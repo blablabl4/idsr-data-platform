@@ -16,6 +16,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <!-- SheetJS (XLSX Export) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- jsPDF (PDF Export) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -630,6 +634,123 @@
   </div>
 
   <!-- ======================================================================= -->
+  <!-- MODAL DE EXPORTAÇÃO DE RELATÓRIO & STORYTELLING DE DADOS                -->
+  <!-- ======================================================================= -->
+  <div id="modal-report-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-3xl w-full p-5 sm:p-7 space-y-5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+      
+      <!-- Cabeçalho do Modal -->
+      <div class="flex items-start justify-between border-b border-idsr-borda pb-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white">Central de Exportação</span>
+            <span class="text-xs text-idsr-cinza">Receita Federal · IBGE · Sebrae</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-idsr-creme uppercase mt-1">Relatórios Executivos & Storytelling de Dados</h2>
+          <span class="text-xs text-idsr-cinza block mt-0.5">Gere e baixe relatórios oficiais estruturados em múltiplos formatos com narrativa de dados</span>
+        </div>
+        <button onclick="closeReportModal()" class="p-1.5 rounded-lg hover:bg-idsr-surface text-idsr-cinza hover:text-white theme-btn shrink-0" title="Fechar">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- 4 Cards de Download Direto -->
+      <div>
+        <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider block mb-2.5">Escolha o Formato do Relatório:</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+          
+          <!-- XLSX -->
+          <button onclick="exportReport('xlsx')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-emerald-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">EXCEL</span>
+                <svg class="w-4 h-4 text-emerald-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </div>
+              <strong class="text-idsr-creme font-bold text-xs block">Planilha .XLSX</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">3 abas: Storytelling, KPIs e Matriz Regional.</p>
+            </div>
+            <span class="text-[10px] font-semibold text-emerald-400 flex items-center">Baixar Planilha →</span>
+          </button>
+
+          <!-- PDF -->
+          <button onclick="exportReport('pdf')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-red-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">DOCUMENTO</span>
+                <svg class="w-4 h-4 text-red-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </div>
+              <strong class="text-idsr-creme font-bold text-xs block">Relatório .PDF</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Documento executivo diagramado com sumário e dados.</p>
+            </div>
+            <span class="text-[10px] font-semibold text-red-400 flex items-center">Baixar PDF →</span>
+          </button>
+
+          <!-- CSV -->
+          <button onclick="exportReport('csv')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-blue-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">DADOS</span>
+                <svg class="w-4 h-4 text-blue-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </div>
+              <strong class="text-idsr-creme font-bold text-xs block">Tabela .CSV</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Dados estruturados com separadores UTF-8 com BOM.</p>
+            </div>
+            <span class="text-[10px] font-semibold text-blue-400 flex items-center">Baixar CSV →</span>
+          </button>
+
+          <!-- TXT -->
+          <button onclick="exportReport('txt')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-amber-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">NARRATIVA</span>
+                <svg class="w-4 h-4 text-amber-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+              </div>
+              <strong class="text-idsr-creme font-bold text-xs block">Texto .TXT</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Storytelling completo, diagnósticos e conclusões.</p>
+            </div>
+            <span class="text-[10px] font-semibold text-amber-400 flex items-center">Baixar TXT →</span>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Prévia do Storytelling de Dados & Resumo Executivo -->
+      <div class="space-y-2">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-2 h-2 rounded-full bg-idsr-sucesso"></span>
+            <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider">Storytelling de Dados & Resumo Executivo:</span>
+          </div>
+          <button onclick="copyReportStorytelling()" id="btn-copy-story" class="px-2.5 py-1 text-[11px] theme-btn bg-idsr-surface border border-idsr-borda text-idsr-cinza hover:text-white flex items-center space-x-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span>Copiar Texto</span>
+          </button>
+        </div>
+
+        <div class="p-4 rounded-xl bg-idsr-surface/60 border border-idsr-borda max-h-60 overflow-y-auto font-mono text-[11px] text-idsr-cinza leading-relaxed whitespace-pre-wrap select-text" id="report-preview-text">
+        </div>
+      </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-idsr-borda text-xs">
+        <span class="text-idsr-cinza text-[11px]" id="report-filter-status">
+          Relatório gerado com base no filtro ativo: Total Brasil (21,8M CNPJs)
+        </span>
+        <div class="flex items-center space-x-2 w-full sm:w-auto">
+          <button onclick="window.print()" class="w-full sm:w-auto px-4 py-2 theme-btn bg-idsr-surface border border-idsr-borda text-xs text-idsr-creme hover:bg-idsr-borda flex items-center justify-center space-x-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            <span>Imprimir</span>
+          </button>
+          <button onclick="closeReportModal()" class="w-full sm:w-auto px-5 py-2 theme-btn bg-idsr-surface border border-idsr-borda text-xs font-bold text-white hover:bg-idsr-borda">
+            Fechar
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
   <!-- CHROME 1: CABEÇALHO IDSR STUDIO (OFICIAL idsr.com.br / DINÂMICO & QUENTE)-->
   <!-- ======================================================================= -->
   <header class="chrome-idsr border-b border-[#423834] bg-[#27201D] px-4 sm:px-6 h-20 items-center justify-between w-full shrink-0">
@@ -682,6 +803,7 @@
         <button id="theme-btn-apple" onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Apple</button>
         <button id="theme-btn-amazon" onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Amazon</button>
       </div>
+      <button onclick="openReportModal()" class="px-3 py-1.5 rounded-lg bg-[#FF3831] text-xs font-bold text-white hover:bg-[#E02A23] flex items-center space-x-1 shadow-sm shrink-0" data-balloon-badge="Exportação" data-balloon-title="Relatórios & Storytelling" data-balloon="Gera relatórios executivos em XLSX (Excel), PDF, CSV e TXT com análise de dados e resumo executivo."><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Relatório</span></button>
       <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1.5 rounded-lg bg-[#38302C] border border-[#423834] text-xs font-bold text-[#FCF2BD] hover:bg-[#423834]">Guia</button>
     </div>
   </header>
@@ -739,6 +861,7 @@
         <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Apple</button>
         <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Amazon</button>
       </div>
+      <button onclick="openReportModal()" class="px-3 py-1 theme-btn bg-[#1A73E8] text-white text-xs font-bold hover:bg-[#1557B0] flex items-center space-x-1 shadow-sm" data-balloon-badge="Exportação" data-balloon-title="Relatórios & Storytelling" data-balloon="Gera relatórios executivos em XLSX, PDF, CSV e TXT com análise de dados e resumo executivo."><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Relatório</span></button>
       <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1 theme-btn bg-[#E8F0FE] text-[#1A73E8] text-xs font-bold hover:bg-[#D2E3FC]">Guia</button>
     </div>
   </header>
@@ -792,6 +915,7 @@
         <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
         <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
       </div>
+      <button onclick="openReportModal()" class="px-3 py-1 theme-btn bg-white/20 hover:bg-white/30 border border-white/20 text-xs font-semibold text-white flex items-center space-x-1 shadow-sm" data-balloon-badge="Exportação" data-balloon-title="Relatórios & Storytelling" data-balloon="Gera relatórios executivos em XLSX, PDF, CSV e TXT com análise de dados e resumo executivo."><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Relatório</span></button>
       <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
     </div>
   </header>
@@ -839,6 +963,7 @@
         <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Apple</button>
         <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
       </div>
+      <button onclick="openReportModal()" class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm text-[11px] hover:bg-[#E88B00] flex items-center space-x-1 shadow-sm" data-balloon-badge="Exportação" data-balloon-title="Relatórios & Storytelling" data-balloon="Gera relatórios executivos em XLSX, PDF, CSV e TXT com análise de dados e resumo executivo."><svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg><span>Relatório</span></button>
       <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-2 py-0.5 theme-btn bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
     </div>
   </header>
@@ -910,6 +1035,13 @@
           data-balloon-title="Limpar Todos os Filtros"
           data-balloon="Restaura a visualização consolidada do universo total de 21,8 milhões de CNPJs ativos no Brasil.">
           Limpar Filtros
+        </button>
+        <button onclick="openReportModal()" class="px-3 py-1 theme-btn bg-idsr-brasa text-white hover:bg-idsr-brasaHover text-xs flex items-center space-x-1.5 shadow-sm font-semibold"
+          data-balloon-badge="Exportação"
+          data-balloon-title="Exportar Relatório do Painel"
+          data-balloon="Gera relatórios executivos em XLSX, PDF, CSV e TXT com os dados do filtro ativo.">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <span>Exportar Relatório</span>
         </button>
       </div>
 
