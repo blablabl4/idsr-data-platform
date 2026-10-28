@@ -439,6 +439,34 @@
       flex-shrink: 0 !important;
     }
 
+    /* Seletores de Tipo de Gráfico Dinâmico */
+    .chart-type-btn {
+      padding: 0.2rem 0.55rem !important;
+      font-size: 11px !important;
+      font-weight: 500;
+      border-radius: var(--raio-botao, 6px);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      white-space: nowrap !important;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .chart-type-btn:hover {
+      color: var(--color-text-main);
+      border-color: var(--color-border-strong);
+    }
+    .chart-type-btn-active {
+      background: var(--color-primary) !important;
+      color: #FFFFFF !important;
+      border-color: var(--color-primary) !important;
+      font-weight: 700;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
     /* Scrollbars discretas */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--color-bg); }
@@ -774,28 +802,28 @@
     <aside class="sidebar-google w-60 border-r border-[#DADCE0] bg-[#FFFFFF] p-3 flex-col justify-between shrink-0 text-xs text-[#3C4043]">
       <div class="space-y-1">
         <span class="px-2 py-1 text-[11px] font-bold text-[#5F6368] uppercase tracking-wider block">Serviços GCP</span>
-        <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] border-l-4 border-[#1A73E8]">
-          <svg class="w-4 h-4 mr-1 text-[#1A73E8]" fill="currentColor" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
+        <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] border-l-4 border-[#1A73E8]">
+          <svg class="w-4 h-4 mr-1 text-[#1A73E8] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
           <span>Looker Studio (Visão)</span>
         </button>
-        <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
-          <svg class="w-4 h-4 mr-1 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
+        <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+          <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
           <span>BigQuery (SQL)</span>
         </button>
-        <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
-          <svg class="w-4 h-4 mr-1 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+        <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+          <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
           <span>Dataform (dbt Core)</span>
         </button>
-        <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
-          <svg class="w-4 h-4 mr-1 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
+        <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+          <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
           <span>Cloud Composer</span>
         </button>
-        <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
-          <svg class="w-4 h-4 mr-1 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+          <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span>Cloud Run (FastAPI)</span>
         </button>
-        <button onclick="switchTab('rag')" class="w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
-          <svg class="w-4 h-4 mr-1 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4 21l3.39-.97C8.93 20.66 10.4 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+        <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+          <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4 21l3.39-.97C8.93 20.66 10.4 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
           <span>Vertex AI (RAG Engine)</span>
         </button>
       </div>
@@ -812,11 +840,11 @@
         <div>
           <span class="text-[11px] font-semibold text-[#8E8E93] tracking-wider uppercase block mb-1.5 px-2">Coleções</span>
           <div class="space-y-1">
-            <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center bg-white/15 text-white shadow-sm hover:bg-white/20 transition-all">
+            <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center bg-white/15 text-white shadow-sm hover:bg-white/20 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#0A84FF] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
               <span>Visão Geral & Widgets</span>
             </button>
-            <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#30D158] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
               <span>Terminal SQL</span>
             </button>
@@ -826,19 +854,19 @@
         <div>
           <span class="text-[11px] font-semibold text-[#8E8E93] tracking-wider uppercase block mb-1.5 px-2">Pipelines & Modelos</span>
           <div class="space-y-1">
-            <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#FFD60A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 6h4a5 5 0 0 1 5 5v1"/><line x1="6" y1="9" x2="6" y2="15"/></svg>
               <span>Linhagem dbt</span>
             </button>
-            <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#FF9F0A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Rotinas Airflow</span>
             </button>
-            <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#0A84FF] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               <span>Serviço FastAPI</span>
             </button>
-            <button onclick="switchTab('rag')" class="w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
               <svg class="w-4 h-4 mr-2.5 text-[#BF5AF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
               <span>Busca Vetorial RAG</span>
             </button>
@@ -925,12 +953,29 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
           <!-- Gráfico 1 -->
           <div class="p-4 sm:p-5 theme-card border border-idsr-borda bg-idsr-painel">
-            <div class="flex items-center justify-between pb-3 border-b border-idsr-borda mb-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-idsr-borda mb-3">
               <div>
-                <span class="text-xs font-bold text-idsr-creme uppercase block">Mortalidade em 24m por Capital Social</span>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-idsr-creme uppercase block">Mortalidade em 24m por Capital Social</span>
+                  <span id="chart-nps-highlight" class="text-xs font-bold text-idsr-brasa">&lt; R$ 10k: 58,4%</span>
+                </div>
                 <span class="text-[10px] text-idsr-cinza">Fonte: Sebrae / Receita Federal do Brasil</span>
               </div>
-              <span id="chart-nps-highlight" class="text-xs font-bold text-idsr-brasa">&lt; R$ 10k: 58,4%</span>
+              <!-- Seletor de Tipo de Gráfico 1 -->
+              <div class="flex items-center space-x-1 shrink-0 bg-black/20 p-1 rounded border border-idsr-borda/60" id="nps-chart-type-selector">
+                <button type="button" onclick="setChartType('nps', 'bar')" id="btn-nps-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas">
+                  Colunas
+                </button>
+                <button type="button" onclick="setChartType('nps', 'line')" id="btn-nps-line" class="chart-type-btn" title="Gráfico de Linha">
+                  Linha
+                </button>
+                <button type="button" onclick="setChartType('nps', 'horizontal')" id="btn-nps-horizontal" class="chart-type-btn" title="Barras Horizontais">
+                  Horizontal
+                </button>
+                <button type="button" onclick="setChartType('nps', 'doughnut')" id="btn-nps-doughnut" class="chart-type-btn" title="Gráfico de Rosca">
+                  Rosca
+                </button>
+              </div>
             </div>
             <div class="h-64 sm:h-72">
               <canvas id="chartNpsDelay"></canvas>
@@ -939,12 +984,26 @@
 
           <!-- Gráfico 2 -->
           <div class="p-4 sm:p-5 theme-card border border-idsr-borda bg-idsr-painel">
-            <div class="flex items-center justify-between pb-3 border-b border-idsr-borda mb-3">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-idsr-borda mb-3">
               <div>
-                <span class="text-xs font-bold text-idsr-creme uppercase block">Distribuição e Sobrevivência Regional</span>
+                <div class="flex items-center space-x-2">
+                  <span class="text-xs font-bold text-idsr-creme uppercase block">Distribuição e Sobrevivência Regional</span>
+                  <span class="text-xs font-bold text-idsr-sucesso">Sul Líder: 79,4%</span>
+                </div>
                 <span class="text-[10px] text-idsr-cinza">Fonte: IBGE Demografia das Empresas (CEMPRE)</span>
               </div>
-              <span class="text-xs font-bold text-idsr-sucesso">Sul Líder: 79,4%</span>
+              <!-- Seletor de Tipo de Gráfico 2 -->
+              <div class="flex items-center space-x-1 shrink-0 bg-black/20 p-1 rounded border border-idsr-borda/60" id="regional-chart-type-selector">
+                <button type="button" onclick="setChartType('regional', 'bar')" id="btn-regional-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas Agrupadas">
+                  Colunas
+                </button>
+                <button type="button" onclick="setChartType('regional', 'line')" id="btn-regional-line" class="chart-type-btn" title="Gráfico de Linhas Comparativas">
+                  Linhas
+                </button>
+                <button type="button" onclick="setChartType('regional', 'horizontal')" id="btn-regional-horizontal" class="chart-type-btn" title="Barras Horizontais">
+                  Horizontal
+                </button>
+              </div>
             </div>
             <div class="h-64 sm:h-72">
               <canvas id="chartRegional"></canvas>

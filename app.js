@@ -10,6 +10,22 @@ let currentDrawerType = "";
 let chartNpsInstance = null;
 let chartRegionalInstance = null;
 let currentTheme = "idsr";
+let currentActiveTab = "analytics";
+let currentNpsChartType = "bar"; // 'bar', 'line', 'horizontal', 'doughnut'
+let currentRegionalChartType = "bar"; // 'bar', 'line', 'horizontal'
+
+let currentNpsData = [58.4, 38.2, 24.1, 14.8, 8.2];
+const currentNpsLabels = [
+  "< R$ 10k (Crítico / MEI)",
+  "R$ 10k - 50k (Micro)",
+  "R$ 50k - 100k (Média)",
+  "R$ 100k - 300k (Pequeno)",
+  "> R$ 300k (Consolidado / EPP)"
+];
+
+const currentRegionalLabels = ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"];
+let currentRegionalData1 = [49.5, 22.3, 15.6, 8.2, 4.4];
+let currentRegionalData2 = [77.8, 79.4, 71.2, 74.6, 68.5];
 
 const THEME_DEFINITIONS = {
   idsr: {
@@ -113,6 +129,7 @@ function switchVisualTheme(themeName, notify = true) {
   if (descEl && def) descEl.innerText = def.desc;
 
   updateChartThemes();
+  switchTab(currentActiveTab);
 
   // Forçar recálculo de dimensões dos gráficos após mudança de layout
   setTimeout(() => {
@@ -125,175 +142,347 @@ function switchVisualTheme(themeName, notify = true) {
   }
 }
 
-function updateChartThemes() {
-  const def = THEME_DEFINITIONS[currentTheme];
-  if (!def) return;
+function renderNpsChart() {
+  const ctxNps = document.getElementById("chartNpsDelay");
+  if (!ctxNps) return;
+  if (chartNpsInstance) {
+    chartNpsInstance.destroy();
+    chartNpsInstance = null;
+  }
 
-  const barRadius = currentTheme === "apple" ? 10 : (currentTheme === "google" ? 8 : (currentTheme === "amazon" ? 1 : 0));
+  const def = THEME_DEFINITIONS[currentTheme] || THEME_DEFINITIONS.idsr;
+  const barRadius = currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : (currentTheme === "amazon" ? 1 : 2));
   const fontFam = currentTheme === "apple" ? "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" :
     (currentTheme === "google" ? "'Roboto', 'Google Sans', sans-serif" :
     (currentTheme === "amazon" ? "'Amazon Ember', 'Segoe UI', sans-serif" :
     "'JetBrains Mono', monospace"));
 
-  if (chartNpsInstance) {
-    chartNpsInstance.data.datasets[0].backgroundColor = def.barColors;
-    chartNpsInstance.data.datasets[0].borderRadius = barRadius;
-    chartNpsInstance.options.scales.y.grid.color = def.gridColor;
-    chartNpsInstance.options.scales.y.ticks.color = def.tickColor;
-    chartNpsInstance.options.scales.y.ticks.font = { family: fontFam, size: 10 };
-    chartNpsInstance.options.scales.x.ticks.color = def.tickColor;
-    chartNpsInstance.options.scales.x.ticks.font = { family: fontFam, size: 10 };
-    chartNpsInstance.options.plugins.tooltip.backgroundColor = def.tooltipBg;
-    chartNpsInstance.options.plugins.tooltip.titleColor = def.tooltipText;
-    chartNpsInstance.options.plugins.tooltip.bodyColor = def.tooltipText;
-    chartNpsInstance.options.plugins.tooltip.titleFont = { family: fontFam, size: 11 };
-    chartNpsInstance.options.plugins.tooltip.bodyFont = { family: fontFam, size: 12 };
-    chartNpsInstance.update();
+  let chartType = "bar";
+  let indexAxis = "x";
+  let datasets = [];
+  let scalesConfig = {};
+
+  if (currentNpsChartType === "bar") {
+    chartType = "bar";
+    indexAxis = "x";
+    datasets = [{
+      label: "Taxa de Mortalidade em 24m (%)",
+      data: [...currentNpsData],
+      backgroundColor: def.barColors,
+      borderRadius: barRadius,
+      borderSkipped: false
+    }];
+    scalesConfig = {
+      y: {
+        min: 0,
+        max: 70,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  } else if (currentNpsChartType === "horizontal") {
+    chartType = "bar";
+    indexAxis = "y";
+    datasets = [{
+      label: "Taxa de Mortalidade em 24m (%)",
+      data: [...currentNpsData],
+      backgroundColor: def.barColors,
+      borderRadius: barRadius,
+      borderSkipped: false
+    }];
+    scalesConfig = {
+      x: {
+        min: 0,
+        max: 70,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  } else if (currentNpsChartType === "line") {
+    chartType = "line";
+    indexAxis = "x";
+    datasets = [{
+      label: "Taxa de Mortalidade em 24m (%)",
+      data: [...currentNpsData],
+      borderColor: def.barColors[0],
+      backgroundColor: def.barColors[0] + "33",
+      fill: true,
+      tension: 0.35,
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      pointBackgroundColor: def.barColors[0]
+    }];
+    scalesConfig = {
+      y: {
+        min: 0,
+        max: 70,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      x: {
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  } else if (currentNpsChartType === "doughnut") {
+    chartType = "doughnut";
+    datasets = [{
+      label: "Taxa de Mortalidade em 24m (%)",
+      data: [...currentNpsData],
+      backgroundColor: def.barColors,
+      borderWidth: 2,
+      borderColor: def.tooltipBg
+    }];
+    scalesConfig = {};
   }
 
-  if (chartRegionalInstance) {
-    chartRegionalInstance.data.datasets[0].backgroundColor = def.regionalOpened;
-    chartRegionalInstance.data.datasets[0].borderRadius = barRadius;
-    chartRegionalInstance.data.datasets[1].backgroundColor = def.regionalClosed;
-    chartRegionalInstance.data.datasets[1].borderRadius = barRadius;
-    chartRegionalInstance.options.scales.y.grid.color = def.gridColor;
-    chartRegionalInstance.options.scales.y.ticks.color = def.tickColor;
-    chartRegionalInstance.options.scales.y.ticks.font = { family: fontFam, size: 10 };
-    chartRegionalInstance.options.scales.x.ticks.color = def.tickColor;
-    chartRegionalInstance.options.scales.x.ticks.font = { family: fontFam, size: 10 };
-    chartRegionalInstance.options.plugins.tooltip.backgroundColor = def.tooltipBg;
-    chartRegionalInstance.options.plugins.tooltip.titleColor = def.tooltipText;
-    chartRegionalInstance.options.plugins.tooltip.bodyColor = def.tooltipText;
-    if (chartRegionalInstance.options.plugins.legend) {
-      chartRegionalInstance.options.plugins.legend.labels.color = def.tickColor;
-      chartRegionalInstance.options.plugins.legend.labels.font = { family: fontFam, size: 10 };
+  chartNpsInstance = new Chart(ctxNps, {
+    type: chartType,
+    data: {
+      labels: [...currentNpsLabels],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: indexAxis,
+      plugins: {
+        legend: {
+          display: currentNpsChartType === "doughnut",
+          position: "bottom",
+          labels: {
+            color: def.tickColor,
+            font: { family: fontFam, size: 10 },
+            boxWidth: 12
+          }
+        },
+        tooltip: {
+          backgroundColor: def.tooltipBg,
+          titleColor: def.tooltipText,
+          bodyColor: def.tooltipText,
+          titleFont: { family: fontFam, size: 11 },
+          bodyFont: { family: fontFam, size: 12 },
+          borderColor: def.gridColor,
+          borderWidth: 1,
+          callbacks: {
+            label: context => ` Mortalidade 24m: ${(context.raw || (context.parsed && (context.parsed.y ?? context.parsed.x)) || 0)}% (Sebrae/RFB)`
+          }
+        }
+      },
+      scales: scalesConfig
     }
-    chartRegionalInstance.update();
+  });
+
+  // Atualizar botões visuais do seletor
+  ["bar", "line", "horizontal", "doughnut"].forEach(t => {
+    const btn = document.getElementById(`btn-nps-${t}`);
+    if (btn) {
+      if (t === currentNpsChartType) {
+        btn.classList.add("chart-type-btn-active");
+      } else {
+        btn.classList.remove("chart-type-btn-active");
+      }
+    }
+  });
+}
+
+function renderRegionalChart() {
+  const ctxReg = document.getElementById("chartRegional");
+  if (!ctxReg) return;
+  if (chartRegionalInstance) {
+    chartRegionalInstance.destroy();
+    chartRegionalInstance = null;
   }
+
+  const def = THEME_DEFINITIONS[currentTheme] || THEME_DEFINITIONS.idsr;
+  const barRadius = currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : (currentTheme === "amazon" ? 1 : 2));
+  const fontFam = currentTheme === "apple" ? "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" :
+    (currentTheme === "google" ? "'Roboto', 'Google Sans', sans-serif" :
+    (currentTheme === "amazon" ? "'Amazon Ember', 'Segoe UI', sans-serif" :
+    "'JetBrains Mono', monospace"));
+
+  let chartType = "bar";
+  let indexAxis = "x";
+  let datasets = [];
+  let scalesConfig = {};
+
+  if (currentRegionalChartType === "bar") {
+    chartType = "bar";
+    indexAxis = "x";
+    datasets = [
+      {
+        label: "% Total Nacional de Empresas (IBGE)",
+        data: [...currentRegionalData1],
+        backgroundColor: def.regionalOpened,
+        borderRadius: barRadius
+      },
+      {
+        label: "% Taxa de Sobrevivência em 24m (CEMPRE)",
+        data: [...currentRegionalData2],
+        backgroundColor: def.regionalClosed,
+        borderRadius: barRadius
+      }
+    ];
+    scalesConfig = {
+      y: {
+        min: 0,
+        max: 100,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      x: {
+        grid: { display: false },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  } else if (currentRegionalChartType === "horizontal") {
+    chartType = "bar";
+    indexAxis = "y";
+    datasets = [
+      {
+        label: "% Total Nacional de Empresas (IBGE)",
+        data: [...currentRegionalData1],
+        backgroundColor: def.regionalOpened,
+        borderRadius: barRadius
+      },
+      {
+        label: "% Taxa de Sobrevivência em 24m (CEMPRE)",
+        data: [...currentRegionalData2],
+        backgroundColor: def.regionalClosed,
+        borderRadius: barRadius
+      }
+    ];
+    scalesConfig = {
+      x: {
+        min: 0,
+        max: 100,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      y: {
+        grid: { display: false },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  } else if (currentRegionalChartType === "line") {
+    chartType = "line";
+    indexAxis = "x";
+    datasets = [
+      {
+        label: "% Total Nacional de Empresas (IBGE)",
+        data: [...currentRegionalData1],
+        borderColor: def.regionalOpened,
+        backgroundColor: def.regionalOpened + "33",
+        fill: false,
+        tension: 0.35,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        borderWidth: 2.5
+      },
+      {
+        label: "% Taxa de Sobrevivência em 24m (CEMPRE)",
+        data: [...currentRegionalData2],
+        borderColor: def.regionalClosed,
+        backgroundColor: def.regionalClosed + "33",
+        fill: false,
+        tension: 0.35,
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        borderWidth: 2.5
+      }
+    ];
+    scalesConfig = {
+      y: {
+        min: 0,
+        max: 100,
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 }, callback: v => `${v}%` }
+      },
+      x: {
+        grid: { color: def.gridColor },
+        ticks: { color: def.tickColor, font: { family: fontFam, size: 10 } }
+      }
+    };
+  }
+
+  chartRegionalInstance = new Chart(ctxReg, {
+    type: chartType,
+    data: {
+      labels: [...currentRegionalLabels],
+      datasets: datasets
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: indexAxis,
+      plugins: {
+        legend: {
+          display: true,
+          position: "top",
+          labels: {
+            color: def.tickColor,
+            font: { family: fontFam, size: 10 },
+            boxWidth: 12
+          }
+        },
+        tooltip: {
+          backgroundColor: def.tooltipBg,
+          titleColor: def.tooltipText,
+          bodyColor: def.tooltipText,
+          borderColor: def.gridColor,
+          borderWidth: 1
+        }
+      },
+      scales: scalesConfig
+    }
+  });
+
+  // Atualizar botões visuais do seletor
+  ["bar", "line", "horizontal"].forEach(t => {
+    const btn = document.getElementById(`btn-regional-${t}`);
+    if (btn) {
+      if (t === currentRegionalChartType) {
+        btn.classList.add("chart-type-btn-active");
+      } else {
+        btn.classList.remove("chart-type-btn-active");
+      }
+    }
+  });
+}
+
+function setChartType(chartName, type) {
+  if (chartName === "nps") {
+    currentNpsChartType = type;
+    renderNpsChart();
+    const typeNames = { bar: "Colunas", line: "Linha", horizontal: "Horizontal", doughnut: "Rosca" };
+    showToast(`Gráfico de Capital Social alterado para: ${typeNames[type] || type}`);
+  } else if (chartName === "regional") {
+    currentRegionalChartType = type;
+    renderRegionalChart();
+    const typeNames = { bar: "Colunas", line: "Linhas Comparativas", horizontal: "Horizontal" };
+    showToast(`Gráfico Regional alterado para: ${typeNames[type] || type}`);
+  }
+}
+
+function updateChartThemes() {
+  renderNpsChart();
+  renderRegionalChart();
 }
 
 /* ========================================================================= */
 /* INICIALIZAÇÃO DOS GRÁFICOS ANALÍTICOS (DADOS REAIS SEBRAE & IBGE)         */
 /* ========================================================================= */
 function initCharts() {
-  const def = THEME_DEFINITIONS[currentTheme];
-
-  // Gráfico 1: Taxa Real de Mortalidade em 24 meses por Faixa de Capital Inicial (Sebrae / Receita Federal)
-  const ctxNps = document.getElementById("chartNpsDelay");
-  if (ctxNps) {
-    chartNpsInstance = new Chart(ctxNps, {
-      type: "bar",
-      data: {
-        labels: [
-          "< R$ 10k (Crítico / MEI)",
-          "R$ 10k - 50k (Micro)",
-          "R$ 50k - 100k (Média)",
-          "R$ 100k - 300k (Pequeno)",
-          "> R$ 300k (Consolidado / EPP)"
-        ],
-        datasets: [
-          {
-            label: "Taxa de Mortalidade em 24m (%)",
-            data: [58.4, 38.2, 24.1, 14.8, 8.2],
-            backgroundColor: def.barColors,
-            borderRadius: currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : 2),
-            borderSkipped: false
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: def.tooltipBg,
-            titleFont: { family: "JetBrains Mono", size: 11 },
-            bodyFont: { family: "Manrope", size: 12 },
-            borderColor: def.gridColor,
-            borderWidth: 1,
-            callbacks: {
-              label: (context) => ` Taxa de Mortalidade em 24m: ${context.parsed.y}% (Sebrae/RFB)`
-            }
-          }
-        },
-        scales: {
-          y: {
-            min: 0,
-            max: 70,
-            grid: { color: def.gridColor },
-            ticks: {
-              color: def.tickColor,
-              font: { family: "JetBrains Mono", size: 10 },
-              callback: (v) => `${v}%`
-            }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: def.tickColor, font: { family: "JetBrains Mono", size: 10 } }
-          }
-        }
-      }
-    });
-  }
-
-  // Gráfico 2: Participação Regional e Taxa de Sobrevivência (IBGE CEMPRE)
-  const ctxReg = document.getElementById("chartRegional");
-  if (ctxReg) {
-    chartRegionalInstance = new Chart(ctxReg, {
-      type: "bar",
-      data: {
-        labels: ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"],
-        datasets: [
-          {
-            label: "% Total Nacional de Empresas (IBGE)",
-            data: [49.5, 22.3, 15.6, 8.2, 4.4],
-            backgroundColor: def.regionalOpened,
-            borderRadius: currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : 2)
-          },
-          {
-            label: "% Taxa de Sobrevivência em 24m (CEMPRE)",
-            data: [77.8, 79.4, 71.2, 74.6, 68.5],
-            backgroundColor: def.regionalClosed,
-            borderRadius: currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : 2)
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            labels: {
-              color: def.tickColor,
-              font: { family: "JetBrains Mono", size: 10 }
-            }
-          },
-          tooltip: {
-            backgroundColor: def.tooltipBg,
-            borderColor: def.gridColor,
-            borderWidth: 1
-          }
-        },
-        scales: {
-          y: {
-            min: 0,
-            max: 100,
-            grid: { color: def.gridColor },
-            ticks: {
-              color: def.tickColor,
-              font: { family: "JetBrains Mono", size: 10 },
-              callback: (v) => `${v}%`
-            }
-          },
-          x: {
-            grid: { display: false },
-            ticks: { color: def.tickColor, font: { family: "JetBrains Mono", size: 10 } }
-          }
-        }
-      }
-    });
-  }
+  renderNpsChart();
+  renderRegionalChart();
 }
 
 /* ========================================================================= */
@@ -479,25 +668,24 @@ function applyInteractiveFilters() {
   if (kpiAberturas) kpiAberturas.innerText = regData.aberturasAno;
   if (kpiSubAberturas) kpiSubAberturas.innerText = regData.subAberturas;
 
-  if (chartNpsInstance) {
-    const factor = porteData.fatorMort || 1.0;
-    const adjustedNps = regData.npsData.map(v => Math.min(Math.max(parseFloat((v * factor).toFixed(1)), 4.0), 85.0));
-    chartNpsInstance.data.datasets[0].data = adjustedNps;
-    chartNpsInstance.update();
+  const factor = porteData.fatorMort || 1.0;
+  currentNpsData = regData.npsData.map(v => Math.min(Math.max(parseFloat((v * factor).toFixed(1)), 4.0), 85.0));
+
+  const npsHighlightEl = document.getElementById("chart-nps-highlight");
+  if (npsHighlightEl) {
+    npsHighlightEl.innerText = `< R$ 10k: ${currentNpsData[0]}%`;
   }
 
-  if (chartRegionalInstance) {
-    if (regKey === "todos") {
-      chartRegionalInstance.data.labels = ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"];
-      chartRegionalInstance.data.datasets[0].data = [49.5, 22.3, 15.6, 8.2, 4.4];
-      chartRegionalInstance.data.datasets[1].data = [77.8, 79.4, 71.2, 74.6, 68.5];
-    } else {
-      chartRegionalInstance.data.labels = ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"];
-      chartRegionalInstance.data.datasets[0].data = regData.regionalData;
-      chartRegionalInstance.data.datasets[1].data = regData.regionalSobrevivencia;
-    }
-    chartRegionalInstance.update();
+  if (regKey === "todos") {
+    currentRegionalData1 = [49.5, 22.3, 15.6, 8.2, 4.4];
+    currentRegionalData2 = [77.8, 79.4, 71.2, 74.6, 68.5];
+  } else {
+    currentRegionalData1 = [...regData.regionalData];
+    currentRegionalData2 = [...regData.regionalSobrevivencia];
   }
+
+  renderNpsChart();
+  renderRegionalChart();
 
   showToast(`Filtros atualizados: ${regData.nome}`);
 }
@@ -516,9 +704,10 @@ function resetInteractiveFilters() {
 }
 
 /* ========================================================================= */
-/* CONTROLE DE ABAS (TABS)                                                   */
+/* CONTROLE DE ABAS (TABS) & SIDEBARS DINÂMICAS                              */
 /* ========================================================================= */
 function switchTab(tabId) {
+  currentActiveTab = tabId;
   document.querySelectorAll(".tab-view").forEach(v => v.classList.add("hidden"));
   document.querySelectorAll(".tab-nav-btn").forEach(b => {
     b.classList.remove("tab-nav-active");
@@ -531,6 +720,29 @@ function switchTab(tabId) {
   if (targetBtn) {
     targetBtn.classList.add("tab-nav-active");
   }
+
+  // Atualizar botões do menu lateral Google (Material 3 Drawer)
+  document.querySelectorAll(".sidebar-google-btn").forEach(btn => {
+    const isTarget = btn.getAttribute("data-sidebar-tab") === tabId;
+    const icon = btn.querySelector("svg");
+    if (isTarget) {
+      btn.className = "sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] border-l-4 border-[#1A73E8]";
+      if (icon) icon.className = "w-4 h-4 mr-1 text-[#1A73E8] shrink-0";
+    } else {
+      btn.className = "sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent";
+      if (icon) icon.className = "w-4 h-4 mr-1 text-[#5F6368] shrink-0";
+    }
+  });
+
+  // Atualizar botões do menu lateral Apple (macOS Tahoe Glass)
+  document.querySelectorAll(".sidebar-apple-btn").forEach(btn => {
+    const isTarget = btn.getAttribute("data-sidebar-tab") === tabId;
+    if (isTarget) {
+      btn.className = "sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center bg-white/15 text-white shadow-sm hover:bg-white/20 transition-all";
+    } else {
+      btn.className = "sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all";
+    }
+  });
 
   // Se trocar para a aba de gráficos, redimensionar Chart.js
   if (tabId === "analytics") {
