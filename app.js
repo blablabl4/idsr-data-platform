@@ -14,13 +14,13 @@ let currentTheme = "idsr";
 const THEME_DEFINITIONS = {
   idsr: {
     name: "IDSR STUDIO",
-    desc: "Design Editorial Suíço · Tipografia Unbounded/Manrope · Alto Contraste & Densidade",
-    barColors: ["#FF3831", "#E02A23", "#F59E0B", "#10B981", "#059669"],
+    desc: "Estúdio de Sites & Engenharia de Dados · idsr.com.br · Feito em São Paulo",
+    barColors: ["#FF3831", "#E02A23", "#F59E0B", "#30D158", "#4C3487"],
     regionalOpened: "#FCF2BD",
     regionalClosed: "#FF3831",
-    gridColor: "#302622",
-    tickColor: "#948882",
-    tooltipBg: "#181412",
+    gridColor: "#423834",
+    tickColor: "#B3A59E",
+    tooltipBg: "#27201D",
     tooltipText: "#FCF2BD"
   },
   google: {
@@ -65,11 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
   initCharts();
   loadSelectedSql();
   runPredictionSimulation();
+  startSpClock();
 
   if (!localStorage.getItem("idsr_intro_seen")) {
     openIntroModal();
   }
 });
+
+function startSpClock() {
+  function update() {
+    const now = new Date();
+    const spTime = now.toLocaleTimeString("pt-BR", { timeZone: "America/Sao_Paulo" });
+    const els = document.querySelectorAll(".relogio-sp");
+    els.forEach(el => el.innerText = spTime);
+  }
+  update();
+  setInterval(update, 1000);
+}
 
 /* ========================================================================= */
 /* CONTROLE DO MODAL DE INTRODUÇÃO (SEM TECNÊS)                              */
