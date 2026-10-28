@@ -897,21 +897,21 @@ function runPredictionSimulation() {
   meterEl.style.width = `${probPct}%`;
 
   if (probBaixa < 0.25) {
-    badgeEl.className = "px-2.5 py-0.5 theme-btn text-xs font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800";
-    badgeEl.innerText = "BAIXO RISCO (ALTA SOBREVIVÊNCIA)";
-    probEl.className = "text-4xl font-mono font-bold text-emerald-400";
+    badgeEl.className = "self-start sm:self-auto px-2.5 py-0.5 text-xs font-bold rounded border bg-emerald-950/80 text-emerald-400 border-emerald-800 whitespace-nowrap";
+    badgeEl.innerText = "BAIXO RISCO";
+    probEl.className = "text-4xl font-bold text-emerald-400";
     meterEl.className = "h-full bg-emerald-400 transition-all duration-200";
     actionEl.innerText = "Estrutura financeira sólida segundo os padrões do Sebrae: a relação entre capital investido e reserva fornece folga segura para atravessar o ciclo de maturação.";
   } else if (probBaixa < 0.50) {
-    badgeEl.className = "px-2.5 py-0.5 theme-btn text-xs font-mono font-bold bg-amber-950/80 text-amber-400 border border-amber-800";
+    badgeEl.className = "self-start sm:self-auto px-2.5 py-0.5 text-xs font-bold rounded border bg-amber-950/80 text-amber-400 border-amber-800 whitespace-nowrap";
     badgeEl.innerText = "RISCO MODERADO";
-    probEl.className = "text-4xl font-mono font-bold text-amber-400";
+    probEl.className = "text-4xl font-bold text-amber-400";
     meterEl.className = "h-full bg-amber-400 transition-all duration-200";
     actionEl.innerText = "Atenção ao fluxo de caixa nos meses 6 a 12. As estatísticas oficiais recomendam elevar a reserva líquida ou firmar parcerias mais próximas dos polos consumidores.";
   } else {
-    badgeEl.className = "px-2.5 py-0.5 theme-btn text-xs font-mono font-bold bg-red-950/80 text-red-400 border border-red-800";
-    badgeEl.innerText = "RISCO ELEVADO DE FECHAMENTO";
-    probEl.className = "text-4xl font-mono font-bold text-red-400";
+    badgeEl.className = "self-start sm:self-auto px-2.5 py-0.5 text-xs font-bold rounded border bg-red-950/80 text-red-400 border-red-800 whitespace-nowrap";
+    badgeEl.innerText = "ALTO RISCO";
+    probEl.className = "text-4xl font-bold text-red-400";
     meterEl.className = "h-full bg-red-500 transition-all duration-200";
     actionEl.innerText = "Histórico crítico registrado na base da Receita Federal: empresas com capital inicial abaixo de R$ 15.000 e menos de 6 meses de reserva têm mais de 50% de probabilidade de baixa em até 2 anos.";
   }
