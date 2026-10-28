@@ -603,11 +603,22 @@
 
     /* Responsividade refinada de tipografia e cards no mobile */
     @media (max-width: 640px) {
+      [data-theme] .kpi-number,
       .kpi-number {
-        font-size: 1.5rem !important;
+        font-size: 1.35rem !important;
+        line-height: 1.15 !important;
       }
       .kpi-card {
-        padding: 0.75rem !important;
+        padding: 0.85rem !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        min-height: 118px !important;
+      }
+      .kpi-label {
+        font-size: 0.70rem !important;
+        white-space: normal !important;
+        line-height: 1.25 !important;
       }
       .filter-control {
         width: 100% !important;
@@ -1094,11 +1105,10 @@
           data-balloon="Restaura a visualização consolidada do universo total de 21,8 milhões de CNPJs ativos no Brasil.">
           Limpar Filtros
         </button>
-        <button onclick="openReportModal()" class="px-3 py-1 theme-btn bg-idsr-brasa text-white hover:bg-idsr-brasaHover text-xs flex items-center space-x-1.5 shadow-sm font-semibold"
+        <button onclick="openReportModal()" class="px-3 py-1 theme-btn bg-idsr-surface border border-idsr-borda hover:bg-idsr-borda text-idsr-creme hover:text-white text-xs flex items-center space-x-1.5 font-medium"
           data-balloon-badge="Exportação"
           data-balloon-title="Exportar Relatório do Painel"
-          data-balloon="Gera relatórios executivos em XLSX, PDF, CSV e TXT com os dados do filtro ativo.">
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <svg class="w-3.5 h-3.5 text-idsr-brasa" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           <span>Exportar Relatório</span>
         </button>
       </div>
@@ -1228,41 +1238,41 @@
       <div id="view-analytics" class="tab-view space-y-6 w-full">
 
         <!-- 4 KPI CARDS COM ADAPTAÇÃO GEOMÉTRICA RADICAL -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 w-full">
           <div class="kpi-card kpi-card-1" data-balloon-badge="Métrica Federal" data-balloon-title="Universo Ativo (MDIC / RFB)" data-balloon="Contagem oficial de empresas com registro ativo na Receita Federal do Brasil e Ministério do Desenvolvimento, Indústria e Comércio.">
-            <span class="kpi-label block truncate">Universo Ativo (MDIC / RFB)</span>
-            <div class="mt-1 flex items-baseline space-x-2">
+            <span class="kpi-label block text-xs font-semibold leading-tight text-idsr-cinza">Universo Ativo (MDIC / RFB)</span>
+            <div class="mt-1 flex flex-wrap items-baseline gap-1">
               <span id="kpi-total-empresas" class="kpi-number">21,8M</span>
-              <span class="text-xs text-idsr-cinza">cnpjs</span>
+              <span class="text-xs text-idsr-cinza">CNPJs</span>
             </div>
-            <span id="kpi-sub-total" class="text-[11px] text-idsr-cinza block mt-1 truncate">Total de CNPJs ativos no Brasil</span>
+            <span id="kpi-sub-total" class="text-[11px] text-idsr-cinza block mt-1 leading-snug">Total de empresas ativas</span>
           </div>
 
           <div class="kpi-card kpi-card-2" data-balloon-badge="Métrica Federal" data-balloon-title="Sobrevivência em 24 Meses (Sebrae)" data-balloon="Percentual médio nacional de empresas que continuam de portas abertas após os primeiros dois anos de existência.">
-            <span class="kpi-label block truncate">Sobrevivência 24m (Sebrae)</span>
-            <div class="mt-1 flex items-baseline space-x-2">
+            <span class="kpi-label block text-xs font-semibold leading-tight text-idsr-cinza">Sobrevivência 24m (Sebrae)</span>
+            <div class="mt-1 flex flex-wrap items-baseline gap-1">
               <span id="kpi-taxa-sobrevivencia" class="kpi-number text-idsr-sucesso">61,0%</span>
               <span class="text-xs text-idsr-cinza">ativas</span>
             </div>
-            <span id="kpi-sub-sobrevivencia" class="text-[11px] text-idsr-cinza block mt-1 truncate">39,0% baixadas em 24 meses</span>
+            <span id="kpi-sub-sobrevivencia" class="text-[11px] text-idsr-cinza block mt-1 leading-snug">39,0% baixadas em 24 meses</span>
           </div>
 
           <div class="kpi-card kpi-card-3" data-balloon-badge="Métrica Federal" data-balloon-title="Resiliência das EPPs (5 Anos)" data-balloon="Empresas de Pequeno Porte têm a maior taxa histórica de permanência no mercado brasileiro: 83% sobrevivem após 5 anos.">
-            <span class="kpi-label block truncate">Sobrevivência EPP 5 anos</span>
-            <div class="mt-1 flex items-baseline space-x-2">
+            <span class="kpi-label block text-xs font-semibold leading-tight text-idsr-cinza">Sobrevivência EPP 5 anos</span>
+            <div class="mt-1 flex flex-wrap items-baseline gap-1">
               <span id="kpi-taxa-epp" class="kpi-number text-idsr-sucesso">83,0%</span>
-              <span class="text-xs text-idsr-cinza">resiliência</span>
+              <span class="text-xs text-idsr-cinza">resilientes</span>
             </div>
-            <span id="kpi-sub-epp" class="text-[11px] text-idsr-cinza block mt-1 truncate">Apenas 17% de mortalidade em 5 anos</span>
+            <span id="kpi-sub-epp" class="text-[11px] text-idsr-cinza block mt-1 leading-snug">Maior taxa histórica nacional</span>
           </div>
 
           <div class="kpi-card kpi-card-4" data-balloon-badge="Métrica Federal" data-balloon-title="Ritmo de Novas Aberturas (Redesim)" data-balloon="Média de novos registros empresariais formalizados por ano, totalizando mais de 10.500 novos negócios a cada dia útil.">
-            <span class="kpi-label block truncate">Aberturas Anuais (Redesim)</span>
-            <div class="mt-1 flex items-baseline space-x-2">
+            <span class="kpi-label block text-xs font-semibold leading-tight text-idsr-cinza">Aberturas Anuais (Redesim)</span>
+            <div class="mt-1 flex flex-wrap items-baseline gap-1">
               <span id="kpi-aberturas-ano" class="kpi-number">3,85M</span>
               <span class="text-xs text-idsr-cinza">novas/ano</span>
             </div>
-            <span id="kpi-sub-aberturas" class="text-[11px] text-idsr-cinza block mt-1 truncate">10.500 novos registros/dia útil</span>
+            <span id="kpi-sub-aberturas" class="text-[11px] text-idsr-cinza block mt-1 leading-snug">10.500 novos registros/dia</span>
           </div>
         </div>
 
@@ -1379,9 +1389,9 @@
 
             <!-- Score Visual -->
             <div class="lg:col-span-5 p-5 theme-card bg-idsr-surface border border-idsr-borda">
-              <div class="flex items-center justify-between pb-2 border-b border-idsr-borda">
-                <span class="text-[11px] text-idsr-cinza uppercase">Probabilidade de Baixa</span>
-                <span id="pred-badge" class="px-2.5 py-0.5 theme-btn text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800" data-balloon-badge="Simulador" data-balloon-title="Classificação de Risco" data-balloon="Faixa de risco estimada pelo modelo estatístico calibrado na base da Receita Federal e dados do Sebrae.">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 pb-2.5 border-b border-idsr-borda">
+                <span class="text-xs font-bold text-idsr-cinza uppercase tracking-wider">Probabilidade de Baixa</span>
+                <span id="pred-badge" class="self-start sm:self-auto px-2.5 py-0.5 text-xs font-bold rounded border bg-emerald-950/80 text-emerald-400 border-emerald-800 whitespace-nowrap" data-balloon-badge="Simulador" data-balloon-title="Classificação de Risco" data-balloon="Faixa de risco estimada pelo modelo estatístico calibrado na base da Receita Federal e dados do Sebrae.">
                   BAIXO RISCO
                 </span>
               </div>
