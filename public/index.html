@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IDSR Data Platform | Inteligência de Empresas no Brasil (Receita Federal & IBGE)</title>
   <meta name="description" content="Plataforma de inteligência e sobrevivência empresarial baseada em dados públicos oficiais da Receita Federal, IBGE e MDIC.">
-  <meta name="author" content="Isaque da Silva Rocha (blablabl4)">
+  <meta name="author" content="Isaque da Silva Rocha">
   
   <!-- Fontes Oficiais -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Roboto+Mono:wght@400;500;700&family=Roboto:wght@400;500;700&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -49,29 +49,29 @@
     /* 4 SISTEMAS DE DESIGN: ARQUITETURA, FORMAS E DISPOSIÇÃO DIFERENTES        */
     /* ========================================================================= */
 
-    /* 1. IDSR STUDIO (Editorial Suíço / Luxo Brutalista / Alta Densidade) */
+    /* 1. IDSR STUDIO (Cores & DNA Oficiais idsr.com.br: Quente, Dinâmico, Divertido) */
     :root, [data-theme="idsr"] {
-      --color-bg: #110E0C;
-      --color-card: #181412;
-      --color-surface: #201A18;
-      --color-border: #302622;
-      --color-border-strong: #443732;
-      --color-text-main: #FCF2BD;
-      --color-text-secondary: #D8CE9F;
-      --color-text-muted: #948882;
-      --color-text-subtle: #5A504B;
-      --color-accent: #FF3831;
+      --color-bg: #27201D;              /* Noite oficial idsr.com.br */
+      --color-card: #2F2724;            /* Painel quente */
+      --color-surface: #38302C;         /* Superfície */
+      --color-border: #423834;          /* Borda sutil */
+      --color-border-strong: #5A4C46;
+      --color-text-main: #FCF2BD;       /* Creme oficial idsr.com.br */
+      --color-text-secondary: #E3D9A4;
+      --color-text-muted: #B3A59E;
+      --color-text-subtle: #7D7069;
+      --color-accent: #FF3831;          /* Brasa oficial idsr.com.br */
       --color-accent-hover: #E02A23;
-      --color-brand-secondary: #4C3487;
-      --color-success: #10B981;
+      --color-brand-secondary: #4C3487; /* Roxo oficial idsr.com.br */
+      --color-success: #30D158;
       --color-warning: #F59E0B;
-      --card-radius: 0px;
-      --btn-radius: 0px;
-      --card-shadow: none;
+      --card-radius: 12px;              /* Raio oficial idsr.com.br */
+      --btn-radius: 8px;                /* Raio botão oficial idsr.com.br */
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
       --card-backdrop: none;
-      --header-bg: #181412;
+      --header-bg: #27201D;
       --tab-active-border: #FF3831;
-      --tab-active-bg: #201A18;
+      --tab-active-bg: #38302C;
     }
 
     /* 2. PADRÃO GOOGLE (Material Design 3 / Google Cloud Console / Looker Studio) */
@@ -156,8 +156,36 @@
       transition: background-color 0.2s ease, color 0.2s ease;
     }
 
+    /* Anotações Manuscritas Dinâmicas IDSR */
+    .mao {
+      font-family: 'Caveat Brush', cursive !important;
+      font-weight: 400 !important;
+      text-transform: none !important;
+      color: var(--color-accent) !important;
+      display: inline-block;
+      transform: rotate(-4deg);
+      font-size: 1.15em;
+      line-height: 0.9;
+    }
+
+    /* Pulso "no ar" oficial do idsr.com.br */
+    .pulso {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #30D158;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.7);
+      animation: pulso 2s infinite;
+    }
+    @keyframes pulso {
+      0% { box-shadow: 0 0 0 0 rgba(48, 209, 88, 0.7); }
+      70% { box-shadow: 0 0 0 7px rgba(48, 209, 88, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(48, 209, 88, 0); }
+    }
+
     /* ========================================================================= */
-    /* FORÇA TIPOGRÁFICA ABSOLUTA POR TEMA (SOBREPÕE QUALQUER UTILITY TAILWIND)   */
+    /* TIPOGRAFIA RIGOROSA POR SISTEMA VISUAL                                   */
     /* ========================================================================= */
     [data-theme="idsr"], [data-theme="idsr"] * {
       font-family: 'Manrope', system-ui, sans-serif !important;
@@ -195,16 +223,16 @@
     }
 
     /* ========================================================================= */
-    /* FORMAS E DISPOSIÇÃO RADICALMENTE DIFERENTES                              */
+    /* FORMAS E DISPOSIÇÃO POR TEMA                                             */
     /* ========================================================================= */
 
-    /* 1. IDSR STUDIO (Editorial Suíço / Brutalismo) */
+    /* 1. IDSR STUDIO (idsr.com.br) */
     [data-theme="idsr"] .kpi-card {
-      border-radius: 0px !important;
-      border: 1px solid #302622 !important;
-      background: #181412 !important;
-      box-shadow: none !important;
-      border-left: 3px solid #FF3831 !important;
+      border-radius: 12px !important;
+      border: 1px solid #423834 !important;
+      background: #2F2724 !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+      border-left: 4px solid #FF3831 !important;
       padding: 1.25rem !important;
     }
     [data-theme="idsr"] .kpi-number {
@@ -215,19 +243,24 @@
     [data-theme="idsr"] .kpi-label {
       text-transform: uppercase !important;
       letter-spacing: 0.08em !important;
-      color: #948882 !important;
-      font-size: 0.70rem !important;
+      color: #B3A59E !important;
+      font-size: 0.72rem !important;
     }
-    [data-theme="idsr"] .theme-card,
+    [data-theme="idsr"] .theme-card {
+      border-radius: 12px !important;
+      border: 1px solid #423834 !important;
+      background: #2F2724 !important;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.20) !important;
+    }
     [data-theme="idsr"] .theme-btn {
-      border-radius: 0px !important;
+      border-radius: 8px !important;
     }
     [data-theme="idsr"] .filter-control {
-      border-radius: 0px !important;
-      border: 1px solid #302622 !important;
-      background: #181412 !important;
+      border-radius: 8px !important;
+      border: 1px solid #423834 !important;
+      background: #27201D !important;
       color: #FCF2BD !important;
-      padding: 0.4rem 0.75rem !important;
+      padding: 0.45rem 0.85rem !important;
     }
 
     /* 2. PADRÃO GOOGLE (Material 3 / Looker Studio) */
@@ -454,32 +487,66 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- CHROME 1: CABEÇALHO IDSR STUDIO (EDITORIAL SUÍÇO / ALTA DENSIDADE)      -->
+  <!-- CHROME 1: CABEÇALHO IDSR STUDIO (OFICIAL idsr.com.br / DINÂMICO & QUENTE)-->
   <!-- ======================================================================= -->
-  <header class="chrome-idsr border-b border-idsr-borda bg-idsr-painel px-4 sm:px-6 h-14 items-center justify-between w-full shrink-0">
-    <div class="flex items-center space-x-3">
-      <span class="w-6 h-6 theme-btn bg-idsr-brasa flex items-center justify-center font-bold text-white text-xs">ID</span>
-      <span class="font-bold text-sm tracking-tight text-idsr-creme whitespace-nowrap">IDSR<span class="text-idsr-brasa">.</span>DATA</span>
-      <span class="h-4 w-px bg-idsr-borda hidden sm:block"></span>
-      <span class="text-[11px] text-idsr-cinza hidden sm:inline whitespace-nowrap">BASE OFICIAL: RECEITA FEDERAL · IBGE · MDIC</span>
-    </div>
-    <div class="flex items-center space-x-2">
-      <!-- Seletor Rápido de 4 Sistemas Visuais -->
-      <div class="p-0.5 rounded bg-idsr-surface border border-idsr-borda flex items-center space-x-0.5 text-[11px]">
-        <button id="theme-btn-idsr" onclick="switchVisualTheme('idsr')" class="px-2.5 py-1 theme-btn text-white bg-idsr-brasa font-bold">IDSR</button>
-        <button id="theme-btn-google" onclick="switchVisualTheme('google')" class="px-2.5 py-1 theme-btn text-idsr-cinza hover:text-idsr-creme">Google</button>
-        <button id="theme-btn-apple" onclick="switchVisualTheme('apple')" class="px-2.5 py-1 theme-btn text-idsr-cinza hover:text-idsr-creme">Apple</button>
-        <button id="theme-btn-amazon" onclick="switchVisualTheme('amazon')" class="px-2.5 py-1 theme-btn text-idsr-cinza hover:text-idsr-creme">Amazon</button>
+  <header class="chrome-idsr border-b border-[#423834] bg-[#27201D] px-4 sm:px-6 h-20 items-center justify-between w-full shrink-0">
+    <div class="flex items-center space-x-4">
+      <!-- IDSR Official SVG Logo com Ponto Brasa -->
+      <a href="https://idsr.com.br" target="_blank" rel="noopener" class="shrink-0" aria-label="IDSR Estúdio">
+        <svg class="h-6 w-auto text-[#FCF2BD]" viewBox="0 0 684.4 198" role="img" aria-label="IDSR."><path d="M37.0 24.0H83.6V174.0H37.0Z M180.6 24.0Q207.6 24.0 227.9 33.3Q248.2 42.6 259.5 59.4Q270.8 76.2 270.8 99.0Q270.8 121.6 259.5 138.5Q248.2 155.4 227.9 164.7Q207.6 174.0 180.6 174.0H103.4V24.0ZM149.6 153.8 128.2 132.6H184.2Q196.4 132.6 205.3 128.5Q214.2 124.4 219.0 116.8Q223.8 109.2 223.8 99.0Q223.8 88.6 219.0 81.1Q214.2 73.6 205.3 69.5Q196.4 65.4 184.2 65.4H128.2L149.6 44.2Z M278.8 124.8H326.0Q326.8 130.0 331.1 133.9Q335.4 137.8 342.8 139.9Q350.2 142.0 360.2 142.0Q374.0 142.0 381.7 138.8Q389.4 135.6 389.4 129.0Q389.4 124.4 385.0 121.5Q380.6 118.6 367.6 117.6L341.2 115.4Q308.8 113.0 294.3 101.3Q279.8 89.6 279.8 69.8Q279.8 53.6 289.2 42.7Q298.6 31.8 315.4 26.2Q332.2 20.6 355.0 20.6Q377.0 20.6 394.1 26.8Q411.2 33.0 421.3 44.3Q431.4 55.6 432.4 70.6H385.2Q384.4 66.2 380.7 62.9Q377.0 59.6 370.2 57.8Q363.4 56.0 354.0 56.0Q341.6 56.0 334.3 59.0Q327.0 62.0 327.0 68.0Q327.0 72.4 331.3 75.2Q335.6 78.0 347.2 79.0L376.2 81.4Q397.8 83.0 411.1 88.1Q424.4 93.2 430.4 101.9Q436.4 110.6 436.4 123.8Q436.4 139.8 426.8 151.9Q417.2 164.0 399.9 170.7Q382.6 177.4 359.4 177.4Q335.6 177.4 317.6 170.8Q299.6 164.2 289.4 152.3Q279.2 140.4 278.8 124.8Z M482.2 88.8H534.6Q543.4 88.8 548.3 84.8Q553.2 80.8 553.2 73.2Q553.2 65.6 548.3 61.6Q543.4 57.6 534.6 57.6H475.6L496.6 36.0V174.0H450.0V24.0H541.6Q559.0 24.0 572.2 30.2Q585.4 36.4 592.8 47.4Q600.2 58.4 600.2 73.2Q600.2 87.6 592.8 98.7Q585.4 109.8 572.2 115.9Q559.0 122.0 541.6 122.0H482.2ZM502.2 103.8H554.0L605.6 174.0H552.2Z" fill="currentColor"/><path class="logo-ponto" d="M629.0 176.2Q622.0 176.2 616.2 172.9Q610.4 169.6 607.1 163.8Q603.8 158.0 603.8 151.0Q603.8 143.8 607.1 138.1Q610.4 132.4 616.2 129.1Q622.0 125.8 629.0 125.8Q636.2 125.8 641.9 129.1Q647.6 132.4 650.9 138.1Q654.2 143.8 654.2 151.0Q654.2 158.0 650.9 163.8Q647.6 169.6 641.9 172.9Q636.2 176.2 629.0 176.2Z" fill="#FF3831"/></svg>
+      </a>
+      
+      <div class="hidden md:flex items-center space-x-2 text-xs text-[#B3A59E] border-l border-[#423834] pl-3">
+        <span>SP</span>
+        <span class="relogio-sp font-mono text-[#FCF2BD]">--:--:--</span>
+        <span class="pulso ml-1"></span>
+        <span class="text-xs text-[#30D158] font-bold">no ar</span>
       </div>
-      <button onclick="openIntroModal()" class="px-2.5 py-1 theme-btn bg-idsr-surface border border-idsr-borda text-xs text-idsr-creme hover:bg-idsr-borda">Guia</button>
-      <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-2.5 py-1 theme-btn bg-idsr-surface border border-idsr-borda text-xs text-idsr-creme hover:bg-idsr-borda">GitHub</a>
+    </div>
+
+    <!-- Candidate Profile Badge in Header -->
+    <div class="flex items-center space-x-3 bg-[#2F2724] border border-[#423834] px-3.5 py-1.5 rounded-xl shadow-sm">
+      <div class="w-8 h-8 rounded-lg bg-[#FF3831] text-[#27201D] flex items-center justify-center font-bold text-xs shrink-0">
+        IR
+      </div>
+      <div class="leading-tight">
+        <div class="flex items-center space-x-1.5">
+          <span class="font-bold text-xs sm:text-sm text-[#FCF2BD]">Isaque da Silva Rocha</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#30D158] hidden sm:inline-block"></span>
+        </div>
+        <span class="text-[11px] text-[#B3A59E] hidden sm:block">Data & Analytics Engineer</span>
+      </div>
+
+      <!-- Icon Actions -->
+      <div class="flex items-center space-x-1.5 border-l border-[#423834] pl-2.5">
+        <a href="https://wa.me/5511983426767?text=Oi%20Isaque%2C%20vi%20sua%20plataforma%20de%20dados%20e%20quero%20conversar" target="_blank" rel="noopener" title="WhatsApp: (11) 98342-6767" class="w-8 h-8 rounded-lg bg-emerald-600/20 hover:bg-emerald-600 text-emerald-400 hover:text-white transition-all border border-emerald-600/40 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.586 1.777.925 2.791.926h.005c3.18 0 5.767-2.587 5.768-5.766 0-1.542-.601-2.992-1.691-4.083a5.728 5.728 0 0 0-4.082-1.631zm3.376 8.204c-.147.414-.735.792-1.127.842-.38.049-.854.08-2.615-.65-1.921-.798-3.14-2.766-3.235-2.894-.094-.128-.776-1.031-.776-1.966s.489-1.393.663-1.583c.174-.19.38-.238.507-.238.127 0 .254.001.365.006.118.005.275-.045.431.328.16.38.547 1.332.595 1.429.049.097.081.21.016.338-.065.128-.098.207-.195.32-.097.113-.205.253-.293.34-.098.097-.201.202-.087.397.114.195.508.838 1.09 1.357.75.669 1.382.876 1.577.973.195.097.309.081.423-.049.114-.129.489-.57.62-.765.13-.195.26-.163.439-.097.179.065 1.135.535 1.33.633.195.097.325.146.374.227.049.081.049.471-.098.885zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.436 5.176L2 22l4.981-1.306A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/isaque-da-silva-rocha-2524122aa/" target="_blank" rel="noopener" title="LinkedIn: isaque-da-silva-rocha" class="w-8 h-8 rounded-lg bg-[#0A66C2]/20 hover:bg-[#0A66C2] text-[#70B5F9] hover:text-white transition-all border border-[#0A66C2]/40 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37z"/></svg>
+        </a>
+        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" title="GitHub: idsr-data-platform" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 text-[#FCF2BD] hover:text-white transition-all border border-white/15 flex items-center justify-center shrink-0">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Theme Switcher & Guia -->
+    <div class="flex items-center space-x-2">
+      <div class="p-0.5 rounded-lg bg-[#38302C] border border-[#423834] flex items-center space-x-0.5 text-[11px]">
+        <button id="theme-btn-idsr" onclick="switchVisualTheme('idsr')" class="px-2.5 py-1 rounded-md text-[#27201D] bg-[#FF3831] font-bold">IDSR</button>
+        <button id="theme-btn-google" onclick="switchVisualTheme('google')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Google</button>
+        <button id="theme-btn-apple" onclick="switchVisualTheme('apple')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Apple</button>
+        <button id="theme-btn-amazon" onclick="switchVisualTheme('amazon')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Amazon</button>
+      </div>
+      <button onclick="openIntroModal()" class="px-3 py-1.5 rounded-lg bg-[#38302C] border border-[#423834] text-xs font-bold text-[#FCF2BD] hover:bg-[#423834]">Guia</button>
     </div>
   </header>
 
   <!-- ======================================================================= -->
   <!-- CHROME 2: CABEÇALHO GOOGLE CLOUD PLATFORM (MATERIAL 3 / GCP APP BAR)    -->
   <!-- ======================================================================= -->
-  <header class="chrome-google border-b border-[#DADCE0] bg-[#FFFFFF] text-[#202124] px-4 h-14 items-center justify-between w-full shadow-sm shrink-0">
+  <header class="chrome-google border-b border-[#DADCE0] bg-[#FFFFFF] text-[#202124] px-4 h-20 items-center justify-between w-full shadow-sm shrink-0">
     <div class="flex items-center space-x-3">
       <svg class="w-5 h-5 text-[#5F6368] cursor-pointer shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
       <div class="flex items-center space-x-1.5 font-medium text-sm whitespace-nowrap">
@@ -493,11 +560,32 @@
         <span class="text-[10px] ml-1 text-[#5F6368]">▼</span>
       </div>
     </div>
-    
-    <!-- Barra de Busca Central Estilo Google -->
-    <div class="hidden lg:flex items-center w-80 bg-[#F1F3F4] rounded-full px-3 py-1.5 text-xs text-[#5F6368] border border-[#DADCE0]">
-      <svg class="w-4 h-4 mr-2 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
-      <span class="truncate">Pesquisar recursos, tabelas e CNPJs (/)...</span>
+
+    <!-- Candidate Profile Badge Google Style -->
+    <div class="flex items-center space-x-3 bg-[#F8F9FA] border border-[#DADCE0] px-3.5 py-1.5 rounded-2xl shadow-sm">
+      <div class="w-8 h-8 rounded-full bg-[#1A73E8] text-white flex items-center justify-center font-bold text-xs shrink-0">
+        IR
+      </div>
+      <div class="leading-tight">
+        <div class="flex items-center space-x-1.5">
+          <span class="font-bold text-xs sm:text-sm text-[#202124]">Isaque da Silva Rocha</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
+        </div>
+        <span class="text-[11px] text-[#5F6368] hidden sm:block">Data & Analytics Engineer</span>
+      </div>
+
+      <!-- Icon Actions -->
+      <div class="flex items-center space-x-1 border-l border-[#DADCE0] pl-2">
+        <a href="https://wa.me/5511983426767?text=Oi%20Isaque%2C%20vi%20sua%20plataforma%20de%20dados%20e%20quero%20conversar" target="_blank" rel="noopener" title="WhatsApp: (11) 98342-6767" class="w-7 h-7 rounded-full bg-[#E8F0FE] hover:bg-[#D2E3FC] text-[#1A73E8] transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.586 1.777.925 2.791.926h.005c3.18 0 5.767-2.587 5.768-5.766 0-1.542-.601-2.992-1.691-4.083a5.728 5.728 0 0 0-4.082-1.631zm3.376 8.204c-.147.414-.735.792-1.127.842-.38.049-.854.08-2.615-.65-1.921-.798-3.14-2.766-3.235-2.894-.094-.128-.776-1.031-.776-1.966s.489-1.393.663-1.583c.174-.19.38-.238.507-.238.127 0 .254.001.365.006.118.005.275-.045.431.328.16.38.547 1.332.595 1.429.049.097.081.21.016.338-.065.128-.098.207-.195.32-.097.113-.205.253-.293.34-.098.097-.201.202-.087.397.114.195.508.838 1.09 1.357.75.669 1.382.876 1.577.973.195.097.309.081.423-.049.114-.129.489-.57.62-.765.13-.195.26-.163.439-.097.179.065 1.135.535 1.33.633.195.097.325.146.374.227.049.081.049.471-.098.885zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.436 5.176L2 22l4.981-1.306A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/isaque-da-silva-rocha-2524122aa/" target="_blank" rel="noopener" title="LinkedIn" class="w-7 h-7 rounded-full bg-[#E8F0FE] hover:bg-[#D2E3FC] text-[#0A66C2] transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37z"/></svg>
+        </a>
+        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" title="GitHub" class="w-7 h-7 rounded-full bg-[#E8F0FE] hover:bg-[#D2E3FC] text-[#202124] transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+      </div>
     </div>
 
     <!-- Seletor de Tema e Ações GCP -->
@@ -509,14 +597,13 @@
         <button onclick="switchVisualTheme('amazon')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Amazon</button>
       </div>
       <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-[#E8F0FE] text-[#1A73E8] text-xs font-bold hover:bg-[#D2E3FC]">Guia</button>
-      <div class="w-7 h-7 rounded-full bg-[#1A73E8] text-white flex items-center justify-center font-bold text-xs shrink-0">IR</div>
     </div>
   </header>
 
   <!-- ======================================================================= -->
   <!-- CHROME 3: CABEÇALHO APPLE MACOS (TAHOE GLASSMORPHISM / TRAFFIC LIGHTS)  -->
   <!-- ======================================================================= -->
-  <header class="chrome-apple border-b border-white/10 bg-[rgba(20,20,24,0.85)] backdrop-blur-2xl px-4 sm:px-6 h-14 items-center justify-between w-full shrink-0">
+  <header class="chrome-apple border-b border-white/10 bg-[rgba(20,20,24,0.85)] backdrop-blur-2xl px-4 sm:px-6 h-20 items-center justify-between w-full shrink-0">
     <div class="flex items-center space-x-4">
       <!-- Traffic Light Buttons -->
       <div class="flex items-center space-x-2 shrink-0">
@@ -527,35 +614,79 @@
       <span class="font-bold text-sm text-[#F5F5F7] tracking-tight whitespace-nowrap">IDSR Lakehouse — macOS</span>
     </div>
 
-    <!-- Segmented Capsule Control -->
-    <div class="p-0.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center space-x-0.5 text-xs">
-      <button onclick="switchVisualTheme('idsr')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">IDSR</button>
-      <button onclick="switchVisualTheme('google')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Google</button>
-      <button onclick="switchVisualTheme('apple')" class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
-      <button onclick="switchVisualTheme('amazon')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
+    <!-- Candidate Profile Badge macOS Style -->
+    <div class="flex items-center space-x-3 bg-white/10 border border-white/15 px-3.5 py-1.5 rounded-2xl backdrop-blur-xl shadow-lg">
+      <div class="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-inner">
+        IR
+      </div>
+      <div class="leading-tight">
+        <div class="flex items-center space-x-1.5">
+          <span class="font-bold text-xs sm:text-sm text-[#F5F5F7]">Isaque da Silva Rocha</span>
+          <span class="w-1.5 h-1.5 rounded-full bg-[#30D158]"></span>
+        </div>
+        <span class="text-[11px] text-[#8E8E93] hidden sm:block">Data & Analytics Engineer</span>
+      </div>
+
+      <!-- Icon Actions -->
+      <div class="flex items-center space-x-1 border-l border-white/15 pl-2">
+        <a href="https://wa.me/5511983426767?text=Oi%20Isaque%2C%20vi%20sua%20plataforma%20de%20dados%20e%20quero%20conversar" target="_blank" rel="noopener" title="WhatsApp: (11) 98342-6767" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-emerald-600/60 text-white transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.586 1.777.925 2.791.926h.005c3.18 0 5.767-2.587 5.768-5.766 0-1.542-.601-2.992-1.691-4.083a5.728 5.728 0 0 0-4.082-1.631zm3.376 8.204c-.147.414-.735.792-1.127.842-.38.049-.854.08-2.615-.65-1.921-.798-3.14-2.766-3.235-2.894-.094-.128-.776-1.031-.776-1.966s.489-1.393.663-1.583c.174-.19.38-.238.507-.238.127 0 .254.001.365.006.118.005.275-.045.431.328.16.38.547 1.332.595 1.429.049.097.081.21.016.338-.065.128-.098.207-.195.32-.097.113-.205.253-.293.34-.098.097-.201.202-.087.397.114.195.508.838 1.09 1.357.75.669 1.382.876 1.577.973.195.097.309.081.423-.049.114-.129.489-.57.62-.765.13-.195.26-.163.439-.097.179.065 1.135.535 1.33.633.195.097.325.146.374.227.049.081.049.471-.098.885zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.436 5.176L2 22l4.981-1.306A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/isaque-da-silva-rocha-2524122aa/" target="_blank" rel="noopener" title="LinkedIn" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-[#0A66C2]/60 text-white transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37z"/></svg>
+        </a>
+        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" title="GitHub" class="w-7 h-7 rounded-lg bg-white/10 hover:bg-white/30 text-white transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+      </div>
     </div>
 
+    <!-- Segmented Capsule Control -->
     <div class="flex items-center space-x-2">
+      <div class="p-0.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center space-x-0.5 text-xs">
+        <button onclick="switchVisualTheme('idsr')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">IDSR</button>
+        <button onclick="switchVisualTheme('google')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Google</button>
+        <button onclick="switchVisualTheme('apple')" class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
+      </div>
       <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
-      <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">GitHub</a>
     </div>
   </header>
 
   <!-- ======================================================================= -->
   <!-- CHROME 4: CABEÇALHO AMAZON AWS (SQUID INK #232F3E / REGION SA-EAST-1)   -->
   <!-- ======================================================================= -->
-  <header class="chrome-amazon bg-[#232F3E] text-[#EAEDED] px-4 h-12 items-center justify-between w-full shrink-0 border-b border-[#3D5166]">
+  <header class="chrome-amazon bg-[#232F3E] text-[#EAEDED] px-4 h-16 items-center justify-between w-full shrink-0 border-b border-[#3D5166]">
     <div class="flex items-center space-x-3">
       <!-- AWS Smile Orange Badge -->
       <span class="px-1.5 py-0.5 rounded-sm bg-[#FF9900] text-black font-bold text-[11px] whitespace-nowrap shrink-0">AWS</span>
       <span class="font-bold text-xs tracking-tight whitespace-nowrap">Management Console</span>
       <span class="h-3.5 w-px bg-[#3D5166] hidden sm:block"></span>
-      <span class="text-[11px] text-[#9BA7B4] hidden sm:inline whitespace-nowrap">[Services] CloudWatch Dashboards</span>
+      <span class="text-[11px] text-[#9BA7B4] hidden sm:inline whitespace-nowrap">[CloudWatch] Dashboards</span>
     </div>
 
-    <div class="hidden md:flex items-center w-72 bg-[#161E2D] rounded px-2.5 py-1 text-xs text-[#9BA7B4] border border-[#3D5166]">
-      <svg class="w-3.5 h-3.5 mr-2 text-[#9BA7B4] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
-      <span class="truncate">Search [Alt + S]</span>
+    <!-- Candidate Profile Badge AWS IAM Style -->
+    <div class="flex items-center space-x-2.5 bg-[#161E2D] border border-[#3D5166] px-3 py-1 rounded">
+      <div class="w-6 h-6 rounded bg-[#FF9900] text-black flex items-center justify-center font-bold text-[10px] shrink-0">
+        IR
+      </div>
+      <div class="leading-tight text-xs">
+        <span class="text-[#EAEDED] font-bold">Isaque da Silva Rocha</span>
+        <span class="text-[10px] text-[#9BA7B4] block font-mono">arn:aws:iam::talent</span>
+      </div>
+
+      <!-- Icon Actions -->
+      <div class="flex items-center space-x-1 border-l border-[#3D5166] pl-2">
+        <a href="https://wa.me/5511983426767?text=Oi%20Isaque%2C%20vi%20sua%20plataforma%20de%20dados%20e%20quero%20conversar" target="_blank" rel="noopener" title="WhatsApp: (11) 98342-6767" class="w-6 h-6 rounded bg-[#232F3E] hover:bg-[#FF9900] text-[#D5DBDB] hover:text-black transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.969.586 1.777.925 2.791.926h.005c3.18 0 5.767-2.587 5.768-5.766 0-1.542-.601-2.992-1.691-4.083a5.728 5.728 0 0 0-4.082-1.631zm3.376 8.204c-.147.414-.735.792-1.127.842-.38.049-.854.08-2.615-.65-1.921-.798-3.14-2.766-3.235-2.894-.094-.128-.776-1.031-.776-1.966s.489-1.393.663-1.583c.174-.19.38-.238.507-.238.127 0 .254.001.365.006.118.005.275-.045.431.328.16.38.547 1.332.595 1.429.049.097.081.21.016.338-.065.128-.098.207-.195.32-.097.113-.205.253-.293.34-.098.097-.201.202-.087.397.114.195.508.838 1.09 1.357.75.669 1.382.876 1.577.973.195.097.309.081.423-.049.114-.129.489-.57.62-.765.13-.195.26-.163.439-.097.179.065 1.135.535 1.33.633.195.097.325.146.374.227.049.081.049.471-.098.885zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.66 1.436 5.176L2 22l4.981-1.306A9.957 9.957 0 0 0 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/isaque-da-silva-rocha-2524122aa/" target="_blank" rel="noopener" title="LinkedIn" class="w-6 h-6 rounded bg-[#232F3E] hover:bg-[#FF9900] text-[#D5DBDB] hover:text-black transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 0-3.28 1.64 1.64 0 0 0 0 3.28m1.4 9.74v-8.37H5.06v8.37z"/></svg>
+        </a>
+        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" title="GitHub" class="w-6 h-6 rounded bg-[#232F3E] hover:bg-[#FF9900] text-[#D5DBDB] hover:text-black transition-all flex items-center justify-center shrink-0">
+          <svg class="w-3 h-3 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+        </a>
+      </div>
     </div>
 
     <div class="flex items-center space-x-2 text-xs">
@@ -564,11 +695,6 @@
         <button onclick="switchVisualTheme('google')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Google</button>
         <button onclick="switchVisualTheme('apple')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Apple</button>
         <button onclick="switchVisualTheme('amazon')" class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
-      </div>
-      <!-- Região Oficial AWS -->
-      <div class="hidden sm:flex items-center space-x-1.5 px-2 py-0.5 bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-[#D5DBDB] whitespace-nowrap">
-        <span class="w-1.5 h-1.5 rounded-full bg-[#1D8102]"></span>
-        <span>sa-east-1 (São Paulo)</span>
       </div>
       <button onclick="openIntroModal()" class="px-2 py-0.5 theme-btn bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
     </div>
@@ -591,71 +717,6 @@
       </div>
     </div>
   </div>
-
-  <!-- ======================================================================= -->
-  <!-- BARRA DE REFERÊNCIAS VISUAIS & FONTES OFICIAIS (ATUALIZA DINAMICAMENTE) -->
-  <!-- ======================================================================= -->
-  <section class="border-b border-idsr-borda bg-idsr-surface/70 px-4 sm:px-6 py-2 text-xs transition-colors">
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-      <div class="flex items-center space-x-2">
-        <span id="badge-theme-name" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white whitespace-nowrap">
-          IDSR STUDIO
-        </span>
-        <span id="badge-theme-desc" class="text-idsr-cinza truncate">
-          Design Editorial Suíço · Tipografia Unbounded e Manrope · Alto Contraste & Densidade
-        </span>
-      </div>
-      <div class="flex items-center space-x-2 text-[11px] text-idsr-cinza whitespace-nowrap">
-        <span class="font-bold text-idsr-creme">Fontes Auditáveis:</span>
-        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">MDIC/Redesim</a>
-        <span>·</span>
-        <a href="https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">Receita Federal</a>
-        <span>·</span>
-        <a href="https://www.ibge.gov.br/estatisticas/economicas/outras-estatisticas-economicas/9064-demografia-das-empresas-e-estatisticas-de-empreendedorismo.html" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">IBGE CEMPRE</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======================================================================= -->
-  <!-- CARD DO CANDIDATO / HIRING HUD (DIRETO E PROFISSIONAL PARA RECRUTADORES) -->
-  <!-- ======================================================================= -->
-  <section class="border-b border-idsr-borda bg-idsr-painel px-4 sm:px-6 py-3 transition-colors">
-    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-10 h-10 rounded-full bg-idsr-brasa/20 border border-idsr-brasa text-idsr-brasa flex items-center justify-center font-bold text-sm shrink-0">
-          IR
-        </div>
-        <div>
-          <div class="flex items-center space-x-2">
-            <h1 class="text-sm sm:text-base font-bold text-idsr-creme leading-none">
-              Isaque da Silva Rocha
-            </h1>
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800 whitespace-nowrap">
-              Disponível para contratação
-            </span>
-          </div>
-          <p class="text-xs text-idsr-cinza mt-1">
-            Senior Data & Analytics Engineer · dbt Core · PySpark · Airflow · Star Schema · FastAPI
-          </p>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap items-center gap-2 text-xs">
-        <a href="https://wa.me/5511966396536?text=Ol%C3%A1%20Isaque,%20vi%20sua%20plataforma%20de%20dados%20e%20gostaria%20de%20conversar" target="_blank" rel="noopener" class="px-3.5 py-1.5 theme-btn bg-emerald-600 hover:bg-emerald-500 text-white font-bold flex items-center space-x-1.5 shadow-sm">
-          <span>WhatsApp</span>
-        </a>
-        <a href="https://linkedin.com/in/blablabl4" target="_blank" rel="noopener" class="px-3.5 py-1.5 theme-btn bg-[#0A66C2] hover:bg-[#004182] text-white font-bold">
-          LinkedIn
-        </a>
-        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-3.5 py-1.5 theme-btn bg-idsr-surface hover:bg-idsr-borda border border-idsr-borda text-idsr-creme font-bold">
-          GitHub do Projeto
-        </a>
-        <button onclick="openExportModal('all')" class="px-3.5 py-1.5 theme-btn bg-idsr-surface hover:bg-idsr-borda border border-idsr-borda text-idsr-creme font-bold">
-          Baixar Código / Modelo
-        </button>
-      </div>
-    </div>
-  </section>
 
   <!-- ======================================================================= -->
   <!-- BARRA DE FILTROS INTERATIVOS EM TEMPO REAL                              -->
@@ -895,7 +956,7 @@
         <div class="p-5 sm:p-6 theme-card border border-idsr-borda bg-idsr-painel w-full">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-idsr-borda mb-5 gap-2">
             <div>
-              <span class="text-xs font-bold text-idsr-creme uppercase block">Simulador de Risco de Fechamento (24 Meses)</span>
+              <span class="text-xs font-bold text-idsr-creme uppercase block">Simulador de Risco: qual a chance da empresa fechar <span class="mao">em 2 anos</span>?</span>
               <span class="text-[11px] text-idsr-cinza">Parâmetros estatísticos calibrados nos dados do Sebrae e IBGE</span>
             </div>
             <div class="flex items-center space-x-2">
