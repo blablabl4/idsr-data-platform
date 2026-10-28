@@ -117,26 +117,45 @@ function updateChartThemes() {
   const def = THEME_DEFINITIONS[currentTheme];
   if (!def) return;
 
+  const barRadius = currentTheme === "apple" ? 10 : (currentTheme === "google" ? 8 : (currentTheme === "amazon" ? 1 : 0));
+  const fontFam = currentTheme === "apple" ? "-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" :
+    (currentTheme === "google" ? "'Roboto', 'Google Sans', sans-serif" :
+    (currentTheme === "amazon" ? "'Amazon Ember', 'Segoe UI', sans-serif" :
+    "'JetBrains Mono', monospace"));
+
   if (chartNpsInstance) {
     chartNpsInstance.data.datasets[0].backgroundColor = def.barColors;
+    chartNpsInstance.data.datasets[0].borderRadius = barRadius;
     chartNpsInstance.options.scales.y.grid.color = def.gridColor;
     chartNpsInstance.options.scales.y.ticks.color = def.tickColor;
+    chartNpsInstance.options.scales.y.ticks.font = { family: fontFam, size: 10 };
     chartNpsInstance.options.scales.x.ticks.color = def.tickColor;
+    chartNpsInstance.options.scales.x.ticks.font = { family: fontFam, size: 10 };
     chartNpsInstance.options.plugins.tooltip.backgroundColor = def.tooltipBg;
     chartNpsInstance.options.plugins.tooltip.titleColor = def.tooltipText;
     chartNpsInstance.options.plugins.tooltip.bodyColor = def.tooltipText;
+    chartNpsInstance.options.plugins.tooltip.titleFont = { family: fontFam, size: 11 };
+    chartNpsInstance.options.plugins.tooltip.bodyFont = { family: fontFam, size: 12 };
     chartNpsInstance.update();
   }
 
   if (chartRegionalInstance) {
     chartRegionalInstance.data.datasets[0].backgroundColor = def.regionalOpened;
+    chartRegionalInstance.data.datasets[0].borderRadius = barRadius;
     chartRegionalInstance.data.datasets[1].backgroundColor = def.regionalClosed;
+    chartRegionalInstance.data.datasets[1].borderRadius = barRadius;
     chartRegionalInstance.options.scales.y.grid.color = def.gridColor;
     chartRegionalInstance.options.scales.y.ticks.color = def.tickColor;
+    chartRegionalInstance.options.scales.y.ticks.font = { family: fontFam, size: 10 };
     chartRegionalInstance.options.scales.x.ticks.color = def.tickColor;
+    chartRegionalInstance.options.scales.x.ticks.font = { family: fontFam, size: 10 };
     chartRegionalInstance.options.plugins.tooltip.backgroundColor = def.tooltipBg;
     chartRegionalInstance.options.plugins.tooltip.titleColor = def.tooltipText;
     chartRegionalInstance.options.plugins.tooltip.bodyColor = def.tooltipText;
+    if (chartRegionalInstance.options.plugins.legend) {
+      chartRegionalInstance.options.plugins.legend.labels.color = def.tickColor;
+      chartRegionalInstance.options.plugins.legend.labels.font = { family: fontFam, size: 10 };
+    }
     chartRegionalInstance.update();
   }
 }
