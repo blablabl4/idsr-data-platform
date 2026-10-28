@@ -1,0 +1,52 @@
+version: 2
+
+sources:
+  - name: bronze_lakehouse
+    database: idsr_analytics
+    schema: bronze
+    tables:
+      - name: raw_orders
+        description: "Eventos brutos de pedidos ingeridos via PySpark do S3/MinIO"
+      - name: raw_customers
+        description: "Dados cadastrais brutos de clientes"
+
+models:
+  - name: stg_ecommerce_orders
+    description: "Camada Silver: Limpeza, tipagem e deduplicação de pedidos"
+    columns:
+      - name: order_id
+        description: "Chave primária do pedido"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: "Chave estrangeira do cliente"
+        tests:
+          - not_null
+      - name: order_status
+        description: "Status do ciclo do pedido"
+        tests:
+          - accepted_values:
+              values: ['delivered', 'shipped', 'canceled', 'invoiced', 'processing']
+
+  - name: fct_logistics_performance
+    description: "Camada Gold: Métricas de SLA logístico e entrega consolidada para consumo de BI e ML"
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: customer_sk
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_ecommerce_orders')
+              field: customer_id
+      - name: freight_value
+        description: "Valor do frete pago"
+        tests:
+          - not_null
+      - name: is_delayed
+        description: "Booleano indicando quebra de SLA contratado"
+        tests:
+          - not_null

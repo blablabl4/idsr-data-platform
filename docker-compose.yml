@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Data Lakehouse Metadata & Analytics Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: idsr_postgres_lakehouse
+    environment:
+      POSTGRES_USER: idsr_engineer
+      POSTGRES_PASSWORD: idsr_secure_password
+      POSTGRES_DB: idsr_analytics
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./sql/01_star_schema_ddl.sql:/docker-entrypoint-initdb.d/01_init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U idsr_engineer -d idsr_analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MinIO (S3-Compatible Object Storage for Bronze / Silver Parquet files)
+  minio:
+    image: minio/minio:RELEASE.2024-03-05T04-48-44Z
+    container_name: idsr_minio_s3
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minio_admin
+      MINIO_ROOT_PASSWORD: minio_secret_key
+    command: server /data --console-address ":9001"
+    volumes:
+      - miniodata:/data
+
+  # FastAPI REST API & Predictive Serving
+  fastapi_service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: idsr_fastapi_engine
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://idsr_engineer:idsr_secure_password@postgres:5432/idsr_analytics
+      S3_ENDPOINT_URL: http://minio:9000
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
+  miniodata:
