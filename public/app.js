@@ -82,11 +82,91 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSelectedSql();
   runPredictionSimulation();
   startSpClock();
+  initInfoBalloons();
 
   if (!localStorage.getItem("idsr_intro_seen")) {
     openIntroModal();
   }
 });
+
+/* ========================================================================= */
+/* BALÕES DE INFORMAÇÃO FLUTUANTES (HOVER TOOLTIPS EM TODOS OS MÓDULOS)      */
+/* ========================================================================= */
+function initInfoBalloons() {
+  const balloon = document.getElementById("ui-info-balloon");
+  const bBadge = document.getElementById("balloon-badge");
+  const bTitle = document.getElementById("balloon-title");
+  const bDesc = document.getElementById("balloon-desc");
+  if (!balloon) return;
+
+  let currentTarget = null;
+
+  document.addEventListener("pointerover", (e) => {
+    const target = e.target.closest("[data-balloon]");
+    if (!target) return;
+    currentTarget = target;
+
+    const desc = target.getAttribute("data-balloon");
+    const title = target.getAttribute("data-balloon-title") || "";
+    const badge = target.getAttribute("data-balloon-badge") || "Módulo";
+
+    if (!desc) return;
+
+    if (bBadge) bBadge.innerText = badge;
+    if (bTitle) {
+      bTitle.innerText = title;
+      bTitle.style.display = title ? "block" : "none";
+    }
+    if (bDesc) bDesc.innerText = desc;
+
+    positionBalloon(e);
+    balloon.classList.remove("hidden");
+    requestAnimationFrame(() => {
+      balloon.classList.remove("opacity-0");
+      balloon.classList.add("opacity-100");
+    });
+  });
+
+  document.addEventListener("pointermove", (e) => {
+    if (currentTarget) {
+      positionBalloon(e);
+    }
+  });
+
+  document.addEventListener("pointerout", (e) => {
+    const target = e.target.closest("[data-balloon]");
+    if (!target || target === currentTarget) {
+      currentTarget = null;
+      balloon.classList.remove("opacity-100");
+      balloon.classList.add("opacity-0");
+      setTimeout(() => {
+        if (!currentTarget) balloon.classList.add("hidden");
+      }, 150);
+    }
+  });
+
+  function positionBalloon(e) {
+    const pad = 12;
+    const balloonWidth = balloon.offsetWidth || 280;
+    const balloonHeight = balloon.offsetHeight || 80;
+
+    let x = e.clientX + 14;
+    let y = e.clientY + 18;
+
+    if (x + balloonWidth > window.innerWidth - pad) {
+      x = e.clientX - balloonWidth - 14;
+    }
+    if (y + balloonHeight > window.innerHeight - pad) {
+      y = e.clientY - balloonHeight - 14;
+    }
+
+    x = Math.max(pad, x);
+    y = Math.max(pad, y);
+
+    balloon.style.left = `${x}px`;
+    balloon.style.top = `${y}px`;
+  }
+}
 
 function startSpClock() {
   function update() {

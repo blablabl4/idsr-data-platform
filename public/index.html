@@ -467,6 +467,33 @@
       box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
+    /* Balão de Informação Flutuante (Tooltip Interativo) */
+    #ui-info-balloon {
+      background: var(--color-card, #2F2724);
+      border-color: var(--color-border-strong, #5A4C46);
+      color: var(--color-text-main, #FCF2BD);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    }
+    [data-theme="google"] #ui-info-balloon {
+      background: #FFFFFF !important;
+      border-color: #DADCE0 !important;
+      color: #202124 !important;
+      box-shadow: 0 4px 16px rgba(60, 64, 67, 0.28) !important;
+    }
+    [data-theme="apple"] #ui-info-balloon {
+      background: rgba(28, 28, 34, 0.90) !important;
+      backdrop-filter: blur(24px) !important;
+      border-color: rgba(255, 255, 255, 0.16) !important;
+      color: #F5F5F7 !important;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.6) !important;
+    }
+    [data-theme="amazon"] #ui-info-balloon {
+      background: #161E2D !important;
+      border-color: #3D5166 !important;
+      color: #EAEDED !important;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5) !important;
+    }
+
     /* Scrollbars discretas */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--color-bg); }
@@ -476,41 +503,129 @@
 <body class="min-h-full flex flex-col bg-idsr-noite text-idsr-creme antialiased selection:bg-idsr-brasa selection:text-white">
 
   <!-- ======================================================================= -->
-  <!-- MODAL DE INTRODUÇÃO & GUIA DIRETO (SEM JARGÕES)                         -->
+  <!-- BALÃO DE INFORMAÇÃO FLUTUANTE (HOVER TOOLTIP EM TODOS OS MÓDULOS)       -->
+  <!-- ======================================================================= -->
+  <div id="ui-info-balloon" class="fixed pointer-events-none z-50 transition-opacity duration-150 opacity-0 hidden max-w-xs sm:max-w-sm rounded-xl p-3 shadow-2xl backdrop-blur-md border text-xs" style="left: 0px; top: 0px;">
+    <div class="flex items-center space-x-2 mb-1">
+      <span id="balloon-badge" class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white">Módulo</span>
+      <span id="balloon-title" class="font-bold text-idsr-creme text-xs truncate">Título</span>
+    </div>
+    <p id="balloon-desc" class="text-idsr-cinza text-[11px] leading-relaxed">Explicação direta sem tecnês.</p>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL DE INTRODUÇÃO & GUIA DIRETO (O QUE É O DASHBOARD E COMO USAR)     -->
   <!-- ======================================================================= -->
   <div id="modal-intro-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
-      <div class="flex items-center justify-between border-b border-idsr-borda pb-3">
+    <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-2xl w-full p-5 sm:p-7 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      
+      <!-- Cabeçalho do Modal -->
+      <div class="flex items-start justify-between border-b border-idsr-borda pb-4">
         <div>
-          <span class="text-[11px] text-idsr-brasa uppercase font-bold tracking-wider">Apresentação Rápida</span>
-          <h2 class="text-base font-bold text-idsr-creme uppercase">Guia de Avaliação da Plataforma</h2>
+          <div class="flex items-center space-x-2">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white">Guia Oficial</span>
+            <span class="text-xs text-idsr-cinza">Dados Abertos Federais</span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-bold text-idsr-creme uppercase mt-1">Plataforma de Inteligência & Sobrevivência Empresarial</h2>
+          <span class="text-xs text-idsr-cinza block mt-0.5">Criado por Isaque da Silva Rocha · Engenharia de Dados & Analytics</span>
         </div>
-        <button onclick="closeIntroModal()" class="p-1 rounded hover:bg-idsr-borda text-idsr-cinza hover:text-white theme-btn">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        <button onclick="closeIntroModal()" class="p-1.5 rounded-lg hover:bg-idsr-surface text-idsr-cinza hover:text-white theme-btn shrink-0" title="Fechar Guia">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
-      <div class="space-y-2.5 text-xs text-idsr-cinza">
-        <div class="p-3 theme-card bg-idsr-surface border border-idsr-borda">
-          <strong class="text-idsr-creme block text-[11px] uppercase">1. Dados 100% Reais e Auditáveis</strong>
-          <span>Compilados da <strong>Receita Federal (21,8M CNPJs)</strong>, do <strong>IBGE (CEMPRE)</strong> e do <strong>Sebrae</strong> sobre mortalidade real de empresas no Brasil.</span>
+      <!-- O Que É Este Dashboard -->
+      <div class="p-4 rounded-xl bg-idsr-surface/80 border border-idsr-borda space-y-2">
+        <div class="flex items-center space-x-2">
+          <span class="w-2 h-2 rounded-full bg-idsr-sucesso"></span>
+          <strong class="text-idsr-creme text-xs uppercase tracking-wide">O que é este Dashboard?</strong>
         </div>
-        <div class="p-3 theme-card bg-idsr-surface border border-idsr-borda">
-          <strong class="text-idsr-creme block text-[11px] uppercase">2. Quatro Sistemas Visuais Autênticos</strong>
-          <span>Alterne no menu superior entre <strong>IDSR Studio</strong>, <strong>Google Cloud</strong>, <strong>Apple macOS</strong> e <strong>AWS Console</strong> para conferir tipografia, formas e disposição adaptadas.</span>
-        </div>
-        <div class="p-3 theme-card bg-idsr-surface border border-idsr-borda">
-          <strong class="text-idsr-creme block text-[11px] uppercase">3. Filtros Analíticos em Tempo Real</strong>
-          <span>Segmente por Região, Porte ou Setor na barra de filtros para ver recálculo instantâneo de indicadores e gráficos.</span>
+        <p class="text-xs text-idsr-cinza leading-relaxed">
+          Esta plataforma é um ecossistema completo de <strong>inteligência analítica</strong> e <strong>engenharia de dados</strong> que analisa a sobrevivência e mortalidade de <strong>21,8 milhões de empresas ativas</strong> no Brasil.
+        </p>
+        <p class="text-xs text-idsr-cinza leading-relaxed">
+          O objetivo principal é responder: <em>quais fatores mais protegem ou vulnerabilizam um novo CNPJ no Brasil nos primeiros 24 meses?</em> Todos os dados exibidos são <strong>100% reais e auditáveis</strong>, extraídos diretamente da Receita Federal, IBGE (CEMPRE), MDIC e pesquisas históricas do Sebrae.
+        </p>
+      </div>
+
+      <!-- Como Explorar e Usar Realmente -->
+      <div>
+        <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider block mb-3">Como Navegar e Usar a Plataforma:</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+          
+          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
+            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
+              <span class="text-idsr-brasa font-mono">01.</span>
+              <span>Visão Geral & Filtros</span>
+            </strong>
+            <p class="text-idsr-cinza text-[11px] leading-relaxed">
+              Use a barra de filtros para segmentar por <strong>Região</strong>, <strong>Porte</strong> (MEI, Micro, EPP) e <strong>Setor</strong>. Os números e gráficos se recalculam na hora.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
+            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
+              <span class="text-idsr-brasa font-mono">02.</span>
+              <span>Mudar Tipo de Gráfico</span>
+            </strong>
+            <p class="text-idsr-cinza text-[11px] leading-relaxed">
+              Em cada gráfico, clique nos botões de alternância para ver os dados em <strong>Colunas</strong>, <strong>Linhas</strong>, <strong>Barras Horizontais</strong> ou <strong>Rosca</strong>.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
+            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
+              <span class="text-idsr-brasa font-mono">03.</span>
+              <span>Simulador Preditivo</span>
+            </strong>
+            <p class="text-idsr-cinza text-[11px] leading-relaxed">
+              Role até o simulador e ajuste os controles de <em>Capital Inicial</em>, <em>Sócios</em> e <em>Reserva</em> para prever a chance estatística do negócio se manter de pé.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
+            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
+              <span class="text-idsr-brasa font-mono">04.</span>
+              <span>4 Padrões Visuais (Design)</span>
+            </strong>
+            <p class="text-idsr-cinza text-[11px] leading-relaxed">
+              No topo da tela, clique em <strong>IDSR</strong>, <strong>Google</strong>, <strong>Apple</strong> ou <strong>Amazon</strong> para conferir adaptação radical de design e ergonomia.
+            </p>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1 sm:col-span-2">
+            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
+              <span class="text-idsr-brasa font-mono">05.</span>
+              <span>Módulos de Engenharia (SQL, dbt, Airflow, API, IA)</span>
+            </strong>
+            <p class="text-idsr-cinza text-[11px] leading-relaxed">
+              Acesse as outras abas no menu para auditar as consultas SQL reais, ver a linhagem de transformação no dbt Core, o agendamento de pipelines no Apache Airflow, os endpoints REST em FastAPI e fazer perguntas ao assistente semântico com RAG.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center justify-between pt-3 border-t border-idsr-borda">
-        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] text-idsr-cinza hover:text-idsr-creme underline theme-btn">gov.br/mapa-de-empresas</a>
-        <button onclick="closeIntroModal()" class="px-5 py-2 theme-btn bg-idsr-brasa text-xs font-bold text-white hover:bg-idsr-brasaHover">
-          Entendi, Acessar Plataforma
-        </button>
+      <!-- Dica dos Balões de Informação -->
+      <div class="p-3 rounded-lg bg-idsr-fundo/60 border border-idsr-borda text-[11px] text-idsr-cinza flex items-center space-x-2">
+        <svg class="w-4 h-4 text-idsr-brasa shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span><strong>Dica Prática:</strong> Deixe o cursor do mouse parado sobre qualquer módulo, gráfico, filtro ou campo para abrir balões informativos explicando o que cada elemento faz.</span>
       </div>
+
+      <!-- Rodapé do Modal -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-idsr-borda">
+        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] text-idsr-cinza hover:text-idsr-creme underline theme-btn">
+          Fonte Oficial: gov.br/mapa-de-empresas
+        </a>
+        <div class="flex items-center space-x-2 w-full sm:w-auto">
+          <button onclick="closeIntroModal(); document.getElementById('simulador-cnpj')?.scrollIntoView({ behavior: 'smooth' });" class="w-full sm:w-auto px-4 py-2 theme-btn bg-idsr-surface border border-idsr-borda text-xs font-semibold text-idsr-creme hover:bg-idsr-borda">
+            Ir para o Simulador
+          </button>
+          <button onclick="closeIntroModal()" class="w-full sm:w-auto px-5 py-2 theme-btn bg-idsr-brasa text-xs font-bold text-white hover:bg-idsr-brasaHover shadow-md">
+            Começar a Explorar
+          </button>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -562,12 +677,12 @@
     <!-- Theme Switcher & Guia -->
     <div class="flex items-center space-x-2">
       <div class="p-0.5 rounded-lg bg-[#38302C] border border-[#423834] flex items-center space-x-0.5 text-[11px]">
-        <button id="theme-btn-idsr" onclick="switchVisualTheme('idsr')" class="px-2.5 py-1 rounded-md text-[#27201D] bg-[#FF3831] font-bold">IDSR</button>
-        <button id="theme-btn-google" onclick="switchVisualTheme('google')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Google</button>
-        <button id="theme-btn-apple" onclick="switchVisualTheme('apple')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Apple</button>
-        <button id="theme-btn-amazon" onclick="switchVisualTheme('amazon')" class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Amazon</button>
+        <button id="theme-btn-idsr" onclick="switchVisualTheme('idsr')" data-balloon-badge="Design" data-balloon-title="Visual IDSR Studio" data-balloon="Estilo autoral oficial do idsr.com.br com estética editorial suíça, alto contraste e tipografia elegante." class="px-2.5 py-1 rounded-md text-[#27201D] bg-[#FF3831] font-bold">IDSR</button>
+        <button id="theme-btn-google" onclick="switchVisualTheme('google')" data-balloon-badge="Design" data-balloon-title="Visual Google Cloud" data-balloon="Padrão Material Design 3 e Google Cloud Console com superfícies limpas e cantos arredondados." class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Google</button>
+        <button id="theme-btn-apple" onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Apple</button>
+        <button id="theme-btn-amazon" onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2.5 py-1 rounded-md text-[#B3A59E] hover:text-[#FCF2BD]">Amazon</button>
       </div>
-      <button onclick="openIntroModal()" class="px-3 py-1.5 rounded-lg bg-[#38302C] border border-[#423834] text-xs font-bold text-[#FCF2BD] hover:bg-[#423834]">Guia</button>
+      <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1.5 rounded-lg bg-[#38302C] border border-[#423834] text-xs font-bold text-[#FCF2BD] hover:bg-[#423834]">Guia</button>
     </div>
   </header>
 
@@ -619,12 +734,12 @@
     <!-- Seletor de Tema e Ações GCP -->
     <div class="flex items-center space-x-2">
       <div class="p-0.5 rounded-full bg-[#F1F3F4] border border-[#DADCE0] flex items-center space-x-0.5 text-[11px]">
-        <button onclick="switchVisualTheme('idsr')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">IDSR</button>
-        <button onclick="switchVisualTheme('google')" class="px-2.5 py-0.5 theme-btn bg-[#1A73E8] text-white font-bold">Google</button>
-        <button onclick="switchVisualTheme('apple')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Apple</button>
-        <button onclick="switchVisualTheme('amazon')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Amazon</button>
+        <button onclick="switchVisualTheme('idsr')" data-balloon-badge="Design" data-balloon-title="Visual IDSR Studio" data-balloon="Estilo autoral oficial do idsr.com.br com estética editorial suíça, alto contraste e tipografia elegante." class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">IDSR</button>
+        <button onclick="switchVisualTheme('google')" data-balloon-badge="Design" data-balloon-title="Visual Google Cloud" data-balloon="Padrão Material Design 3 e Google Cloud Console com superfícies limpas e cantos arredondados." class="px-2.5 py-0.5 theme-btn bg-[#1A73E8] text-white font-bold">Google</button>
+        <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Amazon</button>
       </div>
-      <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-[#E8F0FE] text-[#1A73E8] text-xs font-bold hover:bg-[#D2E3FC]">Guia</button>
+      <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1 theme-btn bg-[#E8F0FE] text-[#1A73E8] text-xs font-bold hover:bg-[#D2E3FC]">Guia</button>
     </div>
   </header>
 
@@ -672,12 +787,12 @@
     <!-- Segmented Capsule Control -->
     <div class="flex items-center space-x-2">
       <div class="p-0.5 rounded-xl bg-white/10 backdrop-blur-md border border-white/10 flex items-center space-x-0.5 text-xs">
-        <button onclick="switchVisualTheme('idsr')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">IDSR</button>
-        <button onclick="switchVisualTheme('google')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Google</button>
-        <button onclick="switchVisualTheme('apple')" class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
-        <button onclick="switchVisualTheme('amazon')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
+        <button onclick="switchVisualTheme('idsr')" data-balloon-badge="Design" data-balloon-title="Visual IDSR Studio" data-balloon="Estilo autoral oficial do idsr.com.br com estética editorial suíça, alto contraste e tipografia elegante." class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">IDSR</button>
+        <button onclick="switchVisualTheme('google')" data-balloon-badge="Design" data-balloon-title="Visual Google Cloud" data-balloon="Padrão Material Design 3 e Google Cloud Console com superfícies limpas e cantos arredondados." class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Google</button>
+        <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
       </div>
-      <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
+      <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
     </div>
   </header>
 
@@ -719,12 +834,12 @@
 
     <div class="flex items-center space-x-2 text-xs">
       <div class="p-0.5 rounded bg-[#161E2D] border border-[#3D5166] flex items-center space-x-0.5">
-        <button onclick="switchVisualTheme('idsr')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">IDSR</button>
-        <button onclick="switchVisualTheme('google')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Google</button>
-        <button onclick="switchVisualTheme('apple')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Apple</button>
-        <button onclick="switchVisualTheme('amazon')" class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
+        <button onclick="switchVisualTheme('idsr')" data-balloon-badge="Design" data-balloon-title="Visual IDSR Studio" data-balloon="Estilo autoral oficial do idsr.com.br com estética editorial suíça, alto contraste e tipografia elegante." class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">IDSR</button>
+        <button onclick="switchVisualTheme('google')" data-balloon-badge="Design" data-balloon-title="Visual Google Cloud" data-balloon="Padrão Material Design 3 e Google Cloud Console com superfícies limpas e cantos arredondados." class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Google</button>
+        <button onclick="switchVisualTheme('apple')" data-balloon-badge="Design" data-balloon-title="Visual Apple macOS" data-balloon="Human Interface Guidelines com acabamento em vidro translúcido (frosted glass) e estilo macOS Tahoe." class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" data-balloon-badge="Design" data-balloon-title="Visual AWS Console" data-balloon="AWS Management Console com paleta Squid Ink (#232F3E), alta densidade de métricas e barra CloudWatch." class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
       </div>
-      <button onclick="openIntroModal()" class="px-2 py-0.5 theme-btn bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
+      <button onclick="openIntroModal()" data-balloon-badge="Ajuda" data-balloon-title="Guia da Plataforma" data-balloon="Reabre o guia explicativo com orientações de uso, detalhes dos dados oficiais e passo a passo." class="px-2 py-0.5 theme-btn bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
     </div>
   </header>
 
@@ -755,7 +870,10 @@
         <span class="text-idsr-creme font-bold text-[11px] whitespace-nowrap uppercase tracking-wider">Filtros:</span>
 
         <!-- Filtro por Região -->
-        <select id="filter-region" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
+        <select id="filter-region" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
+          data-balloon-badge="Filtro Geográfico"
+          data-balloon-title="Filtrar por Região do Brasil"
+          data-balloon="Recalcula instantaneamente os 21,8M de empresas e os indicadores de sobrevivência para a macrorregião selecionada (IBGE).">
           <option value="todos">Região: Brasil (Todas)</option>
           <option value="sudeste">Região: Sudeste (49,5% do Brasil)</option>
           <option value="sul">Região: Sul (Líder em Sobrevivência 79,4%)</option>
@@ -765,7 +883,10 @@
         </select>
 
         <!-- Filtro por Porte Empresarial -->
-        <select id="filter-porte" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
+        <select id="filter-porte" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
+          data-balloon-badge="Filtro de Porte"
+          data-balloon-title="Filtrar por Porte Empresarial"
+          data-balloon="Permite isolar MEI (alta rotatividade), Microempresas ME ou Empresas de Pequeno Porte EPP (maior longevidade).">
           <option value="todos">Porte: Todos os Segmentos</option>
           <option value="mei">Porte: MEI (Maior Volatilidade)</option>
           <option value="me">Porte: Microempresa ME (78,4% Sobrevida)</option>
@@ -773,7 +894,10 @@
         </select>
 
         <!-- Filtro por Macro-Setor -->
-        <select id="filter-setor" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
+        <select id="filter-setor" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
+          data-balloon-badge="Filtro Setorial"
+          data-balloon-title="Filtrar por Atividade Econômica"
+          data-balloon="Segmenta os cálculos de resiliência e mortalidade por Comércio Varejista, Serviços & Tecnologia, Indústria ou Construção Civil.">
           <option value="todos">Setor: Todos os Setores</option>
           <option value="comercio">Comércio Varejista</option>
           <option value="servicos">Serviços & Tecnologia</option>
@@ -781,7 +905,10 @@
           <option value="construcao">Construção Civil</option>
         </select>
 
-        <button onclick="resetInteractiveFilters()" class="px-3 py-1 theme-btn bg-idsr-surface border border-idsr-borda text-idsr-cinza hover:text-white text-xs">
+        <button onclick="resetInteractiveFilters()" class="px-3 py-1 theme-btn bg-idsr-surface border border-idsr-borda text-idsr-cinza hover:text-white text-xs"
+          data-balloon-badge="Ação"
+          data-balloon-title="Limpar Todos os Filtros"
+          data-balloon="Restaura a visualização consolidada do universo total de 21,8 milhões de CNPJs ativos no Brasil.">
           Limpar Filtros
         </button>
       </div>
@@ -802,27 +929,27 @@
     <aside class="sidebar-google w-60 border-r border-[#DADCE0] bg-[#FFFFFF] p-3 flex-col justify-between shrink-0 text-xs text-[#3C4043]">
       <div class="space-y-1">
         <span class="px-2 py-1 text-[11px] font-bold text-[#5F6368] uppercase tracking-wider block">Serviços GCP</span>
-        <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] border-l-4 border-[#1A73E8]">
+        <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] border-l-4 border-[#1A73E8]" data-balloon-badge="Módulo 1" data-balloon-title="Looker Studio (Visão & Simulador)" data-balloon="Painel executivo com métricas reais de mortalidade em 24m (Sebrae/RFB), indicadores regionais e simulador preditivo de risco cadastral.">
           <svg class="w-4 h-4 mr-1 text-[#1A73E8] shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M5 9.2h3V19H5zM10.6 5h2.8v14h-2.8zm5.6 8H19v6h-2.8z"/></svg>
           <span>Looker Studio (Visão)</span>
         </button>
-        <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+        <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent" data-balloon-badge="Módulo 2" data-balloon-title="BigQuery (Terminal SQL Analítico)" data-balloon="Console de consultas SQL sobre tabelas relacionais de 21,8M de empresas cruzadas com dados geográficos do IBGE e CNAEs.">
           <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
           <span>BigQuery (SQL)</span>
         </button>
-        <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+        <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent" data-balloon-badge="Módulo 3" data-balloon-title="Dataform / dbt Core (Linhagem & Curadoria)" data-balloon="Linhagem interativa do pipeline de engenharia de dados, mostrando o trajeto das camadas Bronze, Silver e Gold (Star Schema).">
           <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
           <span>Dataform (dbt Core)</span>
         </button>
-        <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+        <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent" data-balloon-badge="Módulo 4" data-balloon-title="Cloud Composer / Airflow (Orquestração)" data-balloon="Rotinas automatizadas em Python que agendam a ingestão contínua da Receita Federal e controlam a saúde de processamento.">
           <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/></svg>
           <span>Cloud Composer</span>
         </button>
-        <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+        <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent" data-balloon-badge="Módulo 5" data-balloon-title="Cloud Run / FastAPI (Serviço de Dados)" data-balloon="Endpoints REST de alta performance em Python para alimentar aplicações externas com dados cadastrais e predições em menos de 10ms.">
           <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           <span>Cloud Run (FastAPI)</span>
         </button>
-        <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent">
+        <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-google-btn w-full text-left px-3 py-2 rounded-r-full font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] border-l-4 border-transparent" data-balloon-badge="Módulo 6" data-balloon-title="Vertex AI / RAG Engine (Busca Vetorial & IA)" data-balloon="Motor de inteligência artificial com busca semântica em normas da Receita Federal e documentação técnica com resposta contextualizada.">
           <svg class="w-4 h-4 mr-1 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4 21l3.39-.97C8.93 20.66 10.4 21 12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
           <span>Vertex AI (RAG Engine)</span>
         </button>
@@ -840,11 +967,11 @@
         <div>
           <span class="text-[11px] font-semibold text-[#8E8E93] tracking-wider uppercase block mb-1.5 px-2">Coleções</span>
           <div class="space-y-1">
-            <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center bg-white/15 text-white shadow-sm hover:bg-white/20 transition-all">
+            <button onclick="switchTab('analytics')" data-sidebar-tab="analytics" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center bg-white/15 text-white shadow-sm hover:bg-white/20 transition-all" data-balloon-badge="Módulo 1" data-balloon-title="Visão Geral & Simulador (Widgets)" data-balloon="Painel executivo com métricas reais de sobrevivência e mortalidade (Sebrae/RFB), indicadores regionais e simulador preditivo.">
               <svg class="w-4 h-4 mr-2.5 text-[#0A84FF] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
               <span>Visão Geral & Widgets</span>
             </button>
-            <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('lakehouse')" data-sidebar-tab="lakehouse" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all" data-balloon-badge="Módulo 2" data-balloon-title="Terminal SQL (Consultas Analíticas)" data-balloon="Execução direta de queries SQL sobre a base cadastral de 21,8M de empresas do Brasil e malha demográfica do IBGE.">
               <svg class="w-4 h-4 mr-2.5 text-[#30D158] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
               <span>Terminal SQL</span>
             </button>
@@ -854,19 +981,19 @@
         <div>
           <span class="text-[11px] font-semibold text-[#8E8E93] tracking-wider uppercase block mb-1.5 px-2">Pipelines & Modelos</span>
           <div class="space-y-1">
-            <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('dbt')" data-sidebar-tab="dbt" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all" data-balloon-badge="Módulo 3" data-balloon-title="Linhagem dbt Core (Transformação)" data-balloon="Modelagem dimensional Star Schema na camada Gold e validação de qualidade de dados com regras de negócio auditáveis.">
               <svg class="w-4 h-4 mr-2.5 text-[#FFD60A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/><path d="M9 6h4a5 5 0 0 1 5 5v1"/><line x1="6" y1="9" x2="6" y2="15"/></svg>
               <span>Linhagem dbt</span>
             </button>
-            <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('airflow')" data-sidebar-tab="airflow" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all" data-balloon-badge="Módulo 4" data-balloon-title="Rotinas Airflow (Orquestração)" data-balloon="Pipelines programados com TaskFlow API, retentativas automáticas e monitoramento de integridade e SLAs.">
               <svg class="w-4 h-4 mr-2.5 text-[#FF9F0A] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Rotinas Airflow</span>
             </button>
-            <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('pyspark')" data-sidebar-tab="pyspark" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all" data-balloon-badge="Módulo 5" data-balloon-title="Serviço FastAPI (API REST)" data-balloon="Serviço assíncrono de predição e consulta rápida com validação de schemas Pydantic v2 e Swagger integrado.">
               <svg class="w-4 h-4 mr-2.5 text-[#0A84FF] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
               <span>Serviço FastAPI</span>
             </button>
-            <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all">
+            <button onclick="switchTab('rag')" data-sidebar-tab="rag" class="sidebar-apple-btn w-full text-left px-3 py-2 rounded-xl font-medium flex items-center text-[#E5E5EA] hover:bg-white/10 transition-all" data-balloon-badge="Módulo 6" data-balloon-title="Busca Vetorial RAG (Assistente IA)" data-balloon="Recuperação semântica em chunks de documentação técnica com injeção de contexto e citações diretas das fontes oficiais.">
               <svg class="w-4 h-4 mr-2.5 text-[#BF5AF2] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l2.4 7.2h7.6l-6 4.8 2.4 7.2-6.4-4.8-6.4 4.8 2.4-7.2-6-4.8h7.6z"/></svg>
               <span>Busca Vetorial RAG</span>
             </button>
@@ -885,22 +1012,22 @@
 
       <!-- NAVEGAÇÃO DE ABAS UNIVERSAL (Para IDSR e AWS ou Mobile) -->
       <div class="chrome-idsr chrome-amazon flex space-x-1 overflow-x-auto pb-2 border-b border-idsr-borda w-full">
-        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="tab-nav-btn tab-nav-active px-3 py-1.5 text-xs theme-btn">
+        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="tab-nav-btn tab-nav-active px-3 py-1.5 text-xs theme-btn" data-balloon-badge="Módulo 1" data-balloon-title="Visão Geral & Simulador Preditivo" data-balloon="Painel executivo com taxas de sobrevivência do Sebrae/Receita Federal, distribuição geográfica e simulador preditivo de risco.">
           Visão Geral & Simulador
         </button>
-        <button onclick="switchTab('lakehouse')" id="tab-btn-lakehouse" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme">
+        <button onclick="switchTab('lakehouse')" id="tab-btn-lakehouse" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme" data-balloon-badge="Módulo 2" data-balloon-title="Consultas SQL Analíticas" data-balloon="Consultas diretas em SQL sobre tabelas analíticas com 21,8M de cadastros da Receita Federal e dados do IBGE.">
           Análises Estatísticas (SQL)
         </button>
-        <button onclick="switchTab('dbt')" id="tab-btn-dbt" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme">
+        <button onclick="switchTab('dbt')" id="tab-btn-dbt" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme" data-balloon-badge="Módulo 3" data-balloon-title="Origem & Limpeza (dbt Core)" data-balloon="Pipeline de engenharia com linhagem interativa e regras de qualidade nas camadas Bronze, Silver e Gold.">
           Origem e Limpeza (dbt)
         </button>
-        <button onclick="switchTab('airflow')" id="tab-btn-airflow" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme">
+        <button onclick="switchTab('airflow')" id="tab-btn-airflow" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme" data-balloon-badge="Módulo 4" data-balloon-title="Automação & Orquestração (Airflow)" data-balloon="DAGs automatizadas com TaskFlow API, monitoramento de integridade e alertas automáticos de SLA.">
           Atualização Automática (Airflow)
         </button>
-        <button onclick="switchTab('pyspark')" id="tab-btn-pyspark" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme">
+        <button onclick="switchTab('pyspark')" id="tab-btn-pyspark" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme" data-balloon-badge="Módulo 5" data-balloon-title="API FastAPI em Python" data-balloon="Endpoints REST assíncronos para consumo externo e cálculo de probabilidades em tempo real (< 10ms).">
           API & Consulta Direta (Python)
         </button>
-        <button onclick="switchTab('rag')" id="tab-btn-rag" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme">
+        <button onclick="switchTab('rag')" id="tab-btn-rag" class="tab-nav-btn px-3 py-1.5 text-xs theme-btn text-idsr-cinza hover:text-idsr-creme" data-balloon-badge="Módulo 6" data-balloon-title="Assistente de IA & RAG" data-balloon="Busca semântica avançada em leis, normas e documentação oficial com respostas fundamentadas e fontes citadas.">
           Perguntas & Respostas (RAG)
         </button>
       </div>
@@ -912,7 +1039,7 @@
 
         <!-- 4 KPI CARDS COM ADAPTAÇÃO GEOMÉTRICA RADICAL -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
-          <div class="kpi-card kpi-card-1">
+          <div class="kpi-card kpi-card-1" data-balloon-badge="Métrica Federal" data-balloon-title="Universo Ativo (MDIC / RFB)" data-balloon="Contagem oficial de empresas com registro ativo na Receita Federal do Brasil e Ministério do Desenvolvimento, Indústria e Comércio.">
             <span class="kpi-label block truncate">Universo Ativo (MDIC / RFB)</span>
             <div class="mt-1 flex items-baseline space-x-2">
               <span id="kpi-total-empresas" class="kpi-number">21,8M</span>
@@ -921,7 +1048,7 @@
             <span id="kpi-sub-total" class="text-[11px] text-idsr-cinza block mt-1 truncate">Total de CNPJs ativos no Brasil</span>
           </div>
 
-          <div class="kpi-card kpi-card-2">
+          <div class="kpi-card kpi-card-2" data-balloon-badge="Métrica Federal" data-balloon-title="Sobrevivência em 24 Meses (Sebrae)" data-balloon="Percentual médio nacional de empresas que continuam de portas abertas após os primeiros dois anos de existência.">
             <span class="kpi-label block truncate">Sobrevivência 24m (Sebrae)</span>
             <div class="mt-1 flex items-baseline space-x-2">
               <span id="kpi-taxa-sobrevivencia" class="kpi-number text-idsr-sucesso">61,0%</span>
@@ -930,7 +1057,7 @@
             <span id="kpi-sub-sobrevivencia" class="text-[11px] text-idsr-cinza block mt-1 truncate">39,0% baixadas em 24 meses</span>
           </div>
 
-          <div class="kpi-card kpi-card-3">
+          <div class="kpi-card kpi-card-3" data-balloon-badge="Métrica Federal" data-balloon-title="Resiliência das EPPs (5 Anos)" data-balloon="Empresas de Pequeno Porte têm a maior taxa histórica de permanência no mercado brasileiro: 83% sobrevivem após 5 anos.">
             <span class="kpi-label block truncate">Sobrevivência EPP 5 anos</span>
             <div class="mt-1 flex items-baseline space-x-2">
               <span id="kpi-taxa-epp" class="kpi-number text-idsr-sucesso">83,0%</span>
@@ -939,7 +1066,7 @@
             <span id="kpi-sub-epp" class="text-[11px] text-idsr-cinza block mt-1 truncate">Apenas 17% de mortalidade em 5 anos</span>
           </div>
 
-          <div class="kpi-card kpi-card-4">
+          <div class="kpi-card kpi-card-4" data-balloon-badge="Métrica Federal" data-balloon-title="Ritmo de Novas Aberturas (Redesim)" data-balloon="Média de novos registros empresariais formalizados por ano, totalizando mais de 10.500 novos negócios a cada dia útil.">
             <span class="kpi-label block truncate">Aberturas Anuais (Redesim)</span>
             <div class="mt-1 flex items-baseline space-x-2">
               <span id="kpi-aberturas-ano" class="kpi-number">3,85M</span>
@@ -963,16 +1090,16 @@
               </div>
               <!-- Seletor de Tipo de Gráfico 1 -->
               <div class="flex items-center space-x-1 shrink-0 bg-black/20 p-1 rounded border border-idsr-borda/60" id="nps-chart-type-selector">
-                <button type="button" onclick="setChartType('nps', 'bar')" id="btn-nps-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas">
+                <button type="button" onclick="setChartType('nps', 'bar')" id="btn-nps-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas" data-balloon-badge="Visualização" data-balloon-title="Gráfico em Colunas" data-balloon="Exibe a taxa de mortalidade em barras verticais agrupadas por faixa de capital inicial.">
                   Colunas
                 </button>
-                <button type="button" onclick="setChartType('nps', 'line')" id="btn-nps-line" class="chart-type-btn" title="Gráfico de Linha">
+                <button type="button" onclick="setChartType('nps', 'line')" id="btn-nps-line" class="chart-type-btn" title="Gráfico de Linha" data-balloon-badge="Visualização" data-balloon-title="Gráfico em Linha" data-balloon="Exibe a curva contínua e a inclinação da taxa de encerramento por capital inicial.">
                   Linha
                 </button>
-                <button type="button" onclick="setChartType('nps', 'horizontal')" id="btn-nps-horizontal" class="chart-type-btn" title="Barras Horizontais">
+                <button type="button" onclick="setChartType('nps', 'horizontal')" id="btn-nps-horizontal" class="chart-type-btn" title="Barras Horizontais" data-balloon-badge="Visualização" data-balloon-title="Barras Horizontais" data-balloon="Inverte a orientação dos eixos facilitando a leitura de faixas de capital extensas.">
                   Horizontal
                 </button>
-                <button type="button" onclick="setChartType('nps', 'doughnut')" id="btn-nps-doughnut" class="chart-type-btn" title="Gráfico de Rosca">
+                <button type="button" onclick="setChartType('nps', 'doughnut')" id="btn-nps-doughnut" class="chart-type-btn" title="Gráfico de Rosca" data-balloon-badge="Visualização" data-balloon-title="Gráfico de Rosca (Radial)" data-balloon="Proporção percentual de mortalidade distribuída em anel circular contemporâneo.">
                   Rosca
                 </button>
               </div>
@@ -994,13 +1121,13 @@
               </div>
               <!-- Seletor de Tipo de Gráfico 2 -->
               <div class="flex items-center space-x-1 shrink-0 bg-black/20 p-1 rounded border border-idsr-borda/60" id="regional-chart-type-selector">
-                <button type="button" onclick="setChartType('regional', 'bar')" id="btn-regional-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas Agrupadas">
+                <button type="button" onclick="setChartType('regional', 'bar')" id="btn-regional-bar" class="chart-type-btn chart-type-btn-active" title="Gráfico de Colunas Agrupadas" data-balloon-badge="Visualização" data-balloon-title="Colunas Regionais Agrupadas" data-balloon="Compara lado a lado a fatia de empresas de cada região com sua taxa de sobrevivência.">
                   Colunas
                 </button>
-                <button type="button" onclick="setChartType('regional', 'line')" id="btn-regional-line" class="chart-type-btn" title="Gráfico de Linhas Comparativas">
+                <button type="button" onclick="setChartType('regional', 'line')" id="btn-regional-line" class="chart-type-btn" title="Gráfico de Linhas Comparativas" data-balloon-badge="Visualização" data-balloon-title="Linhas Comparativas" data-balloon="Compara o perfil regional através de duas linhas contínuas de participação e sobrevida.">
                   Linhas
                 </button>
-                <button type="button" onclick="setChartType('regional', 'horizontal')" id="btn-regional-horizontal" class="chart-type-btn" title="Barras Horizontais">
+                <button type="button" onclick="setChartType('regional', 'horizontal')" id="btn-regional-horizontal" class="chart-type-btn" title="Barras Horizontais" data-balloon-badge="Visualização" data-balloon-title="Barras Horizontais Regionais" data-balloon="Barras horizontais para rápida comparação entre os desempenhos das 5 regiões.">
                   Horizontal
                 </button>
               </div>
@@ -1012,7 +1139,7 @@
         </div>
 
         <!-- SIMULADOR PREDITIVO DE SOBREVIVÊNCIA DE CNPJ -->
-        <div class="p-5 sm:p-6 theme-card border border-idsr-borda bg-idsr-painel w-full">
+        <div id="simulador-cnpj" class="p-5 sm:p-6 theme-card border border-idsr-borda bg-idsr-painel w-full">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-idsr-borda mb-5 gap-2">
             <div>
               <span class="text-xs font-bold text-idsr-creme uppercase block">Simulador de Risco: qual a chance da empresa fechar <span class="mao">em 2 anos</span>?</span>
@@ -1032,7 +1159,7 @@
                   <span class="text-idsr-cinza">Capital Social Inicial Declarado (RFB):</span>
                   <span id="label-frete" class="text-idsr-creme font-bold">R$ 50.000,00</span>
                 </div>
-                <input type="range" id="input-frete" min="2000" max="300000" value="50000" step="2000" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
+                <input type="range" id="input-frete" data-balloon-badge="Simulador" data-balloon-title="Capital Social Inicial" data-balloon="Valor financeiro investido na abertura. Dados do Sebrae comprovam que capital acima de R$ 50k reduz em mais da metade o risco de falência precoce." min="2000" max="300000" value="50000" step="2000" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
               </div>
 
               <div>
@@ -1040,7 +1167,7 @@
                   <span class="text-idsr-cinza">Distância do Principal Polo Econômico (km):</span>
                   <span id="label-distancia" class="text-idsr-creme font-bold">250 km</span>
                 </div>
-                <input type="range" id="input-distancia" min="10" max="2500" value="250" step="20" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
+                <input type="range" id="input-distancia" data-balloon-badge="Simulador" data-balloon-title="Distância até o Polo Econômico" data-balloon="Distância em km até o polo comercial mais próximo, afetando custos de frete e tamanho do mercado consumidor." min="10" max="2500" value="250" step="20" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
               </div>
 
               <div>
@@ -1048,7 +1175,7 @@
                   <span class="text-idsr-cinza">Estrutura Societária (Sócios no Contrato):</span>
                   <span id="label-peso" class="text-idsr-creme font-bold">2 sócios</span>
                 </div>
-                <input type="range" id="input-peso" min="1" max="8" value="2" step="1" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
+                <input type="range" id="input-peso" data-balloon-badge="Simulador" data-balloon-title="Composição Societária" data-balloon="Negócios com 2 ou mais sócios contam com divisão de competências e maior fôlego financeiro, aumentando as taxas de sobrevida." min="1" max="8" value="2" step="1" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
               </div>
 
               <div>
@@ -1056,7 +1183,7 @@
                   <span class="text-idsr-cinza">Reserva em Caixa (Meses de Custos Fixos):</span>
                   <span id="label-prazo" class="text-idsr-creme font-bold">12 meses</span>
                 </div>
-                <input type="range" id="input-prazo" min="1" max="36" value="12" step="1" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
+                <input type="range" id="input-prazo" data-balloon-badge="Simulador" data-balloon-title="Reserva de Emergência" data-balloon="Meses de custos fixos guardados em caixa para absorver oscilações de faturamento sem recorrer a dívidas bancárias caras." min="1" max="36" value="12" step="1" oninput="runPredictionSimulation()" class="w-full accent-idsr-brasa bg-idsr-surface h-2 rounded cursor-pointer">
               </div>
             </div>
 
@@ -1064,7 +1191,7 @@
             <div class="lg:col-span-5 p-5 theme-card bg-idsr-surface border border-idsr-borda">
               <div class="flex items-center justify-between pb-2 border-b border-idsr-borda">
                 <span class="text-[11px] text-idsr-cinza uppercase">Probabilidade de Baixa</span>
-                <span id="pred-badge" class="px-2.5 py-0.5 theme-btn text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800">
+                <span id="pred-badge" class="px-2.5 py-0.5 theme-btn text-xs font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800" data-balloon-badge="Simulador" data-balloon-title="Classificação de Risco" data-balloon="Faixa de risco estimada pelo modelo estatístico calibrado na base da Receita Federal e dados do Sebrae.">
                   BAIXO RISCO
                 </span>
               </div>
