@@ -84,9 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
   startSpClock();
   initInfoBalloons();
 
-  if (!localStorage.getItem("idsr_intro_seen")) {
-    openIntroModal();
-  }
+  // Guia disponível sob demanda no botão 'Guia' do cabeçalho
+  // if (!localStorage.getItem("idsr_intro_seen")) { openIntroModal(); }
 });
 
 /* ========================================================================= */
@@ -210,12 +209,18 @@ function openIntroModal() {
   const b = document.getElementById("ui-info-balloon");
   if (b) { b.classList.add("hidden", "opacity-0"); }
   const modal = document.getElementById("modal-intro-backdrop");
-  if (modal) modal.classList.remove("hidden");
+  if (modal) {
+    modal.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
 }
 
 function closeIntroModal() {
   const modal = document.getElementById("modal-intro-backdrop");
-  if (modal) modal.classList.add("hidden");
+  if (modal) {
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
   localStorage.setItem("idsr_intro_seen", "true");
 }
 
@@ -1403,12 +1408,14 @@ function openReportModal() {
   }
 
   modal.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
 }
 
 function closeReportModal() {
   const modal = document.getElementById("modal-report-backdrop");
   if (modal) {
     modal.classList.add("hidden");
+    document.body.style.overflow = "";
   }
 }
 
@@ -2301,3 +2308,13 @@ function exportPDF(data) {
     window.print();
   }
 }
+
+// Fechar modais ao pressionar tecla Escape
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") {
+    closeIntroModal();
+    closeReportModal();
+    closeExportModal();
+    if (typeof closeCodeDrawer === "function") closeCodeDrawer();
+  }
+});
