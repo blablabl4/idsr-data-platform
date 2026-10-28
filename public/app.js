@@ -1841,7 +1841,7 @@ function exportXLSX(data) {
 function exportPDF(data) {
   if (typeof window.jspdf === "undefined" || !window.jspdf.jsPDF) {
     console.warn("jsPDF indisponivel, abrindo tela de impressao do navegador.");
-    showToast("Gerador PDF indisponivel. Abrindo impressao do navegador...");
+    showToast("Gerador PDF indisponivel. Abrindo impressao...");
     window.print();
     return;
   }
@@ -1860,57 +1860,57 @@ function exportPDF(data) {
     const contentWidth = pageWidth - (margin * 2);
 
     /* ===================================================================== */
-    /* PAGINA 1: CABECALHO, RESUMO EXECUTIVO, KPIS E VALE DA MORTE           */
+    /* PAGINA 1: CABECALHO, RESUMO, KPIS E VALE DA MORTE (CAPITAL SOCIAL)    */
     /* ===================================================================== */
 
     // Barra de Topo
     doc.setFillColor(20, 20, 24);
-    doc.rect(0, 0, pageWidth, 56, "F");
+    doc.rect(0, 0, pageWidth, 52, "F");
 
     doc.setFillColor(255, 56, 49); // Brasa IDSR
-    doc.rect(0, 52, pageWidth, 4, "F");
+    doc.rect(0, 48, pageWidth, 4, "F");
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(14);
+    doc.setFontSize(13);
     doc.setTextColor(252, 242, 189); // Creme IDSR
-    doc.text("IDSR DATA LAKEHOUSE - RELATORIO EXECUTIVO", margin, 32);
-
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(9);
-    doc.setTextColor(179, 165, 158); // Cinza IDSR
-    doc.text("Plataforma de Inteligencia de Dados · Base Oficial 21,8M CNPJs", margin, 46);
-
-    // Box de Metadados e Candidato
-    let currentY = 72;
-    doc.setFillColor(248, 249, 250);
-    doc.setDrawColor(220, 224, 230);
-    doc.roundedRect(margin, currentY, contentWidth, 54, 4, 4, "FD");
-
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(10);
-    doc.setTextColor(30, 41, 59);
-    doc.text("Responsavel Tecnico: Isaque da Silva Rocha", margin + 12, currentY + 18);
+    doc.text("IDSR DATA LAKEHOUSE - RELATORIO EXECUTIVO", margin, 28);
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(8.5);
+    doc.setTextColor(179, 165, 158); // Cinza IDSR
+    doc.text("Plataforma de Inteligencia de Dados | Base Oficial 21,8M CNPJs (Receita Federal / IBGE)", margin, 42);
+
+    // Box de Metadados e Responsavel Tecnico
+    let currentY = 64;
+    doc.setFillColor(248, 249, 250);
+    doc.setDrawColor(220, 224, 230);
+    doc.roundedRect(margin, currentY, contentWidth, 48, 4, 4, "FD");
+
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(9.5);
+    doc.setTextColor(30, 41, 59);
+    doc.text("Responsavel Tecnico: Isaque da Silva Rocha", margin + 10, currentY + 16);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
     doc.setTextColor(71, 85, 105);
-    doc.text("Cargo: Data & Analytics Engineer | WhatsApp: (11) 98342-6767 | Emissao: " + data.meta.date + " " + data.meta.time, margin + 12, currentY + 32);
-    doc.text("Contexto Ativo: " + data.meta.filterRegion + " | " + data.meta.filterPorte + " | Fontes: RFB, IBGE, Sebrae, MDIC", margin + 12, currentY + 45);
+    doc.text("Cargo: Data & Analytics Engineer | WhatsApp: (11) 98342-6767 | Emissao: " + data.meta.date + " as " + data.meta.time, margin + 10, currentY + 29);
+    doc.text("Contexto Ativo: " + data.meta.filterRegion + " | " + data.meta.filterPorte + " | Fontes: RFB, IBGE, Sebrae, MDIC", margin + 10, currentY + 41);
 
     // Secao 1: Resumo Executivo
-    currentY += 68;
+    currentY += 60;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(224, 36, 36);
     doc.text("1. RESUMO EXECUTIVO (EXECUTIVE SUMMARY)", margin, currentY);
 
-    currentY += 12;
+    currentY += 10;
     doc.setFillColor(254, 242, 242);
     doc.setDrawColor(254, 202, 202);
-    doc.roundedRect(margin, currentY, contentWidth, 68, 4, 4, "FD");
+    doc.roundedRect(margin, currentY, contentWidth, 62, 4, 4, "FD");
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8.5);
+    doc.setFontSize(8);
     doc.setTextColor(31, 41, 55);
     const summaryLines = [
       "O ecossistema empresarial brasileiro consolida 21.824.510 CNPJs ativos. Embora o pais registre mais de 3,85 milhoes",
@@ -1919,22 +1919,22 @@ function exportPDF(data) {
       "A sobrevivencia esta diretamente atrelada ao capital social integralizado: empresas com menos de R$ 10.000 enfrentam",
       "58,4% de mortalidade em 2 anos, enquanto aportes superiores a R$ 100.000 alcancam 85,2% de sobrevida consolidada."
     ];
-    let sumY = currentY + 14;
+    let sumY = currentY + 13;
     summaryLines.forEach(line => {
       doc.text(line, margin + 10, sumY);
-      sumY += 12;
+      sumY += 11;
     });
 
-    // Secao 2: Grid de 4 Cards de KPIs
-    currentY += 82;
+    // Secao 2: Grid de 4 Cards de KPIs Nacionais
+    currentY += 74;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 24);
     doc.text("2. INDICADORES ESTRUTURAIS NACIONAIS", margin, currentY);
 
-    currentY += 10;
+    currentY += 9;
     const cardWidth = (contentWidth - 18) / 4;
-    const cardHeight = 44;
+    const cardHeight = 40;
     const kpiCards = [
       { label: "UNIVERSO ATIVO", val: "21,8M", sub: "CNPJs no Brasil" },
       { label: "SOBREVIDA 2 ANOS", val: "61,0%", sub: "39% encerram cedo" },
@@ -1949,37 +1949,37 @@ function exportPDF(data) {
       doc.roundedRect(cardX, currentY, cardWidth, cardHeight, 3, 3, "FD");
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(7);
+      doc.setFontSize(6.5);
       doc.setTextColor(100, 116, 139);
-      doc.text(kpi.label, cardX + 6, currentY + 12);
+      doc.text(kpi.label, cardX + 6, currentY + 11);
 
       doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
+      doc.setFontSize(12);
       doc.setTextColor(15, 23, 42);
-      doc.text(kpi.val, cardX + 6, currentY + 27);
+      doc.text(kpi.val, cardX + 6, currentY + 25);
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(6.5);
       doc.setTextColor(100, 116, 139);
-      doc.text(kpi.sub, cardX + 6, currentY + 38);
+      doc.text(kpi.sub, cardX + 6, currentY + 35);
     });
 
-    // Secao 3: Storytelling Ato I e Ato II
-    currentY += cardHeight + 20;
+    // Secao 3: Storytelling Atos I e II
+    currentY += cardHeight + 16;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 24);
     doc.text("3. DATA STORYTELLING: DINAMICA DE ENTRADA & O VALE DA MORTE", margin, currentY);
 
-    currentY += 12;
+    currentY += 11;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(224, 36, 36);
     doc.text("[Ato I: Facilidade de Abertura vs Fragilidade Estrutural]", margin, currentY);
 
-    currentY += 11;
+    currentY += 10;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setTextColor(51, 65, 85);
     const ato1Lines = [
       "A integracao cadastral via Redesim e Gov.br viabilizou a abertura de empresas em poucas horas nas capitais brasileiras.",
@@ -1988,18 +1988,18 @@ function exportPDF(data) {
     ];
     ato1Lines.forEach(l => {
       doc.text(l, margin, currentY);
-      currentY += 10.5;
+      currentY += 9.5;
     });
 
-    currentY += 4;
+    currentY += 3;
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(9);
+    doc.setFontSize(8.5);
     doc.setTextColor(224, 36, 36);
     doc.text("[Ato II: O 'Vale da Morte' do Capital Social e Reserva de Liquidez]", margin, currentY);
 
-    currentY += 11;
+    currentY += 10;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setTextColor(51, 65, 85);
     const ato2Lines = [
       "A base de dados da RFB demonstra uma relacao matematica direta entre reserva inicial e longevidade corporativa.",
@@ -2008,118 +2008,219 @@ function exportPDF(data) {
     ];
     ato2Lines.forEach(l => {
       doc.text(l, margin, currentY);
-      currentY += 10.5;
+      currentY += 9.5;
     });
 
-    // Tabela Compacta de Capital Social
-    currentY += 8;
-    doc.setFillColor(248, 250, 252);
-    doc.setDrawColor(226, 232, 240);
-    doc.rect(margin, currentY, contentWidth, 76, "FD");
+    currentY += 6;
 
-    // Header da tabela
-    doc.setFillColor(226, 232, 240);
-    doc.rect(margin, currentY, contentWidth, 15, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(7.5);
-    doc.setTextColor(30, 41, 59);
-    doc.text("Faixa de Capital Social", margin + 8, currentY + 10.5);
-    doc.text("Participacao", margin + 130, currentY + 10.5);
-    doc.text("Mortalidade 24m", margin + 210, currentY + 10.5);
-    doc.text("Sobrevida 24m", margin + 295, currentY + 10.5);
-    doc.text("Nivel de Risco & Diagnostico", margin + 375, currentY + 10.5);
+    // Tabela de Capital Social (Com jsPDF-AutoTable ou fallback manual inteligente com quebra de linhas)
+    const capitalHeaders = [["Faixa de Capital", "Participacao", "Mortalidade 24m", "Sobrevida 24m", "Nivel de Risco & Diagnostico Estrutural"]];
+    const capitalRows = data.capitalMatrix.map(c => [
+      c.faixa,
+      c.participacao,
+      c.mortalidade2a,
+      c.sobrevida2a,
+      c.risco + " - " + c.diag
+    ]);
 
-    let tabY = currentY + 25;
-    data.capitalMatrix.forEach(row => {
-      doc.setFont("helvetica", "normal");
+    if (typeof doc.autoTable === "function") {
+      doc.autoTable({
+        startY: currentY,
+        head: capitalHeaders,
+        body: capitalRows,
+        theme: "grid",
+        margin: { left: margin, right: margin },
+        styles: {
+          fontSize: 7.5,
+          cellPadding: 4,
+          textColor: [51, 65, 85],
+          lineColor: [226, 232, 240],
+          lineWidth: 0.5,
+          overflow: "linebreak",
+          valign: "middle"
+        },
+        headStyles: {
+          fillColor: [30, 41, 59],
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+          fontSize: 7.5,
+          halign: "left"
+        },
+        columnStyles: {
+          0: { cellWidth: 105, fontStyle: "bold" },
+          1: { cellWidth: 65, halign: "center" },
+          2: { cellWidth: 75, halign: "center", textColor: [185, 28, 28] },
+          3: { cellWidth: 70, halign: "center", textColor: [22, 101, 52] },
+          4: { cellWidth: "auto" }
+        }
+      });
+      currentY = doc.lastAutoTable.finalY;
+    } else {
+      // Fallback manual sem autoTable: desenha linhas com altura proporcional sem truncar
+      doc.setFillColor(30, 41, 59);
+      doc.rect(margin, currentY, contentWidth, 14, "F");
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(7.5);
-      doc.setTextColor(51, 65, 85);
-      doc.text(row.faixa, margin + 8, tabY);
-      doc.text(row.participacao, margin + 130, tabY);
-      doc.text(row.mortalidade2a, margin + 210, tabY);
-      doc.text(row.sobrevida2a, margin + 295, tabY);
-      doc.text(row.risco + " - " + row.diag.substring(0, 36) + "...", margin + 375, tabY);
-      tabY += 14;
-    });
+      doc.setTextColor(255, 255, 255);
+      doc.text("Faixa de Capital Social", margin + 6, currentY + 10);
+      doc.text("Participacao", margin + 115, currentY + 10);
+      doc.text("Mortalidade 24m", margin + 185, currentY + 10);
+      doc.text("Sobrevida 24m", margin + 265, currentY + 10);
+      doc.text("Nivel de Risco & Diagnostico", margin + 340, currentY + 10);
+      currentY += 14;
+
+      data.capitalMatrix.forEach((r, idx) => {
+        const bg = (idx % 2 === 0) ? [248, 250, 252] : [255, 255, 255];
+        doc.setFillColor(bg[0], bg[1], bg[2]);
+        doc.rect(margin, currentY, contentWidth, 18, "F");
+        doc.setDrawColor(226, 232, 240);
+        doc.line(margin, currentY + 18, margin + contentWidth, currentY + 18);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7);
+        doc.setTextColor(30, 41, 59);
+        doc.text(r.faixa, margin + 6, currentY + 12);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(r.participacao, margin + 115, currentY + 12);
+        doc.setTextColor(185, 28, 28);
+        doc.text(r.mortalidade2a, margin + 185, currentY + 12);
+        doc.setTextColor(22, 101, 52);
+        doc.text(r.sobrevida2a, margin + 265, currentY + 12);
+        doc.setTextColor(51, 65, 85);
+        doc.text(r.risco + " - " + r.diag, margin + 340, currentY + 12, { maxWidth: contentWidth - 345 });
+        currentY += 18;
+      });
+    }
 
     // Rodape Pagina 1
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text("IDSR Data Lakehouse · Analise de 21,8M CNPJs · Isaque da Silva Rocha", margin, pageHeight - 20);
+    doc.text("IDSR Data Lakehouse | Analise de 21,8M CNPJs | Isaque da Silva Rocha", margin, pageHeight - 20);
     doc.text("Pagina 1 de 2", pageWidth - margin - 50, pageHeight - 20);
 
     /* ===================================================================== */
-    /* PAGINA 2: GEOGRAFIA, GOVERNANCA, RECOMENDACOES E FONTES               */
+    /* PAGINA 2: GEOGRAFIA, GOVERNANCA, RECOMENDACOES E METODOLOGIA          */
     /* ===================================================================== */
     doc.addPage();
 
     // Barra de Topo Pagina 2
     doc.setFillColor(20, 20, 24);
-    doc.rect(0, 0, pageWidth, 40, "F");
+    doc.rect(0, 0, pageWidth, 38, "F");
     doc.setFillColor(255, 56, 49);
-    doc.rect(0, 37, pageWidth, 3, "F");
+    doc.rect(0, 35, pageWidth, 3, "F");
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(252, 242, 189);
-    doc.text("IDSR DATA LAKEHOUSE - GEOGRAFIA, GOVERNANCA & DIRETRIZES", margin, 24);
+    doc.text("IDSR DATA LAKEHOUSE - GEOGRAFIA, GOVERNANCA & DIRETRIZES", margin, 23);
 
-    currentY = 56;
+    currentY = 52;
 
     // Secao 4: Ato III - Geografia Economica
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 24);
     doc.text("4. DATA STORYTELLING: GEOGRAFIA ECONOMICA REGIONAL (IBGE)", margin, currentY);
 
     currentY += 10;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setTextColor(51, 65, 85);
     doc.text("A distribuicao geografica evidencia profundas assimetrias entre os ecossistemas produtivos brasileiros:", margin, currentY);
 
-    currentY += 10;
-    // Tabela Regional
-    doc.setFillColor(248, 250, 252);
-    doc.setDrawColor(226, 232, 240);
-    doc.rect(margin, currentY, contentWidth, 90, "FD");
+    currentY += 8;
 
-    doc.setFillColor(226, 232, 240);
-    doc.rect(margin, currentY, contentWidth, 15, "F");
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(7.5);
-    doc.setTextColor(30, 41, 59);
-    doc.text("Regiao Geografica", margin + 8, currentY + 10.5);
-    doc.text("Participacao", margin + 110, currentY + 10.5);
-    doc.text("Sobrevida 24m", margin + 185, currentY + 10.5);
-    doc.text("Mortalidade 24m", margin + 265, currentY + 10.5);
-    doc.text("Dinamica Economica & Fatores Regionais", margin + 355, currentY + 10.5);
+    // Tabela Regional com AutoTable ou fallback
+    const regionalHeaders = [["Regiao", "Participacao", "Sobrevida 24m", "Mortalidade 24m", "Perfil e Dinamica Economica Regional"]];
+    const regionalRows = data.regionalMatrix.map(r => [
+      r.regiao,
+      r.participacao,
+      r.sobrevida2a,
+      r.mortalidade2a,
+      r.perfil
+    ]);
 
-    let regY = currentY + 25;
-    data.regionalMatrix.forEach(r => {
-      doc.setFont("helvetica", "normal");
+    if (typeof doc.autoTable === "function") {
+      doc.autoTable({
+        startY: currentY,
+        head: regionalHeaders,
+        body: regionalRows,
+        theme: "grid",
+        margin: { left: margin, right: margin },
+        styles: {
+          fontSize: 7.5,
+          cellPadding: 4,
+          textColor: [51, 65, 85],
+          lineColor: [226, 232, 240],
+          lineWidth: 0.5,
+          overflow: "linebreak",
+          valign: "middle"
+        },
+        headStyles: {
+          fillColor: [30, 41, 59],
+          textColor: [255, 255, 255],
+          fontStyle: "bold",
+          fontSize: 7.5,
+          halign: "left"
+        },
+        columnStyles: {
+          0: { cellWidth: 85, fontStyle: "bold" },
+          1: { cellWidth: 65, halign: "center" },
+          2: { cellWidth: 70, halign: "center", textColor: [22, 101, 52] },
+          3: { cellWidth: 75, halign: "center", textColor: [185, 28, 28] },
+          4: { cellWidth: "auto" }
+        }
+      });
+      currentY = doc.lastAutoTable.finalY + 14;
+    } else {
+      doc.setFillColor(30, 41, 59);
+      doc.rect(margin, currentY, contentWidth, 14, "F");
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(7.5);
-      doc.setTextColor(51, 65, 85);
-      doc.text(r.regiao, margin + 8, regY);
-      doc.text(r.participacao, margin + 110, regY);
-      doc.text(r.sobrevida2a, margin + 185, regY);
-      doc.text(r.mortalidade2a, margin + 265, regY);
-      doc.text(r.perfil.substring(0, 45) + "...", margin + 355, regY);
-      regY += 14;
-    });
+      doc.setTextColor(255, 255, 255);
+      doc.text("Regiao Geografica", margin + 6, currentY + 10);
+      doc.text("Participacao", margin + 95, currentY + 10);
+      doc.text("Sobrevida 24m", margin + 165, currentY + 10);
+      doc.text("Mortalidade 24m", margin + 245, currentY + 10);
+      doc.text("Dinamica Regional", margin + 325, currentY + 10);
+      currentY += 14;
 
-    currentY += 106;
+      data.regionalMatrix.forEach((r, idx) => {
+        const bg = (idx % 2 === 0) ? [248, 250, 252] : [255, 255, 255];
+        doc.setFillColor(bg[0], bg[1], bg[2]);
+        doc.rect(margin, currentY, contentWidth, 18, "F");
+        doc.setDrawColor(226, 232, 240);
+        doc.line(margin, currentY + 18, margin + contentWidth, currentY + 18);
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(7);
+        doc.setTextColor(30, 41, 59);
+        doc.text(r.regiao, margin + 6, currentY + 12);
+
+        doc.setFont("helvetica", "normal");
+        doc.text(r.participacao, margin + 95, currentY + 12);
+        doc.setTextColor(22, 101, 52);
+        doc.text(r.sobrevida2a, margin + 165, currentY + 12);
+        doc.setTextColor(185, 28, 28);
+        doc.text(r.mortalidade2a, margin + 245, currentY + 12);
+        doc.setTextColor(51, 65, 85);
+        doc.text(r.perfil, margin + 325, currentY + 12, { maxWidth: contentWidth - 330 });
+        currentY += 18;
+      });
+      currentY += 14;
+    }
 
     // Secao 5: Ato IV - Sociedades e Porte
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(20, 20, 24);
     doc.text("5. DATA STORYTELLING: GOVERNANCA SOCIETARIA & PORTE", margin, currentY);
 
-    currentY += 12;
+    currentY += 11;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setTextColor(51, 65, 85);
     const ato4Lines = [
       "- Microempreendedor Individual (MEI - 53,2% dos CNPJs): Mortalidade de 58% em 5 anos devido a atuacao unipessoal isolada.",
@@ -2129,24 +2230,24 @@ function exportPDF(data) {
     ];
     ato4Lines.forEach(l => {
       doc.text(l, margin, currentY);
-      currentY += 11;
+      currentY += 10;
     });
 
-    currentY += 12;
+    currentY += 8;
 
     // Secao 6: Recomendacoes Estrategicas
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(11);
+    doc.setFontSize(10.5);
     doc.setTextColor(224, 36, 36);
     doc.text("6. DIRETRIZES E RECOMENDACOES PARA TOMADORES DE DECISAO", margin, currentY);
 
-    currentY += 12;
+    currentY += 10;
     doc.setFillColor(248, 250, 252);
     doc.setDrawColor(220, 224, 230);
-    doc.roundedRect(margin, currentY, contentWidth, 72, 4, 4, "FD");
+    doc.roundedRect(margin, currentY, contentWidth, 64, 4, 4, "FD");
 
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
+    doc.setFontSize(7.5);
     doc.setTextColor(30, 41, 59);
     const recs = [
       "1. Runway Minimo Obrigatorio: Nao iniciar operacao sem liquidez para 6 a 9 meses de despesas fixas estimadas.",
@@ -2155,40 +2256,40 @@ function exportPDF(data) {
       "3. Complementaridade Societaria: Estruturar sociedades com perfis tecnicos, comerciais e financeiros divididos.",
       "4. Acesso a Credito Orientado: Priorizar linhas estruturadas de garantia (Pronampe, FGO, BNDES) com assistencia continuada."
     ];
-    let recY = currentY + 14;
+    let recY = currentY + 12;
     recs.forEach(r => {
-      doc.text(r, margin + 10, recY);
-      recY += 11;
+      doc.text(r, margin + 8, recY);
+      recY += 10;
     });
 
-    currentY += 86;
+    currentY += 76;
 
     // Secao 7: Fontes e Metodologia
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(9.5);
+    doc.setFontSize(9);
     doc.setTextColor(20, 20, 24);
     doc.text("7. FONTES DE DADOS OFICIAIS & METODOLOGIA", margin, currentY);
 
-    currentY += 10;
+    currentY += 9;
     doc.setFont("helvetica", "normal");
-    doc.setFontSize(7.5);
+    doc.setFontSize(7);
     doc.setTextColor(100, 116, 139);
     const metaLines = [
-      "• Receita Federal do Brasil (RFB): Microdados abertos de 21,8M de CNPJs, situacao cadastral, natureza juridica e capital social.",
-      "• IBGE: Cadastro Central de Empresas (CEMPRE) e Estatisticas de Demografia das Empresas.",
-      "• Sebrae Nacional: Series historicas de sobrevivencia empresarial e estudos tematicos de mortalidade precoce.",
-      "• Arquitetura Lakehouse, Limpeza, Tratamento e Modelagem Analitica: Isaque da Silva Rocha."
+      "- Receita Federal do Brasil (RFB): Microdados abertos de 21,8M de CNPJs, situacao cadastral, natureza juridica e capital social.",
+      "- IBGE: Cadastro Central de Empresas (CEMPRE) e Estatisticas de Demografia das Empresas.",
+      "- Sebrae Nacional: Series historicas de sobrevivencia empresarial e estudos tematicos de mortalidade precoce.",
+      "- Arquitetura Lakehouse, Limpeza, Tratamento e Modelagem Analitica: Isaque da Silva Rocha."
     ];
     metaLines.forEach(m => {
       doc.text(m, margin, currentY);
-      currentY += 9.5;
+      currentY += 8.5;
     });
 
     // Rodape Pagina 2
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(148, 163, 184);
-    doc.text("IDSR Data Lakehouse · Analise de 21,8M CNPJs · Isaque da Silva Rocha", margin, pageHeight - 20);
+    doc.text("IDSR Data Lakehouse | Analise de 21,8M CNPJs | Isaque da Silva Rocha", margin, pageHeight - 20);
     doc.text("Pagina 2 de 2", pageWidth - margin - 50, pageHeight - 20);
 
     // Salvar Documento

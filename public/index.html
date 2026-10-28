@@ -20,6 +20,8 @@
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- jsPDF (PDF Export) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- jsPDF AutoTable (Tabular & Multi-page PDF Plugin) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
 
   <script>
     tailwind.config = {
@@ -519,6 +521,43 @@
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: var(--color-bg); }
     ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+    /* Estilos Executivos de Impressão & Salvar em PDF via Navegador */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #111827 !important;
+      }
+      header, aside, .sidebar-google, .sidebar-apple, .bar-aws, section, #ui-info-balloon, #toast-notify {
+        display: none !important;
+      }
+      #modal-report-backdrop {
+        display: block !important;
+        position: static !important;
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      #modal-report-backdrop .theme-card {
+        background: #FFFFFF !important;
+        color: #111827 !important;
+        border: none !important;
+        box-shadow: none !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      #modal-report-backdrop button {
+        display: none !important;
+      }
+      #report-preview-text {
+        max-height: none !important;
+        overflow: visible !important;
+        color: #111827 !important;
+        background: #F9FAFB !important;
+        border: 1px solid #E5E7EB !important;
+        font-size: 12px !important;
+        line-height: 1.6 !important;
+      }
+    }
   </style>
 </head>
 <body class="min-h-full flex flex-col bg-idsr-noite text-idsr-creme antialiased selection:bg-idsr-brasa selection:text-white">
