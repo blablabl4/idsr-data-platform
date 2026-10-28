@@ -18,9 +18,9 @@ const THEME_DEFINITIONS = {
     barColors: ["#FF3831", "#E02A23", "#F59E0B", "#10B981", "#059669"],
     regionalOpened: "#FCF2BD",
     regionalClosed: "#FF3831",
-    gridColor: "#332926",
+    gridColor: "#302622",
     tickColor: "#948882",
-    tooltipBg: "#1C1715",
+    tooltipBg: "#181412",
     tooltipText: "#FCF2BD"
   },
   google: {
@@ -36,7 +36,7 @@ const THEME_DEFINITIONS = {
   },
   apple: {
     name: "PADRÃO APPLE (MACOS TAHOE)",
-    desc: "Human Interface Guidelines (macOS) · Vidro Acrílico (Frosted Glass), Cantos Squircle 18px e SF Pro",
+    desc: "Human Interface Guidelines (macOS) · Vidro Acrílico (Frosted Glass), Cantos Squircle 22px e SF Pro",
     barColors: ["#FF453A", "#FF9F0A", "#FFD60A", "#30D158", "#34C759"],
     regionalOpened: "#0A84FF",
     regionalClosed: "#30D158",
@@ -94,27 +94,16 @@ function switchVisualTheme(themeName, notify = true) {
   document.documentElement.setAttribute("data-theme", themeName);
   localStorage.setItem("idsr_platform_theme", themeName);
 
-  ["idsr", "google", "apple", "amazon"].forEach(t => {
-    const btn = document.getElementById(`theme-btn-${t}`);
-    if (btn) {
-      if (t === themeName) {
-        btn.className = "px-2.5 py-1 text-[11px] font-mono theme-btn transition-colors flex items-center space-x-1.5 bg-idsr-brasa text-white font-bold shadow-sm";
-      } else {
-        btn.className = "px-2.5 py-1 text-[11px] font-mono theme-btn transition-colors flex items-center space-x-1.5 text-idsr-cinza hover:text-idsr-creme";
-      }
-    }
-  });
-
-  const def = THEME_DEFINITIONS[themeName];
-  const nameEl = document.getElementById("badge-theme-name");
-  const descEl = document.getElementById("badge-theme-desc");
-  if (nameEl) nameEl.innerText = def.name;
-  if (descEl) descEl.innerText = def.desc;
-
   updateChartThemes();
 
+  // Forçar recálculo de dimensões dos gráficos após mudança de layout
+  setTimeout(() => {
+    if (chartNpsInstance) chartNpsInstance.resize();
+    if (chartRegionalInstance) chartRegionalInstance.resize();
+  }, 100);
+
   if (notify) {
-    showToast(`Visual alterado para: ${def.name}`);
+    showToast(`Visual alterado para: ${THEME_DEFINITIONS[themeName].name}`);
   }
 }
 
@@ -160,14 +149,14 @@ function initCharts() {
       data: {
         labels: [
           "< R$ 10k (Crítico / MEI)",
-          "R$ 10k - 50k (Microempresa)",
+          "R$ 10k - 50k (Micro)",
           "R$ 50k - 100k (Média)",
-          "R$ 100k - 300k (Pequeno Porte)",
+          "R$ 100k - 300k (Pequeno)",
           "> R$ 300k (Consolidado / EPP)"
         ],
         datasets: [
           {
-            label: "Taxa Real de Mortalidade em até 24m (%)",
+            label: "Taxa de Mortalidade em 24m (%)",
             data: [58.4, 38.2, 24.1, 14.8, 8.2],
             backgroundColor: def.barColors,
             borderRadius: currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : 2),
@@ -220,7 +209,7 @@ function initCharts() {
         labels: ["Sudeste", "Sul", "Nordeste", "Centro-Oeste", "Norte"],
         datasets: [
           {
-            label: "% Total Nacional de Empresas Ativas (IBGE)",
+            label: "% Total Nacional de Empresas (IBGE)",
             data: [49.5, 22.3, 15.6, 8.2, 4.4],
             backgroundColor: def.regionalOpened,
             borderRadius: currentTheme === "apple" ? 6 : (currentTheme === "google" ? 8 : 2)
@@ -286,6 +275,14 @@ function switchTab(tabId) {
   if (targetBtn) {
     targetBtn.classList.add("tab-nav-active");
   }
+
+  // Se trocar para a aba de gráficos, redimensionar Chart.js
+  if (tabId === "analytics") {
+    setTimeout(() => {
+      if (chartNpsInstance) chartNpsInstance.resize();
+      if (chartRegionalInstance) chartRegionalInstance.resize();
+    }, 50);
+  }
 }
 
 /* ========================================================================= */
@@ -303,8 +300,6 @@ function runPredictionSimulation() {
   document.getElementById("label-prazo").innerText = `${reservaMeses} meses`;
 
   // Modelo Estatístico calibrado nos dados oficiais do Sebrae e IBGE:
-  // Fatores de proteção: mais capital social declarado, mais meses de reserva, estrutura societária (2+ sócios).
-  // Fator de atrito: distância excessiva de polos econômicos.
   const capitalScore = Math.log10(Math.max(capital, 2000)) / 5.5; // ~0.60 a 1.0
   const reservaScore = Math.min(reservaMeses / 24, 1.2);          // reserva segura >= 12 meses
   const sociosBonus = socios >= 2 ? 0.14 : 0.0;
@@ -327,7 +322,7 @@ function runPredictionSimulation() {
     badgeEl.innerText = "BAIXO RISCO (ALTA SOBREVIVÊNCIA)";
     probEl.className = "text-4xl font-mono font-bold text-emerald-400";
     meterEl.className = "h-full bg-emerald-400 transition-all duration-200";
-    actionEl.innerText = "Estrutura financeira sólida segundo os padrões do Sebrae: a relação entre capital social investido e reserva de caixa fornece margem segura para atravessar o ciclo de maturação.";
+    actionEl.innerText = "Estrutura financeira sólida segundo os padrões do Sebrae: a relação entre capital investido e reserva fornece folga segura para atravessar o ciclo de maturação.";
   } else if (probBaixa < 0.50) {
     badgeEl.className = "px-2.5 py-0.5 theme-btn text-xs font-mono font-bold bg-amber-950/80 text-amber-400 border border-amber-800";
     badgeEl.innerText = "RISCO MODERADO";
@@ -353,9 +348,9 @@ const sqlQueries = {
         cnpj_basico,
         CASE
             WHEN capital_social < 10000 THEN '1. Abaixo de R$ 10k (Crítico / MEI)'
-            WHEN capital_social BETWEEN 10000 AND 50000 THEN '2. R$ 10k a R$ 50k (Microempresa)'
+            WHEN capital_social BETWEEN 10000 AND 50000 THEN '2. R$ 10k a R$ 50k (Micro)'
             WHEN capital_social BETWEEN 50001 AND 100000 THEN '3. R$ 50k a R$ 100k (Média)'
-            WHEN capital_social BETWEEN 100001 AND 300000 THEN '4. R$ 100k a R$ 300k (Pequeno Porte)'
+            WHEN capital_social BETWEEN 100001 AND 300000 THEN '4. R$ 100k a R$ 300k (Pequeno)'
             ELSE '5. Acima de R$ 300k (Consolidado / EPP)'
         END AS faixa_capital,
         situacao_cadastral,
@@ -375,9 +370,9 @@ ORDER BY faixa_capital;`,
     headers: ["Faixa de Capital Social", "Total de Empresas", "Empresas Ativas", "Baixadas (24m)", "Taxa Mortalidade (Sebrae)"],
     rows: [
       ["1. Abaixo de R$ 10k (Crítico / MEI)", "1.480.200", "615.760", "864.440", "58,4%"],
-      ["2. R$ 10k a R$ 50k (Microempresa)", "1.120.400", "692.400", "428.000", "38,2%"],
+      ["2. R$ 10k a R$ 50k (Micro)", "1.120.400", "692.400", "428.000", "38,2%"],
       ["3. R$ 50k a R$ 100k (Média)", "640.800", "486.370", "154.430", "24,1%"],
-      ["4. R$ 100k a R$ 300k (Pequeno Porte)", "380.200", "323.930", "56.270", "14,8%"],
+      ["4. R$ 100k a R$ 300k (Pequeno)", "380.200", "323.930", "56.270", "14,8%"],
       ["5. Acima de R$ 300k (Consolidado / EPP)", "228.400", "209.670", "18.730", "8,2%"]
     ]
   },
@@ -638,7 +633,7 @@ class BusinessSurvivalPredictor:
             "probabilidade_baixa_pct": round(prob_baixa * 100, 1),
             "classificacao": "Baixo Risco" if prob_baixa < 0.25 else ("Risco Moderado" if prob_baixa < 0.50 else "Risco Elevado")
         }`,
-    arch: `Decisão de Engenharia: Utilizou-se Regressão Logística Calibrada com StandardScaler em substituição a modelos de caixa-preta pesados. Isso garante inferência em menos de 10ms na CPU e total explicabilidade para os analistas de crédito e negócio.`,
+    arch: `Decisão de Engenharia: Utilizou-se Regressão Logística Calibrada com StandardScaler em substituição a modelos pesados. Isso garante inferência em menos de 10ms na CPU e total explicabilidade para os analistas de crédito e negócio.`,
     test: `Testes de Software (Pytest): 9 testes cobrindo limites de capital, casos de empresas individuais vs sociedades e faixas de distância. 100% de aprovação automatizada.`
   },
   sql: {
