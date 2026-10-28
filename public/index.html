@@ -462,6 +462,24 @@
       overflow-wrap: break-word !important;
     }
 
+    
+    /* Modais - Proteção Mobile e Touch */
+    #modal-intro-backdrop,
+    #modal-report-backdrop,
+    #export-modal {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    #modal-intro-backdrop .theme-card,
+    #modal-report-backdrop .theme-card,
+    #export-modal .theme-card {
+      max-width: calc(100vw - 1.5rem) !important;
+      overflow-x: hidden !important;
+      word-break: break-word !important;
+      box-sizing: border-box !important;
+    }
+
     /* Seletores de Tipo de Gráfico Dinâmico */
     .chart-type-btn {
       padding: 0.2rem 0.55rem !important;
@@ -612,116 +630,71 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- MODAL DE INTRODUÇÃO & GUIA DIRETO (O QUE É O DASHBOARD E COMO USAR)     -->
+  <!-- MODAL DE INTRODUÇÃO & GUIA DIRETO (COMPACTO & RESPONSIVO)               -->
   <!-- ======================================================================= -->
-  <div id="modal-intro-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-    <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-2xl w-full p-5 sm:p-7 space-y-5 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+  <div id="modal-intro-backdrop" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden" onclick="if(event.target === this) closeIntroModal()">
+    <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-lg w-full p-4 sm:p-6 space-y-3.5 shadow-2xl relative my-auto max-h-[90vh] overflow-y-auto rounded-2xl" onclick="event.stopPropagation()">
       
       <!-- Cabeçalho do Modal -->
-      <div class="flex items-start justify-between border-b border-idsr-borda pb-4">
+      <div class="flex items-start justify-between border-b border-idsr-borda/60 pb-3">
         <div>
-          <div class="flex items-center space-x-2">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white">Guia Oficial</span>
-            <span class="text-xs text-idsr-cinza">Dados Abertos Federais</span>
+          <div class="flex items-center space-x-1.5">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white">Guia Rápido</span>
+            <span class="text-[11px] text-idsr-cinza">Dados Oficiais Receita Federal &amp; IBGE</span>
           </div>
-          <h2 class="text-lg sm:text-xl font-bold text-idsr-creme uppercase mt-1">Plataforma de Inteligência & Sobrevivência Empresarial</h2>
-          <span class="text-xs text-idsr-cinza block mt-0.5">Criado por Isaque da Silva Rocha · Engenharia de Dados & Analytics</span>
+          <h2 class="text-base sm:text-lg font-bold text-idsr-creme uppercase mt-1">Plataforma de Sobrevivência Empresarial</h2>
+          <span class="text-[11px] text-idsr-cinza block mt-0.5">Por Isaque da Silva Rocha &middot; Engenharia de Dados &amp; Analytics</span>
         </div>
-        <button onclick="closeIntroModal()" class="p-1.5 rounded-lg hover:bg-idsr-surface text-idsr-cinza hover:text-white theme-btn shrink-0" title="Fechar Guia">
+        <button onclick="closeIntroModal()" class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-idsr-surface text-idsr-cinza hover:text-white theme-btn shrink-0" title="Fechar Guia" aria-label="Fechar">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
 
       <!-- O Que É Este Dashboard -->
-      <div class="p-4 rounded-xl bg-idsr-surface/80 border border-idsr-borda space-y-2">
-        <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded-full bg-idsr-sucesso"></span>
-          <strong class="text-idsr-creme text-xs uppercase tracking-wide">O que é este Dashboard?</strong>
-        </div>
-        <p class="text-xs text-idsr-cinza leading-relaxed">
-          Esta plataforma é um ecossistema completo de <strong>inteligência analítica</strong> e <strong>engenharia de dados</strong> que analisa a sobrevivência e mortalidade de <strong>21,8 milhões de empresas ativas</strong> no Brasil.
-        </p>
-        <p class="text-xs text-idsr-cinza leading-relaxed">
-          O objetivo principal é responder: <em>quais fatores mais protegem ou vulnerabilizam um novo CNPJ no Brasil nos primeiros 24 meses?</em> Todos os dados exibidos são <strong>100% reais e auditáveis</strong>, extraídos diretamente da Receita Federal, IBGE (CEMPRE), MDIC e pesquisas históricas do Sebrae.
+      <div class="p-3 rounded-xl bg-idsr-surface/80 border border-idsr-borda/60 text-xs leading-relaxed">
+        <strong class="text-idsr-creme font-semibold block mb-0.5">Propósito da Plataforma:</strong>
+        <p class="text-idsr-cinza text-[11px] sm:text-xs">
+          Análise preditiva sobre <strong class="text-idsr-creme">21,8 milhões de empresas ativas</strong> com dados públicos da Receita Federal, IBGE (CEMPRE) e Sebrae, identificando o que realmente protege ou vulnerabiliza novos negócios no Brasil.
         </p>
       </div>
 
-      <!-- Como Explorar e Usar Realmente -->
-      <div>
-        <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider block mb-3">Como Navegar e Usar a Plataforma:</span>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-          
-          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
-            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
-              <span class="text-idsr-brasa font-mono">01.</span>
-              <span>Visão Geral & Filtros</span>
-            </strong>
-            <p class="text-idsr-cinza text-[11px] leading-relaxed">
-              Use a barra de filtros para segmentar por <strong>Região</strong>, <strong>Porte</strong> (MEI, Micro, EPP) e <strong>Setor</strong>. Os números e gráficos se recalculam na hora.
-            </p>
-          </div>
+      <!-- Como Navegar em 3 Passos -->
+      <div class="space-y-2 text-xs">
+        <span class="text-[11px] font-bold text-idsr-creme uppercase tracking-wider block">Como Explorar a Plataforma:</span>
 
-          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
-            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
-              <span class="text-idsr-brasa font-mono">02.</span>
-              <span>Mudar Tipo de Gráfico</span>
-            </strong>
-            <p class="text-idsr-cinza text-[11px] leading-relaxed">
-              Em cada gráfico, clique nos botões de alternância para ver os dados em <strong>Colunas</strong>, <strong>Linhas</strong>, <strong>Barras Horizontais</strong> ou <strong>Rosca</strong>.
-            </p>
-          </div>
-
-          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
-            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
-              <span class="text-idsr-brasa font-mono">03.</span>
-              <span>Simulador Preditivo</span>
-            </strong>
-            <p class="text-idsr-cinza text-[11px] leading-relaxed">
-              Role até o simulador e ajuste os controles de <em>Capital Inicial</em>, <em>Sócios</em> e <em>Reserva</em> para prever a chance estatística do negócio se manter de pé.
-            </p>
-          </div>
-
-          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1">
-            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
-              <span class="text-idsr-brasa font-mono">04.</span>
-              <span>4 Padrões Visuais (Design)</span>
-            </strong>
-            <p class="text-idsr-cinza text-[11px] leading-relaxed">
-              No topo da tela, clique em <strong>IDSR</strong>, <strong>Google</strong>, <strong>Apple</strong> ou <strong>Amazon</strong> para conferir adaptação radical de design e ergonomia.
-            </p>
-          </div>
-
-          <div class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda/70 space-y-1 sm:col-span-2">
-            <strong class="text-idsr-creme font-semibold block flex items-center space-x-1.5">
-              <span class="text-idsr-brasa font-mono">05.</span>
-              <span>Módulos de Engenharia (SQL, dbt, Airflow, API, IA)</span>
-            </strong>
-            <p class="text-idsr-cinza text-[11px] leading-relaxed">
-              Acesse as outras abas no menu para auditar as consultas SQL reais, ver a linhagem de transformação no dbt Core, o agendamento de pipelines no Apache Airflow, os endpoints REST em FastAPI e fazer perguntas ao assistente semântico com RAG.
-            </p>
+        <div class="p-2.5 rounded-xl bg-idsr-surface/40 border border-idsr-borda/40 flex items-start space-x-2.5">
+          <span class="w-5 h-5 rounded-full bg-idsr-brasa/20 text-idsr-brasa font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">1</span>
+          <div class="text-[11px] leading-snug">
+            <strong class="text-idsr-creme">Filtros &amp; Gráficos Dinâmicos:</strong>
+            <span class="text-idsr-cinza"> Segmente por Região, Porte ou Setor. Alterne qualquer gráfico entre Colunas, Linhas, Barras e Rosca.</span>
           </div>
         </div>
-      </div>
 
-      <!-- Dica dos Balões de Informação -->
-      <div class="p-3 rounded-lg bg-idsr-fundo/60 border border-idsr-borda text-[11px] text-idsr-cinza flex items-center space-x-2">
-        <svg class="w-4 h-4 text-idsr-brasa shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        <span><strong>Dica Prática:</strong> Deixe o cursor do mouse parado sobre qualquer módulo, gráfico, filtro ou campo para abrir balões informativos explicando o que cada elemento faz.</span>
+        <div class="p-2.5 rounded-xl bg-idsr-surface/40 border border-idsr-borda/40 flex items-start space-x-2.5">
+          <span class="w-5 h-5 rounded-full bg-idsr-brasa/20 text-idsr-brasa font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">2</span>
+          <div class="text-[11px] leading-snug">
+            <strong class="text-idsr-creme">Simulador Preditivo de Risco:</strong>
+            <span class="text-idsr-cinza"> Ajuste Capital Inicial, Sócios e Reserva para prever a chance estatística de sobrevivência em 24 meses.</span>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-idsr-surface/40 border border-idsr-borda/40 flex items-start space-x-2.5">
+          <span class="w-5 h-5 rounded-full bg-idsr-brasa/20 text-idsr-brasa font-bold text-[11px] flex items-center justify-center shrink-0 mt-0.5">3</span>
+          <div class="text-[11px] leading-snug">
+            <strong class="text-idsr-creme">Engenharia, Relatórios &amp; 4 Temas:</strong>
+            <span class="text-idsr-cinza"> Audite SQL, dbt, Airflow e IA (RAG) nas abas. Gere relatórios em XLSX/PDF e teste os 4 temas no topo.</span>
+          </div>
+        </div>
       </div>
 
       <!-- Rodapé do Modal -->
-      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3 border-t border-idsr-borda">
-        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] text-idsr-cinza hover:text-idsr-creme underline theme-btn">
-          Fonte Oficial: gov.br/mapa-de-empresas
+      <div class="flex items-center justify-between gap-2.5 pt-3 border-t border-idsr-borda/60">
+        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] text-idsr-cinza hover:text-idsr-creme underline truncate">
+          gov.br/mapa-de-empresas
         </a>
-        <div class="flex items-center space-x-2 w-full sm:w-auto">
-          <button onclick="closeIntroModal(); document.getElementById('simulador-cnpj')?.scrollIntoView({ behavior: 'smooth' });" class="w-full sm:w-auto px-4 py-2 theme-btn bg-idsr-surface border border-idsr-borda text-xs font-semibold text-idsr-creme hover:bg-idsr-borda">
-            Ir para o Simulador
-          </button>
-          <button onclick="closeIntroModal()" class="w-full sm:w-auto px-5 py-2 theme-btn bg-idsr-brasa text-xs font-bold text-white hover:bg-idsr-brasaHover shadow-md">
-            Começar a Explorar
-          </button>
-        </div>
+        <button onclick="closeIntroModal()" class="px-5 py-2 theme-btn bg-idsr-brasa text-xs font-bold text-white hover:bg-idsr-brasaHover rounded-lg shadow-sm shrink-0">
+          Começar a Explorar
+        </button>
       </div>
 
     </div>
@@ -730,7 +703,7 @@
   <!-- ======================================================================= -->
   <!-- MODAL DE EXPORTAÇÃO DE RELATÓRIO & STORYTELLING DE DADOS                -->
   <!-- ======================================================================= -->
-  <div id="modal-report-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+  <div id="modal-report-backdrop" class="fixed inset-0 bg-black/85 backdrop-blur-sm z-50 flex items-center justify-center p-3 sm:p-4 hidden" onclick="if(event.target === this) closeReportModal()">
     <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-3xl w-full p-5 sm:p-7 space-y-5 shadow-2xl relative max-h-[92vh] overflow-y-auto">
       
       <!-- Cabeçalho do Modal -->
@@ -830,7 +803,7 @@
         <span class="text-idsr-cinza text-[11px]" id="report-filter-status">
           Relatório gerado com base no filtro ativo: Total Brasil (21,8M CNPJs)
         </span>
-        <div class="flex items-center space-x-2 w-full sm:w-auto">
+        <div class="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto">
           <button onclick="window.print()" class="w-full sm:w-auto px-4 py-2 theme-btn bg-idsr-surface border border-idsr-borda text-xs text-idsr-creme hover:bg-idsr-borda flex items-center justify-center space-x-1.5">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
             <span>Imprimir</span>
