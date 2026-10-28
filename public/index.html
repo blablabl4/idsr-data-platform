@@ -73,8 +73,8 @@
       --font-title: 'Unbounded', sans-serif;
       --font-sans: 'Manrope', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --card-radius: 2px;
-      --btn-radius: 2px;
+      --card-radius: 3px;
+      --btn-radius: 3px;
       --card-shadow: none;
       --card-backdrop: none;
       --header-bg: #181412;
@@ -102,7 +102,7 @@
       --font-sans: 'Roboto', 'Google Sans', 'Inter', sans-serif;
       --font-mono: 'Roboto Mono', 'JetBrains Mono', monospace;
       --card-radius: 14px;
-      --btn-radius: 24px;              /* Material Pill */
+      --btn-radius: 20px;              /* Material Pill */
       --card-shadow: 0 1px 3px rgba(60,64,67,.12), 0 1px 2px rgba(60,64,67,.24);
       --card-backdrop: none;
       --header-bg: #FFFFFF;
@@ -185,6 +185,8 @@
     .theme-btn {
       border-radius: var(--btn-radius);
       transition: all 0.15s ease;
+      white-space: nowrap !important;
+      flex-shrink: 0 !important;
     }
 
     .tab-nav-active {
@@ -194,21 +196,43 @@
       font-weight: 700;
     }
 
-    /* Visibilidade Condicional de Estrutura Visual */
-    .chrome-google, .chrome-apple, .chrome-amazon, .chrome-idsr { display: none; }
-    [data-theme="google"] .chrome-google { display: flex; }
-    [data-theme="apple"] .chrome-apple { display: flex; }
-    [data-theme="amazon"] .chrome-amazon { display: flex; }
-    [data-theme="idsr"] .chrome-idsr { display: flex; }
+    /* Visibilidade Condicional ESTRITA dos Cabeçalhos (Apenas 1 visível por tema) */
+    .chrome-google, .chrome-apple, .chrome-amazon, .chrome-idsr { display: none !important; }
+    [data-theme="google"] .chrome-google { display: flex !important; }
+    [data-theme="apple"] .chrome-apple { display: flex !important; }
+    [data-theme="amazon"] .chrome-amazon { display: flex !important; }
+    [data-theme="idsr"] .chrome-idsr { display: flex !important; }
 
-    /* Barra Lateral Condicional */
-    .sidebar-google, .sidebar-apple { display: none; }
-    [data-theme="google"] .sidebar-google { display: flex; }
-    [data-theme="apple"] .sidebar-apple { display: flex; }
+    /* CONTROLE RIGOROSO DAS BARRAS LATERAIS: NUNCA EXIBIR DUAS AO MESMO TEMPO */
+    .sidebar-google,
+    .sidebar-apple {
+      display: none !important;
+    }
+    /* Apenas no tema Google e em telas médias/grandes */
+    @media (min-width: 768px) {
+      [data-theme="google"] .sidebar-google {
+        display: flex !important;
+      }
+      [data-theme="apple"] .sidebar-apple {
+        display: flex !important;
+      }
+    }
+    /* No IDSR e no Amazon: SEMPRE sem barra lateral (100% largura total) */
+    [data-theme="idsr"] .sidebar-google,
+    [data-theme="idsr"] .sidebar-apple,
+    [data-theme="amazon"] .sidebar-google,
+    [data-theme="amazon"] .sidebar-apple {
+      display: none !important;
+    }
 
-    /* Barra Superior AWS */
-    .bar-aws { display: none; }
-    [data-theme="amazon"] .bar-aws { display: block; }
+    /* Barra Superior AWS CloudWatch */
+    .bar-aws { display: none !important; }
+    [data-theme="amazon"] .bar-aws { display: block !important; }
+
+    /* Prevenção de quebra de texto em botões */
+    button, a, .badge-chip {
+      white-space: nowrap !important;
+    }
 
     /* Scrollbars discretas */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -228,7 +252,7 @@
           <span class="text-[11px] font-mono text-idsr-brasa uppercase font-bold tracking-wider">Apresentação Rápida</span>
           <h2 class="text-lg font-title font-bold text-idsr-creme uppercase">Como Ler e Avaliar Este Projeto</h2>
         </div>
-        <button onclick="closeIntroModal()" class="p-1 rounded hover:bg-idsr-borda text-idsr-cinza hover:text-white">
+        <button onclick="closeIntroModal()" class="p-1 rounded hover:bg-idsr-borda text-idsr-cinza hover:text-white theme-btn">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -243,13 +267,13 @@
           <span>Alterne no seletor superior entre <strong>IDSR Studio</strong>, <strong>Google Cloud</strong>, <strong>Apple macOS</strong> e <strong>AWS Console</strong> para conferir a transformação estrutural, formas e disposição dos dados.</span>
         </div>
         <div class="p-3 theme-card bg-idsr-surface border border-idsr-borda">
-          <strong class="text-idsr-creme block font-mono text-[11px] uppercase">3. Engenharia de Dados & Modelagem</strong>
-          <span>Clique em <em>"Ver Arquitetura"</em> ou <em>"Exportar"</em> para abrir a gaveta com o código real em PySpark, dbt Core, DAGs Airflow, SQL Star Schema e FastAPI.</span>
+          <strong class="text-idsr-creme block font-mono text-[11px] uppercase">3. Filtros Analíticos em Tempo Real</strong>
+          <span>Use a barra de filtros interativa para segmentar por Região, Porte ou Setor da economia e veja os KPIs e gráficos recalculando instantaneamente.</span>
         </div>
       </div>
 
       <div class="flex items-center justify-between pt-3 border-t border-idsr-borda">
-        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] font-mono text-idsr-cinza hover:text-idsr-creme underline">gov.br/mapa-de-empresas</a>
+        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="text-[11px] font-mono text-idsr-cinza hover:text-idsr-creme underline theme-btn">gov.br/mapa-de-empresas</a>
         <button onclick="closeIntroModal()" class="px-5 py-2 theme-btn bg-idsr-brasa text-xs font-mono font-bold text-white hover:bg-idsr-brasaHover">
           Entendi, Acessar Plataforma
         </button>
@@ -263,9 +287,9 @@
   <header class="chrome-idsr border-b border-idsr-borda bg-idsr-painel px-4 sm:px-6 h-14 items-center justify-between w-full shrink-0">
     <div class="flex items-center space-x-3">
       <span class="w-6 h-6 theme-btn bg-idsr-brasa flex items-center justify-center font-title font-bold text-white text-xs">ID</span>
-      <span class="font-title font-bold text-sm tracking-tight text-idsr-creme">IDSR<span class="text-idsr-brasa">.</span>DATA</span>
+      <span class="font-title font-bold text-sm tracking-tight text-idsr-creme whitespace-nowrap">IDSR<span class="text-idsr-brasa">.</span>DATA</span>
       <span class="h-4 w-px bg-idsr-borda hidden sm:block"></span>
-      <span class="text-[11px] font-mono text-idsr-cinza hidden sm:inline">BASE OFICIAL: RECEITA FEDERAL · IBGE · MDIC</span>
+      <span class="text-[11px] font-mono text-idsr-cinza hidden sm:inline whitespace-nowrap">BASE OFICIAL: RECEITA FEDERAL · IBGE · MDIC</span>
     </div>
     <div class="flex items-center space-x-2">
       <!-- Seletor Rápido de 4 Sistemas Visuais -->
@@ -285,13 +309,13 @@
   <!-- ======================================================================= -->
   <header class="chrome-google border-b border-idsr-borda bg-[#FFFFFF] text-[#202124] px-4 h-14 items-center justify-between w-full shadow-sm shrink-0">
     <div class="flex items-center space-x-3">
-      <svg class="w-5 h-5 text-[#5F6368] cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
-      <div class="flex items-center space-x-1.5 font-sans font-medium text-sm">
+      <svg class="w-5 h-5 text-[#5F6368] cursor-pointer shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+      <div class="flex items-center space-x-1.5 font-sans font-medium text-sm whitespace-nowrap">
         <span class="w-3.5 h-3.5 rounded-full bg-[#1A73E8]"></span>
         <span class="text-[#202124] font-bold">Google Cloud</span>
         <span class="text-[#5F6368] font-normal">Console</span>
       </div>
-      <div class="hidden md:flex items-center space-x-1 px-2.5 py-1 rounded bg-[#F1F3F4] text-xs font-sans text-[#3C4043] border border-[#DADCE0] cursor-pointer">
+      <div class="hidden md:flex items-center space-x-1 px-2.5 py-1 rounded bg-[#F1F3F4] text-xs font-sans text-[#3C4043] border border-[#DADCE0] cursor-pointer whitespace-nowrap">
         <span class="font-bold">Projeto:</span>
         <span>idsr-receita-ibge-prod</span>
         <span class="text-[10px] ml-1 text-[#5F6368]">▼</span>
@@ -299,21 +323,21 @@
     </div>
     
     <!-- Barra de Busca Central Estilo Google -->
-    <div class="hidden lg:flex items-center w-96 bg-[#F1F3F4] rounded-full px-3 py-1.5 text-xs text-[#5F6368] border border-[#DADCE0]">
-      <svg class="w-4 h-4 mr-2 text-[#5F6368]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
-      <span>Pesquisar produtos, tabelas e CNPJs (/)...</span>
+    <div class="hidden lg:flex items-center w-80 bg-[#F1F3F4] rounded-full px-3 py-1.5 text-xs text-[#5F6368] border border-[#DADCE0]">
+      <svg class="w-4 h-4 mr-2 text-[#5F6368] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+      <span class="truncate">Pesquisar recursos, tabelas e CNPJs (/)...</span>
     </div>
 
     <!-- Seletor de Tema e Ações GCP -->
     <div class="flex items-center space-x-2">
       <div class="p-0.5 rounded-full bg-[#F1F3F4] border border-[#DADCE0] flex items-center space-x-0.5 text-[11px] font-sans">
-        <button onclick="switchVisualTheme('idsr')" class="px-2.5 py-0.5 rounded-full text-[#5F6368] hover:text-[#202124]">IDSR</button>
-        <button onclick="switchVisualTheme('google')" class="px-2.5 py-0.5 rounded-full bg-[#1A73E8] text-white font-bold">Google</button>
-        <button onclick="switchVisualTheme('apple')" class="px-2.5 py-0.5 rounded-full text-[#5F6368] hover:text-[#202124]">Apple</button>
-        <button onclick="switchVisualTheme('amazon')" class="px-2.5 py-0.5 rounded-full text-[#5F6368] hover:text-[#202124]">Amazon</button>
+        <button onclick="switchVisualTheme('idsr')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">IDSR</button>
+        <button onclick="switchVisualTheme('google')" class="px-2.5 py-0.5 theme-btn bg-[#1A73E8] text-white font-bold">Google</button>
+        <button onclick="switchVisualTheme('apple')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" class="px-2.5 py-0.5 theme-btn text-[#5F6368] hover:text-[#202124]">Amazon</button>
       </div>
-      <button onclick="openIntroModal()" class="px-3 py-1 rounded-full bg-[#E8F0FE] text-[#1A73E8] text-xs font-sans font-bold hover:bg-[#D2E3FC]">Guia</button>
-      <div class="w-7 h-7 rounded-full bg-[#1A73E8] text-white flex items-center justify-center font-bold text-xs">IR</div>
+      <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-[#E8F0FE] text-[#1A73E8] text-xs font-sans font-bold hover:bg-[#D2E3FC]">Guia</button>
+      <div class="w-7 h-7 rounded-full bg-[#1A73E8] text-white flex items-center justify-center font-bold text-xs shrink-0">IR</div>
     </div>
   </header>
 
@@ -323,25 +347,25 @@
   <header class="chrome-apple border-b border-white/10 bg-[rgba(20,20,24,0.85)] backdrop-blur-xl px-4 sm:px-6 h-14 items-center justify-between w-full shrink-0">
     <div class="flex items-center space-x-4">
       <!-- Traffic Light Buttons -->
-      <div class="flex items-center space-x-1.5">
+      <div class="flex items-center space-x-1.5 shrink-0">
         <span class="w-3 h-3 rounded-full bg-[#FF5F56] border border-black/20"></span>
         <span class="w-3 h-3 rounded-full bg-[#FFBD2E] border border-black/20"></span>
         <span class="w-3 h-3 rounded-full bg-[#27C93F] border border-black/20"></span>
       </div>
-      <span class="font-sans font-bold text-sm text-[#F5F5F7] tracking-tight">IDSR Lakehouse · macOS</span>
+      <span class="font-sans font-bold text-sm text-[#F5F5F7] tracking-tight whitespace-nowrap">IDSR Lakehouse · macOS</span>
     </div>
 
     <!-- Segmented Capsule Control -->
     <div class="p-0.5 rounded-xl bg-white/10 backdrop-blur border border-white/10 flex items-center space-x-0.5 text-xs font-sans">
-      <button onclick="switchVisualTheme('idsr')" class="px-3 py-1 rounded-lg text-[#8E8E93] hover:text-white">IDSR</button>
-      <button onclick="switchVisualTheme('google')" class="px-3 py-1 rounded-lg text-[#8E8E93] hover:text-white">Google</button>
-      <button onclick="switchVisualTheme('apple')" class="px-3 py-1 rounded-lg bg-white/20 text-white font-bold shadow-sm">Apple</button>
-      <button onclick="switchVisualTheme('amazon')" class="px-3 py-1 rounded-lg text-[#8E8E93] hover:text-white">Amazon</button>
+      <button onclick="switchVisualTheme('idsr')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">IDSR</button>
+      <button onclick="switchVisualTheme('google')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Google</button>
+      <button onclick="switchVisualTheme('apple')" class="px-3 py-1 theme-btn bg-white/20 text-white font-bold shadow-sm">Apple</button>
+      <button onclick="switchVisualTheme('amazon')" class="px-3 py-1 theme-btn text-[#8E8E93] hover:text-white">Amazon</button>
     </div>
 
     <div class="flex items-center space-x-2">
-      <button onclick="openIntroModal()" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
-      <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-3 py-1 rounded-lg bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">GitHub</a>
+      <button onclick="openIntroModal()" class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">Guia</button>
+      <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-3 py-1 theme-btn bg-white/10 hover:bg-white/15 border border-white/10 text-xs text-white">GitHub</a>
     </div>
   </header>
 
@@ -351,43 +375,43 @@
   <header class="chrome-amazon bg-[#232F3E] text-[#EAEDED] px-4 h-12 items-center justify-between w-full shrink-0 border-b border-[#3D5166]">
     <div class="flex items-center space-x-3">
       <!-- AWS Smile Orange Badge -->
-      <span class="px-1.5 py-0.5 rounded bg-[#FF9900] text-black font-bold font-mono text-[11px]">AWS</span>
-      <span class="font-sans font-bold text-xs tracking-tight">Management Console</span>
+      <span class="px-1.5 py-0.5 rounded bg-[#FF9900] text-black font-bold font-mono text-[11px] whitespace-nowrap shrink-0">AWS</span>
+      <span class="font-sans font-bold text-xs tracking-tight whitespace-nowrap">Management Console</span>
       <span class="h-3.5 w-px bg-[#3D5166] hidden sm:block"></span>
-      <span class="text-[11px] font-mono text-[#9BA7B4] hidden sm:inline">[Services] CloudWatch Dashboards</span>
+      <span class="text-[11px] font-mono text-[#9BA7B4] hidden sm:inline whitespace-nowrap">[Services] CloudWatch Dashboards</span>
     </div>
 
     <div class="hidden md:flex items-center w-72 bg-[#161E2D] rounded px-2.5 py-1 text-xs text-[#9BA7B4] border border-[#3D5166]">
-      <svg class="w-3.5 h-3.5 mr-2 text-[#9BA7B4]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
-      <span>Search [Alt + S]</span>
+      <svg class="w-3.5 h-3.5 mr-2 text-[#9BA7B4] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/></svg>
+      <span class="truncate">Search [Alt + S]</span>
     </div>
 
     <div class="flex items-center space-x-2 text-xs font-mono">
       <div class="p-0.5 rounded bg-[#161E2D] border border-[#3D5166] flex items-center space-x-0.5">
-        <button onclick="switchVisualTheme('idsr')" class="px-2 py-0.5 text-[#9BA7B4] hover:text-white">IDSR</button>
-        <button onclick="switchVisualTheme('google')" class="px-2 py-0.5 text-[#9BA7B4] hover:text-white">Google</button>
-        <button onclick="switchVisualTheme('apple')" class="px-2 py-0.5 text-[#9BA7B4] hover:text-white">Apple</button>
-        <button onclick="switchVisualTheme('amazon')" class="px-2 py-0.5 bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
+        <button onclick="switchVisualTheme('idsr')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">IDSR</button>
+        <button onclick="switchVisualTheme('google')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Google</button>
+        <button onclick="switchVisualTheme('apple')" class="px-2 py-0.5 theme-btn text-[#9BA7B4] hover:text-white">Apple</button>
+        <button onclick="switchVisualTheme('amazon')" class="px-2 py-0.5 theme-btn bg-[#FF9900] text-black font-bold rounded-sm">Amazon</button>
       </div>
       <!-- Região Oficial AWS -->
-      <div class="hidden sm:flex items-center space-x-1.5 px-2 py-0.5 bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-[#D5DBDB]">
+      <div class="hidden sm:flex items-center space-x-1.5 px-2 py-0.5 bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-[#D5DBDB] whitespace-nowrap">
         <span class="w-1.5 h-1.5 rounded-full bg-[#1D8102]"></span>
         <span>sa-east-1 (São Paulo)</span>
       </div>
-      <button onclick="openIntroModal()" class="px-2 py-0.5 bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
+      <button onclick="openIntroModal()" class="px-2 py-0.5 theme-btn bg-[#161E2D] border border-[#3D5166] rounded text-[11px] text-white hover:bg-[#2A3B4C]">Guia</button>
     </div>
   </header>
 
   <!-- AWS SUB-BAR: CLOUDWATCH DASHBOARD ACTION BAR -->
   <div class="bar-aws bg-[#161E2D] border-b border-[#2A3B4C] px-4 py-2 text-xs font-mono text-[#D5DBDB]">
     <div class="flex items-center justify-between">
-      <div class="flex items-center space-x-2">
-        <span class="text-[#9BA7B4]">CloudWatch</span>
+      <div class="flex items-center space-x-2 truncate">
+        <span class="text-[#9BA7B4] whitespace-nowrap">CloudWatch</span>
         <span class="text-[#687078]">&gt;</span>
-        <span class="font-bold text-[#EAEDED]">idsr-federal-cnpj-survival-metrics</span>
-        <span class="px-1.5 py-0.5 rounded bg-[#1D8102]/30 text-[#30D158] border border-[#1D8102]/60 text-[10px] font-bold">[OK] 0 ALARMS</span>
+        <span class="font-bold text-[#EAEDED] truncate">idsr-federal-cnpj-survival-metrics</span>
+        <span class="px-1.5 py-0.5 rounded bg-[#1D8102]/30 text-[#30D158] border border-[#1D8102]/60 text-[10px] font-bold whitespace-nowrap">[OK] 0 ALARMS</span>
       </div>
-      <div class="flex items-center space-x-2 text-[11px]">
+      <div class="flex items-center space-x-2 text-[11px] whitespace-nowrap">
         <span class="text-[#9BA7B4]">Auto-refresh:</span>
         <span class="text-[#FF9900] font-bold">1m ▼</span>
         <span class="text-[#687078]">|</span>
@@ -397,57 +421,170 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- CORPO PRINCIPAL COM LARGURA TOTAL E DISPOSIÇÃO DINÂMICA                 -->
+  <!-- BARRA DE REFERÊNCIAS VISUAIS & FONTES OFICIAIS (ATUALIZA DINAMICAMENTE) -->
+  <!-- ======================================================================= -->
+  <section class="border-b border-idsr-borda bg-idsr-surface/70 px-4 sm:px-6 py-2 text-xs font-mono transition-colors">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <div class="flex items-center space-x-2">
+        <span id="badge-theme-name" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-idsr-brasa text-white whitespace-nowrap">
+          IDSR STUDIO
+        </span>
+        <span id="badge-theme-desc" class="text-idsr-cinza truncate">
+          Design Editorial Suíço · Tipografia Unbounded e Manrope · Alto Contraste & Densidade
+        </span>
+      </div>
+      <div class="flex items-center space-x-2 text-[11px] text-idsr-cinza whitespace-nowrap">
+        <span class="font-bold text-idsr-creme">Fontes Auditáveis:</span>
+        <a href="https://www.gov.br/empresas-e-negocios/pt-br/mapa-de-empresas" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">MDIC/Redesim</a>
+        <span>·</span>
+        <a href="https://dados.gov.br/dados/conjuntos-dados/cadastro-nacional-da-pessoa-juridica---cnpj" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">Receita Federal</a>
+        <span>·</span>
+        <a href="https://www.ibge.gov.br/estatisticas/economicas/outras-estatisticas-economicas/9064-demografia-das-empresas-e-estatisticas-de-empreendedorismo.html" target="_blank" rel="noopener" class="hover:text-idsr-brasa underline">IBGE CEMPRE</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- CARD DO CANDIDATO / HIRING HUD (POR QUE CONTRATAR ISAQUE DA SILVA ROCHA) -->
+  <!-- ======================================================================= -->
+  <section class="border-b border-idsr-borda bg-idsr-painel px-4 sm:px-6 py-3 transition-colors">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded bg-idsr-brasa/20 border border-idsr-brasa text-idsr-brasa flex items-center justify-center font-title font-bold text-sm shrink-0">
+          IR
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-sm sm:text-base font-title font-bold text-idsr-creme leading-none">
+              Isaque da Silva Rocha
+            </h1>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-800 whitespace-nowrap">
+              DISPONÍVEL PARA CONTRATAÇÃO
+            </span>
+          </div>
+          <p class="text-xs text-idsr-cinza font-mono mt-0.5">
+            Engenheiro de Dados & Arquiteto de Lakehouse · PySpark · dbt Core · Apache Airflow · SQL Star Schema · FastAPI · RAG
+          </p>
+        </div>
+      </div>
+
+      <!-- Ações Rápidas de Contratação (Sem quebra de texto) -->
+      <div class="flex flex-wrap items-center gap-1.5 shrink-0">
+        <a href="https://wa.me/5511999999999?text=Olá%20Isaque,%20vi%20seu%20projeto%20de%20Data%20Lakehouse%20e%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade." target="_blank" rel="noopener" class="px-3 py-1.5 theme-btn bg-emerald-600 hover:bg-emerald-500 text-white font-mono font-bold text-xs shadow-sm">
+          Falar no WhatsApp
+        </a>
+        <a href="https://www.linkedin.com/in/blablabl4" target="_blank" rel="noopener" class="px-3 py-1.5 theme-btn bg-[#0A66C2] hover:bg-[#004182] text-white font-mono font-bold text-xs shadow-sm">
+          LinkedIn
+        </a>
+        <a href="https://github.com/blablabl4/idsr-data-platform" target="_blank" rel="noopener" class="px-3 py-1.5 theme-btn bg-idsr-surface hover:bg-idsr-borda border border-idsr-borda text-idsr-creme font-mono font-bold text-xs">
+          GitHub do Projeto
+        </a>
+        <button onclick="openExportModal('all')" class="px-3 py-1.5 theme-btn bg-idsr-surface hover:bg-idsr-borda border border-idsr-borda text-idsr-creme font-mono font-bold text-xs">
+          Baixar Código / Modelo
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- BARRA DE FILTROS INTERATIVOS EM TEMPO REAL                              -->
+  <!-- ======================================================================= -->
+  <section class="border-b border-idsr-borda bg-idsr-surface/40 px-4 sm:px-6 py-2.5 transition-colors">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 text-xs font-mono">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-idsr-creme font-bold uppercase text-[11px] whitespace-nowrap">Filtros Analíticos:</span>
+
+        <!-- Filtro por Região -->
+        <select id="filter-region" onchange="applyInteractiveFilters()" class="bg-idsr-noite text-idsr-creme border border-idsr-borda theme-btn px-2.5 py-1 text-xs focus:outline-none focus:border-idsr-brasa">
+          <option value="todos">Região: Brasil (Todas)</option>
+          <option value="sudeste">Região: Sudeste (49,5% do Brasil)</option>
+          <option value="sul">Região: Sul (Líder em Sobrevivência 79,4%)</option>
+          <option value="nordeste">Região: Nordeste (15,6% do Brasil)</option>
+          <option value="centro-oeste">Região: Centro-Oeste (8,2% do Brasil)</option>
+          <option value="norte">Região: Norte (4,4% do Brasil)</option>
+        </select>
+
+        <!-- Filtro por Porte Empresarial -->
+        <select id="filter-porte" onchange="applyInteractiveFilters()" class="bg-idsr-noite text-idsr-creme border border-idsr-borda theme-btn px-2.5 py-1 text-xs focus:outline-none focus:border-idsr-brasa">
+          <option value="todos">Porte: Todos os Segmentos</option>
+          <option value="mei">Porte: MEI (Maior Volatilidade)</option>
+          <option value="me">Porte: Microempresa ME (78,4% Sobrevida)</option>
+          <option value="epp">Porte: Pequeno Porte EPP (83,0% Sobrevida)</option>
+        </select>
+
+        <!-- Filtro por Macro-Setor -->
+        <select id="filter-setor" onchange="applyInteractiveFilters()" class="bg-idsr-noite text-idsr-creme border border-idsr-borda theme-btn px-2.5 py-1 text-xs focus:outline-none focus:border-idsr-brasa">
+          <option value="todos">Setor: Todos os Setores</option>
+          <option value="comercio">Comércio Varejista (Maior Volume)</option>
+          <option value="servicos">Serviços & Tecnologia (Alta Retenção)</option>
+          <option value="industria">Indústria de Transformação</option>
+          <option value="construcao">Construção Civil</option>
+        </select>
+
+        <button onclick="resetInteractiveFilters()" class="px-2.5 py-1 theme-btn bg-idsr-surface border border-idsr-borda text-idsr-cinza hover:text-white text-[11px]">
+          Limpar Filtros
+        </button>
+      </div>
+
+      <div class="flex items-center space-x-2 text-[11px] text-idsr-cinza shrink-0">
+        <span class="w-2 h-2 rounded-full bg-idsr-sucesso"></span>
+        <span id="active-filter-indicator">Exibindo dados nacionais consolidados (21,8M CNPJs ativos)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- CORPO PRINCIPAL: UMA ÚNICA BARRA LATERAL (SE HOUVER) + ÁREA TOTAL       -->
   <!-- ======================================================================= -->
   <div class="flex-1 flex w-full overflow-hidden">
 
-    <!-- BARRA LATERAL GOOGLE CLOUD (APENAS NO TEMA GOOGLE) -->
-    <aside class="sidebar-google w-60 border-r border-[#DADCE0] bg-[#FFFFFF] p-3 flex-col justify-between shrink-0 hidden md:flex text-xs font-sans text-[#3C4043]">
+    <!-- BARRA LATERAL EXCLUSIVA GOOGLE CLOUD (APENAS QUANDO O TEMA FOR GOOGLE) -->
+    <aside class="sidebar-google w-60 border-r border-[#DADCE0] bg-[#FFFFFF] p-3 flex-col justify-between shrink-0 text-xs font-sans text-[#3C4043]">
       <div class="space-y-1">
         <span class="px-2 py-1 text-[11px] font-bold text-[#5F6368] uppercase tracking-wider block">Serviços Analíticos</span>
-        <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-2 rounded-lg font-bold flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8]">
+        <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-2 rounded-lg font-bold flex items-center space-x-2.5 bg-[#E8F0FE] text-[#1A73E8] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#1A73E8]"></span>
           <span>Looker Studio (Visão)</span>
         </button>
-        <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
+        <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#34A853]"></span>
           <span>BigQuery (SQL)</span>
         </button>
-        <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
+        <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#FBBC04]"></span>
           <span>Dataform (dbt Core)</span>
         </button>
-        <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
+        <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#EA4335]"></span>
           <span>Cloud Composer (Airflow)</span>
         </button>
-        <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
+        <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#1A73E8]"></span>
           <span>Cloud Run (FastAPI)</span>
         </button>
-        <button onclick="switchTab('rag')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043]">
+        <button onclick="switchTab('rag')" class="w-full text-left px-3 py-2 rounded-lg font-medium flex items-center space-x-2.5 hover:bg-[#F1F3F4] text-[#3C4043] theme-btn">
           <span class="w-2 h-2 rounded-full bg-[#9334E8]"></span>
           <span>Vertex AI (RAG Engine)</span>
         </button>
       </div>
 
       <div class="p-3 bg-[#F8F9FA] rounded-xl border border-[#DADCE0] text-[11px] text-[#5F6368]">
-        <strong class="text-[#202124] block">Fontes Governamentais:</strong>
+        <strong class="text-[#202124] block">Google Cloud Lakehouse:</strong>
         <span>Dados Abertos RFB + IBGE CEMPRE integrados.</span>
       </div>
     </aside>
 
-    <!-- BARRA LATERAL APPLE MACOS (APENAS NO TEMA APPLE) -->
-    <aside class="sidebar-apple w-64 border-r border-white/10 bg-[rgba(20,20,24,0.65)] backdrop-blur-2xl p-4 flex-col justify-between shrink-0 hidden md:flex text-xs font-sans text-[#8E8E93]">
+    <!-- BARRA LATERAL EXCLUSIVA APPLE MACOS (APENAS QUANDO O TEMA FOR APPLE) -->
+    <aside class="sidebar-apple w-64 border-r border-white/10 bg-[rgba(20,20,24,0.65)] backdrop-blur-2xl p-4 flex-col justify-between shrink-0 text-xs font-sans text-[#8E8E93]">
       <div class="space-y-4">
         <div>
           <span class="text-[10px] font-bold text-[#8E8E93] uppercase tracking-wider block mb-1 px-2">BIBLIOTECA</span>
           <div class="space-y-0.5">
-            <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-1.5 rounded-lg font-bold flex items-center space-x-2 bg-white/15 text-white">
+            <button onclick="switchTab('analytics')" class="w-full text-left px-3 py-1.5 rounded-lg font-bold flex items-center space-x-2 bg-white/15 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#0A84FF]"></span>
               <span>Visão Geral & Simulador</span>
             </button>
-            <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white">
+            <button onclick="switchTab('lakehouse')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#30D158]"></span>
               <span>Consultas Analíticas SQL</span>
             </button>
@@ -457,19 +594,19 @@
         <div>
           <span class="text-[10px] font-bold text-[#8E8E93] uppercase tracking-wider block mb-1 px-2">ENGENHARIA</span>
           <div class="space-y-0.5">
-            <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white">
+            <button onclick="switchTab('dbt')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#FFD60A]"></span>
               <span>Linhagem dbt Core</span>
             </button>
-            <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white">
+            <button onclick="switchTab('airflow')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#FF9F0A]"></span>
               <span>Rotinas Apache Airflow</span>
             </button>
-            <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white">
+            <button onclick="switchTab('pyspark')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#0A84FF]"></span>
               <span>Microserviço FastAPI</span>
             </button>
-            <button onclick="switchTab('rag')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white">
+            <button onclick="switchTab('rag')" class="w-full text-left px-3 py-1.5 rounded-lg font-medium flex items-center space-x-2 hover:bg-white/10 text-white theme-btn">
               <span class="w-1.5 h-1.5 rounded-full bg-[#BF5AF2]"></span>
               <span>Busca Vetorial RAG</span>
             </button>
@@ -488,22 +625,22 @@
 
       <!-- NAVEGAÇÃO DE ABAS UNIVERSAL (Para IDSR e AWS ou Mobile) -->
       <div class="chrome-idsr chrome-amazon flex space-x-1 overflow-x-auto pb-2 border-b border-idsr-borda w-full">
-        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="tab-nav-btn tab-nav-active px-3 py-1.5 text-xs font-mono theme-btn whitespace-nowrap">
+        <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="tab-nav-btn tab-nav-active px-3 py-1.5 text-xs font-mono theme-btn">
           Visão Geral & Simulador
         </button>
-        <button onclick="switchTab('lakehouse')" id="tab-btn-lakehouse" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme whitespace-nowrap">
+        <button onclick="switchTab('lakehouse')" id="tab-btn-lakehouse" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme">
           Análises Estatísticas (SQL)
         </button>
-        <button onclick="switchTab('dbt')" id="tab-btn-dbt" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme whitespace-nowrap">
+        <button onclick="switchTab('dbt')" id="tab-btn-dbt" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme">
           Origem e Limpeza (dbt)
         </button>
-        <button onclick="switchTab('airflow')" id="tab-btn-airflow" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme whitespace-nowrap">
+        <button onclick="switchTab('airflow')" id="tab-btn-airflow" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme">
           Atualização Automática (Airflow)
         </button>
-        <button onclick="switchTab('pyspark')" id="tab-btn-pyspark" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme whitespace-nowrap">
+        <button onclick="switchTab('pyspark')" id="tab-btn-pyspark" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme">
           API & Consulta Direta (Python)
         </button>
-        <button onclick="switchTab('rag')" id="tab-btn-rag" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme whitespace-nowrap">
+        <button onclick="switchTab('rag')" id="tab-btn-rag" class="tab-nav-btn px-3 py-1.5 text-xs font-mono theme-btn text-idsr-cinza hover:text-idsr-creme">
           Perguntas & Respostas (RAG)
         </button>
       </div>
@@ -516,39 +653,39 @@
         <!-- 4 KPI CARDS EM LARGURA TOTAL -->
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 w-full">
           <div class="p-4 bg-idsr-painel border border-idsr-borda theme-card">
-            <span class="text-[11px] font-mono text-idsr-cinza uppercase block">Universo Ativo (MDIC / RFB)</span>
+            <span class="text-[11px] font-mono text-idsr-cinza uppercase block truncate">Universo Ativo (MDIC / RFB)</span>
             <div class="mt-1 flex items-baseline space-x-2">
-              <span class="text-3xl font-mono font-bold text-idsr-creme">21,8M</span>
+              <span id="kpi-total-empresas" class="text-3xl font-mono font-bold text-idsr-creme">21,8M</span>
               <span class="text-xs font-mono text-idsr-cinza">empresas</span>
             </div>
-            <span class="text-[10px] font-mono text-idsr-cinza block mt-1">Total de CNPJs ativos em operação no Brasil</span>
+            <span id="kpi-sub-total" class="text-[10px] font-mono text-idsr-cinza block mt-1 truncate">Total de CNPJs ativos no Brasil</span>
           </div>
 
           <div class="p-4 bg-idsr-painel border border-idsr-borda theme-card">
-            <span class="text-[11px] font-mono text-idsr-cinza uppercase block">Sobrevivência 24m (Sebrae)</span>
+            <span class="text-[11px] font-mono text-idsr-cinza uppercase block truncate">Sobrevivência 24m (Sebrae)</span>
             <div class="mt-1 flex items-baseline space-x-2">
-              <span class="text-3xl font-mono font-bold text-idsr-sucesso">61,0%</span>
+              <span id="kpi-taxa-sobrevivencia" class="text-3xl font-mono font-bold text-idsr-sucesso">61,0%</span>
               <span class="text-xs font-mono text-idsr-cinza">ativas</span>
             </div>
-            <span class="text-[10px] font-mono text-idsr-cinza block mt-1">39,0% de mortalidade nos primeiros 2 anos</span>
+            <span id="kpi-sub-sobrevivencia" class="text-[10px] font-mono text-idsr-cinza block mt-1 truncate">39,0% de baixa nos primeiros 2 anos</span>
           </div>
 
           <div class="p-4 bg-idsr-painel border border-idsr-borda theme-card">
-            <span class="text-[11px] font-mono text-idsr-cinza uppercase block">Sobrevivência EPP 5 anos</span>
+            <span class="text-[11px] font-mono text-idsr-cinza uppercase block truncate">Sobrevivência EPP 5 anos</span>
             <div class="mt-1 flex items-baseline space-x-2">
-              <span class="text-3xl font-mono font-bold text-idsr-sucesso">83,0%</span>
+              <span id="kpi-taxa-epp" class="text-3xl font-mono font-bold text-idsr-sucesso">83,0%</span>
               <span class="text-xs font-mono text-idsr-cinza">resiliência</span>
             </div>
-            <span class="text-[10px] font-mono text-idsr-cinza block mt-1">Mortalidade de apenas 17% em 5 anos</span>
+            <span id="kpi-sub-epp" class="text-[10px] font-mono text-idsr-cinza block mt-1 truncate">Mortalidade de apenas 17% em 5 anos</span>
           </div>
 
           <div class="p-4 bg-idsr-painel border border-idsr-borda theme-card">
-            <span class="text-[11px] font-mono text-idsr-cinza uppercase block">Aberturas Anuais (Redesim)</span>
+            <span class="text-[11px] font-mono text-idsr-cinza uppercase block truncate">Aberturas Anuais (Redesim)</span>
             <div class="mt-1 flex items-baseline space-x-2">
-              <span class="text-3xl font-mono font-bold text-idsr-creme">3,85M</span>
+              <span id="kpi-aberturas-ano" class="text-3xl font-mono font-bold text-idsr-creme">3,85M</span>
               <span class="text-xs font-mono text-idsr-cinza">novas/ano</span>
             </div>
-            <span class="text-[10px] font-mono text-idsr-cinza block mt-1">Média de 10.500 novos registros por dia útil</span>
+            <span id="kpi-sub-aberturas" class="text-[10px] font-mono text-idsr-cinza block mt-1 truncate">Média de 10.500 registros/dia útil</span>
           </div>
         </div>
 
@@ -559,9 +696,9 @@
             <div class="flex items-center justify-between pb-3 border-b border-idsr-borda mb-3">
               <div>
                 <span class="text-xs font-mono font-bold text-idsr-creme uppercase block">Mortalidade em 24m por Faixa de Capital</span>
-                <span class="text-[10px] font-mono text-idsr-cinza">Fonte: Sebrae / Receita Federal do Brasil</span>
+                <span class="text-[10px] font-mono text-idsr-cinza">Fonte Oficial: Sebrae / Receita Federal do Brasil</span>
               </div>
-              <span class="text-xs font-mono font-bold text-idsr-brasa">&lt; R$ 10k: 58,4%</span>
+              <span id="chart-nps-highlight" class="text-xs font-mono font-bold text-idsr-brasa">&lt; R$ 10k: 58,4%</span>
             </div>
             <div class="h-64 sm:h-72">
               <canvas id="chartNpsDelay"></canvas>
@@ -573,7 +710,7 @@
             <div class="flex items-center justify-between pb-3 border-b border-idsr-borda mb-3">
               <div>
                 <span class="text-xs font-mono font-bold text-idsr-creme uppercase block">Distribuição e Sobrevivência Regional</span>
-                <span class="text-[10px] font-mono text-idsr-cinza">Fonte: IBGE - Demografia das Empresas (CEMPRE)</span>
+                <span class="text-[10px] font-mono text-idsr-cinza">Fonte Oficial: IBGE - Demografia das Empresas (CEMPRE)</span>
               </div>
               <span class="text-xs font-mono font-bold text-idsr-sucesso">Sul Líder: 79,4%</span>
             </div>
@@ -915,7 +1052,7 @@
         <h3 id="drawer-title" class="text-sm font-title font-bold text-idsr-creme uppercase">Especificação Técnica</h3>
         <p id="drawer-subtitle" class="text-xs font-mono text-idsr-cinza mt-0.5">Código-fonte real e decisões de engenharia.</p>
       </div>
-      <button onclick="closeCodeDrawer()" class="p-1 rounded hover:bg-idsr-borda text-idsr-cinza hover:text-white">
+      <button onclick="closeCodeDrawer()" class="p-1 rounded hover:bg-idsr-borda text-idsr-cinza hover:text-white theme-btn">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
@@ -935,7 +1072,7 @@
     </div>
 
     <div class="p-3.5 border-t border-idsr-borda bg-idsr-noite flex items-center justify-between">
-      <span class="text-xs font-mono text-idsr-cinza">Repositório: github.com/blablabl4/idsr-data-platform</span>
+      <span class="text-xs font-mono text-idsr-cinza truncate">Repositório: github.com/blablabl4/idsr-data-platform</span>
       <button onclick="copyDrawerCode()" class="px-3.5 py-1.5 theme-btn bg-idsr-brasa text-white font-mono font-bold text-xs hover:bg-idsr-brasaHover transition-colors shadow-sm">
         Copiar Código
       </button>
@@ -949,7 +1086,7 @@
     <div class="bg-idsr-painel border border-idsr-borda theme-card max-w-md w-full p-5 space-y-3 shadow-2xl">
       <div class="flex items-center justify-between border-b border-idsr-borda pb-2">
         <h3 class="text-sm font-title font-bold text-idsr-creme uppercase">Exportar Modelo / Boilerplate</h3>
-        <button onclick="closeExportModal()" class="text-idsr-cinza hover:text-white">
+        <button onclick="closeExportModal()" class="text-idsr-cinza hover:text-white theme-btn">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
@@ -961,12 +1098,12 @@
         <span class="text-idsr-cinza block text-[10px]">Comando Git Oficial:</span>
         <div class="flex items-center justify-between bg-idsr-surface p-1.5 theme-card border border-idsr-borda">
           <span class="text-xs truncate">git clone https://github.com/blablabl4/idsr-data-platform.git</span>
-          <button onclick="copyToClipboard('git clone https://github.com/blablabl4/idsr-data-platform.git')" class="text-idsr-brasa hover:underline text-[11px] font-bold ml-2 shrink-0">Copiar</button>
+          <button onclick="copyToClipboard('git clone https://github.com/blablabl4/idsr-data-platform.git')" class="text-idsr-brasa hover:underline text-[11px] font-bold ml-2 shrink-0 theme-btn">Copiar</button>
         </div>
       </div>
 
       <div class="flex justify-end space-x-2 pt-2">
-        <button onclick="closeExportModal()" class="px-3 py-1.5 theme-btn bg-idsr-surface text-xs font-mono text-idsr-cinza hover:text-white">Fechar</button>
+        <button onclick="closeExportModal()" class="px-3.5 py-1.5 theme-btn bg-idsr-surface text-xs font-mono text-idsr-cinza hover:text-white">Fechar</button>
         <button onclick="triggerFileDownload()" class="px-3.5 py-1.5 theme-btn bg-idsr-brasa text-xs font-mono font-bold text-white hover:bg-idsr-brasaHover shadow-sm">Baixar Arquivo (.txt)</button>
       </div>
     </div>
