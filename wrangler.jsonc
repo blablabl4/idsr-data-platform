@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "idsr-data-platform",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": false,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "routes": [
+    { "pattern": "dados.idsr.com.br", "custom_domain": true },
+    { "pattern": "data.idsr.com.br", "custom_domain": true }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

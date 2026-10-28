@@ -101,7 +101,36 @@ function initInfoBalloons() {
 
   let currentTarget = null;
 
+  function hideBalloon() {
+    currentTarget = null;
+    balloon.classList.remove("opacity-100");
+    balloon.classList.add("opacity-0");
+    setTimeout(() => {
+      if (!currentTarget) balloon.classList.add("hidden");
+    }, 100);
+  }
+
+  // Oculta imediatamente em interação de clique, foco, rolagem ou seleção
+  window.addEventListener("scroll", hideBalloon, { passive: true });
+  document.addEventListener("mousedown", (e) => {
+    if (e.target.tagName === "SELECT" || e.target.closest("select") || e.target.closest("#modal-report-backdrop") || e.target.closest("#modal-intro-backdrop")) {
+      hideBalloon();
+    }
+  });
+  document.addEventListener("change", hideBalloon);
+  document.addEventListener("focusin", (e) => {
+    if (e.target.tagName === "SELECT" || e.target.tagName === "INPUT") {
+      hideBalloon();
+    }
+  });
+
   document.addEventListener("pointerover", (e) => {
+    // Não ativa balão se o cursor estiver sobre selects ou dentro de modais
+    if (e.target.tagName === "SELECT" || e.target.closest("select") || e.target.closest("#modal-report-backdrop") || e.target.closest("#modal-intro-backdrop")) {
+      hideBalloon();
+      return;
+    }
+
     const target = e.target.closest("[data-balloon]");
     if (!target) return;
     currentTarget = target;
@@ -136,12 +165,7 @@ function initInfoBalloons() {
   document.addEventListener("pointerout", (e) => {
     const target = e.target.closest("[data-balloon]");
     if (!target || target === currentTarget) {
-      currentTarget = null;
-      balloon.classList.remove("opacity-100");
-      balloon.classList.add("opacity-0");
-      setTimeout(() => {
-        if (!currentTarget) balloon.classList.add("hidden");
-      }, 150);
+      hideBalloon();
     }
   });
 
@@ -183,6 +207,8 @@ function startSpClock() {
 /* CONTROLE DO MODAL DE INTRODUÇÃO (SEM TECNÊS)                              */
 /* ========================================================================= */
 function openIntroModal() {
+  const b = document.getElementById("ui-info-balloon");
+  if (b) { b.classList.add("hidden", "opacity-0"); }
   const modal = document.getElementById("modal-intro-backdrop");
   if (modal) modal.classList.remove("hidden");
 }
@@ -1360,6 +1386,8 @@ function showToast(msg) {
 /* ========================================================================= */
 
 function openReportModal() {
+  const b = document.getElementById("ui-info-balloon");
+  if (b) { b.classList.add("hidden", "opacity-0"); }
   const modal = document.getElementById("modal-report-backdrop");
   if (!modal) return;
 

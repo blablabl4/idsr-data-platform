@@ -437,10 +437,27 @@
     .bar-aws { display: none !important; }
     [data-theme="amazon"] .bar-aws { display: block !important; }
 
-    /* Prevenção de quebra de texto em botões */
-    button, a, .badge-chip {
+    /* Prevenção de quebra de texto em botões inline e chips */
+    .theme-btn, .badge-chip, .nav-btn, .chart-type-btn, .tab-btn {
       white-space: nowrap !important;
       flex-shrink: 0 !important;
+    }
+
+    /* Cards e botões estruturados permitem quebra de texto normal */
+    .theme-card, .theme-card button, .theme-card p, button p, a p, .export-card-btn {
+      white-space: normal !important;
+      word-break: normal !important;
+      overflow-wrap: break-word !important;
+    }
+
+    #modal-report-backdrop button.export-card-btn {
+      white-space: normal !important;
+    }
+
+    #modal-report-backdrop p {
+      white-space: normal !important;
+      word-break: normal !important;
+      overflow-wrap: break-word !important;
     }
 
     /* Seletores de Tipo de Gráfico Dinâmico */
@@ -660,55 +677,55 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           
           <!-- XLSX -->
-          <button onclick="exportReport('xlsx')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-emerald-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
-            <div>
+          <button onclick="exportReport('xlsx')" class="export-card-btn p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-emerald-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2 w-full min-h-[125px] overflow-hidden">
+            <div class="w-full">
               <div class="flex items-center justify-between mb-1.5">
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">EXCEL</span>
-                <svg class="w-4 h-4 text-emerald-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 whitespace-nowrap">EXCEL</span>
+                <svg class="w-4 h-4 text-emerald-400 group-hover:translate-y-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
               </div>
-              <strong class="text-idsr-creme font-bold text-xs block">Planilha .XLSX</strong>
-              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">3 abas: Storytelling, KPIs e Matriz Regional.</p>
+              <strong class="text-idsr-creme font-bold text-xs block whitespace-normal">Planilha .XLSX</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug whitespace-normal break-words">3 abas: Storytelling, KPIs e Matriz Regional.</p>
             </div>
-            <span class="text-[10px] font-semibold text-emerald-400 flex items-center">Baixar Planilha →</span>
+            <span class="text-[10px] font-semibold text-emerald-400 flex items-center whitespace-nowrap pt-1">Baixar Planilha →</span>
           </button>
 
           <!-- PDF -->
-          <button onclick="exportReport('pdf')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-red-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
-            <div>
+          <button onclick="exportReport('pdf')" class="export-card-btn p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-red-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2 w-full min-h-[125px] overflow-hidden">
+            <div class="w-full">
               <div class="flex items-center justify-between mb-1.5">
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30">DOCUMENTO</span>
-                <svg class="w-4 h-4 text-red-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/30 whitespace-nowrap">DOCUMENTO</span>
+                <svg class="w-4 h-4 text-red-400 group-hover:translate-y-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
               </div>
-              <strong class="text-idsr-creme font-bold text-xs block">Relatório .PDF</strong>
-              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Documento executivo diagramado com sumário e dados.</p>
+              <strong class="text-idsr-creme font-bold text-xs block whitespace-normal">Relatório .PDF</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug whitespace-normal break-words">Documento executivo diagramado com sumário e dados.</p>
             </div>
-            <span class="text-[10px] font-semibold text-red-400 flex items-center">Baixar PDF →</span>
+            <span class="text-[10px] font-semibold text-red-400 flex items-center whitespace-nowrap pt-1">Baixar PDF →</span>
           </button>
 
           <!-- CSV -->
-          <button onclick="exportReport('csv')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-blue-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
-            <div>
+          <button onclick="exportReport('csv')" class="export-card-btn p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-blue-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2 w-full min-h-[125px] overflow-hidden">
+            <div class="w-full">
               <div class="flex items-center justify-between mb-1.5">
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">DADOS</span>
-                <svg class="w-4 h-4 text-blue-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30 whitespace-nowrap">DADOS</span>
+                <svg class="w-4 h-4 text-blue-400 group-hover:translate-y-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
               </div>
-              <strong class="text-idsr-creme font-bold text-xs block">Tabela .CSV</strong>
-              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Dados estruturados com separadores UTF-8 com BOM.</p>
+              <strong class="text-idsr-creme font-bold text-xs block whitespace-normal">Tabela .CSV</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug whitespace-normal break-words">Dados estruturados com separadores UTF-8 com BOM.</p>
             </div>
-            <span class="text-[10px] font-semibold text-blue-400 flex items-center">Baixar CSV →</span>
+            <span class="text-[10px] font-semibold text-blue-400 flex items-center whitespace-nowrap pt-1">Baixar CSV →</span>
           </button>
 
           <!-- TXT -->
-          <button onclick="exportReport('txt')" class="p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-amber-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2">
-            <div>
+          <button onclick="exportReport('txt')" class="export-card-btn p-3.5 rounded-xl bg-idsr-surface border border-idsr-borda hover:border-amber-500/60 transition-all text-left group hover:scale-[1.02] flex flex-col justify-between space-y-2 w-full min-h-[125px] overflow-hidden">
+            <div class="w-full">
               <div class="flex items-center justify-between mb-1.5">
-                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30">NARRATIVA</span>
-                <svg class="w-4 h-4 text-amber-400 group-hover:translate-y-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30 whitespace-nowrap">NARRATIVA</span>
+                <svg class="w-4 h-4 text-amber-400 group-hover:translate-y-0.5 transition-transform shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
               </div>
-              <strong class="text-idsr-creme font-bold text-xs block">Texto .TXT</strong>
-              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug">Storytelling completo, diagnósticos e conclusões.</p>
+              <strong class="text-idsr-creme font-bold text-xs block whitespace-normal">Texto .TXT</strong>
+              <p class="text-idsr-cinza text-[11px] mt-1 leading-snug whitespace-normal break-words">Storytelling completo, diagnósticos e conclusões.</p>
             </div>
-            <span class="text-[10px] font-semibold text-amber-400 flex items-center">Baixar TXT →</span>
+            <span class="text-[10px] font-semibold text-amber-400 flex items-center whitespace-nowrap pt-1">Baixar TXT →</span>
           </button>
 
         </div>
@@ -719,7 +736,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-2">
             <span class="w-2 h-2 rounded-full bg-idsr-sucesso"></span>
-            <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider">Storytelling de Dados & Resumo Executivo:</span>
+            <span class="text-xs font-bold text-idsr-creme uppercase tracking-wider whitespace-nowrap">Storytelling de Dados & Resumo Executivo:</span>
           </div>
           <button onclick="copyReportStorytelling()" id="btn-copy-story" class="px-2.5 py-1 text-[11px] theme-btn bg-idsr-surface border border-idsr-borda text-idsr-cinza hover:text-white flex items-center space-x-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -995,10 +1012,7 @@
         <span class="text-idsr-creme font-bold text-[11px] whitespace-nowrap uppercase tracking-wider">Filtros:</span>
 
         <!-- Filtro por Região -->
-        <select id="filter-region" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
-          data-balloon-badge="Filtro Geográfico"
-          data-balloon-title="Filtrar por Região do Brasil"
-          data-balloon="Recalcula instantaneamente os 21,8M de empresas e os indicadores de sobrevivência para a macrorregião selecionada (IBGE).">
+        <select id="filter-region" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
           <option value="todos">Região: Brasil (Todas)</option>
           <option value="sudeste">Região: Sudeste (49,5% do Brasil)</option>
           <option value="sul">Região: Sul (Líder em Sobrevivência 79,4%)</option>
@@ -1008,10 +1022,7 @@
         </select>
 
         <!-- Filtro por Porte Empresarial -->
-        <select id="filter-porte" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
-          data-balloon-badge="Filtro de Porte"
-          data-balloon-title="Filtrar por Porte Empresarial"
-          data-balloon="Permite isolar MEI (alta rotatividade), Microempresas ME ou Empresas de Pequeno Porte EPP (maior longevidade).">
+        <select id="filter-porte" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
           <option value="todos">Porte: Todos os Segmentos</option>
           <option value="mei">Porte: MEI (Maior Volatilidade)</option>
           <option value="me">Porte: Microempresa ME (78,4% Sobrevida)</option>
@@ -1019,10 +1030,7 @@
         </select>
 
         <!-- Filtro por Macro-Setor -->
-        <select id="filter-setor" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none"
-          data-balloon-badge="Filtro Setorial"
-          data-balloon-title="Filtrar por Atividade Econômica"
-          data-balloon="Segmenta os cálculos de resiliência e mortalidade por Comércio Varejista, Serviços & Tecnologia, Indústria ou Construção Civil.">
+        <select id="filter-setor" onchange="applyInteractiveFilters()" class="filter-control text-xs focus:outline-none">
           <option value="todos">Setor: Todos os Setores</option>
           <option value="comercio">Comércio Varejista</option>
           <option value="servicos">Serviços & Tecnologia</option>
