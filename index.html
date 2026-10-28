@@ -558,6 +558,44 @@
         line-height: 1.6 !important;
       }
     }
+  
+    /* Mobile-First & Anti-Overflow Guard */
+    html, body {
+      overflow-x: hidden !important;
+      width: 100% !important;
+      max-width: 100vw !important;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Regra responsiva para barra de abas: Visivel em TODOS os temas no mobile (<768px) */
+    .tab-bar-nav {
+      display: flex !important;
+      -webkit-overflow-scrolling: touch;
+    }
+    @media (min-width: 768px) {
+      [data-theme="google"] .tab-bar-nav,
+      [data-theme="apple"] .tab-bar-nav {
+        display: none !important;
+      }
+    }
+
+    /* Responsividade refinada de tipografia e cards no mobile */
+    @media (max-width: 640px) {
+      .kpi-number {
+        font-size: 1.5rem !important;
+      }
+      .kpi-card {
+        padding: 0.75rem !important;
+      }
+      .filter-control {
+        width: 100% !important;
+      }
+    }
+
   </style>
 </head>
 <body class="min-h-full flex flex-col bg-idsr-noite text-idsr-creme antialiased selection:bg-idsr-brasa selection:text-white">
@@ -809,7 +847,7 @@
   <!-- ======================================================================= -->
   <!-- CHROME 1: CABEÇALHO IDSR STUDIO (OFICIAL idsr.com.br / DINÂMICO & QUENTE)-->
   <!-- ======================================================================= -->
-  <header class="chrome-idsr border-b border-[#423834] bg-[#27201D] px-4 sm:px-6 h-20 items-center justify-between w-full shrink-0">
+  <header class="chrome-idsr border-b border-[#423834] bg-[#27201D] px-3 sm:px-6 py-2.5 sm:py-0 sm:h-20 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 w-full shrink-0">
     <div class="flex items-center space-x-4">
       <!-- IDSR Official SVG Logo com Ponto Brasa -->
       <a href="https://idsr.com.br" target="_blank" rel="noopener" class="shrink-0" aria-label="IDSR Estúdio">
@@ -831,7 +869,7 @@
       </div>
       <div class="leading-tight">
         <div class="flex items-center space-x-1.5">
-          <span class="font-bold text-xs sm:text-sm text-[#FCF2BD]">Isaque da Silva Rocha</span>
+          <span class="font-bold text-xs sm:text-sm text-[#FCF2BD]"><span class="sm:hidden">Isaque Rocha</span><span class="hidden sm:inline">Isaque da Silva Rocha</span></span>
           <span class="w-1.5 h-1.5 rounded-full bg-[#30D158] hidden sm:inline-block"></span>
         </div>
         <span class="text-[11px] text-[#B3A59E] hidden sm:block">Data & Analytics Engineer</span>
@@ -867,7 +905,7 @@
   <!-- ======================================================================= -->
   <!-- CHROME 2: CABEÇALHO GOOGLE CLOUD PLATFORM (MATERIAL 3 / GCP APP BAR)    -->
   <!-- ======================================================================= -->
-  <header class="chrome-google border-b border-[#DADCE0] bg-[#FFFFFF] text-[#202124] px-4 h-20 items-center justify-between w-full shadow-sm shrink-0">
+  <header class="chrome-google border-b border-[#DADCE0] bg-[#FFFFFF] text-[#202124] px-3 sm:px-4 py-2.5 sm:py-0 sm:h-20 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 w-full shadow-sm shrink-0">
     <div class="flex items-center space-x-3">
       <svg class="w-5 h-5 text-[#5F6368] cursor-pointer shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
       <div class="flex items-center space-x-1.5 font-medium text-sm whitespace-nowrap">
@@ -889,7 +927,7 @@
       </div>
       <div class="leading-tight">
         <div class="flex items-center space-x-1.5">
-          <span class="font-bold text-xs sm:text-sm text-[#202124]">Isaque da Silva Rocha</span>
+          <span class="font-bold text-xs sm:text-sm text-[#202124]"><span class="sm:hidden">Isaque Rocha</span><span class="hidden sm:inline">Isaque da Silva Rocha</span></span>
           <span class="w-1.5 h-1.5 rounded-full bg-[#34A853]"></span>
         </div>
         <span class="text-[11px] text-[#5F6368] hidden sm:block">Data & Analytics Engineer</span>
@@ -925,7 +963,7 @@
   <!-- ======================================================================= -->
   <!-- CHROME 3: CABEÇALHO APPLE MACOS (TAHOE GLASSMORPHISM / TRAFFIC LIGHTS)  -->
   <!-- ======================================================================= -->
-  <header class="chrome-apple border-b border-white/10 bg-[rgba(20,20,24,0.85)] backdrop-blur-2xl px-4 sm:px-6 h-20 items-center justify-between w-full shrink-0">
+  <header class="chrome-apple border-b border-white/10 bg-[rgba(20,20,24,0.85)] backdrop-blur-2xl px-3 sm:px-6 py-2.5 sm:py-0 sm:h-20 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5 w-full shrink-0">
     <div class="flex items-center space-x-4">
       <!-- Traffic Light Buttons -->
       <div class="flex items-center space-x-2 shrink-0">
@@ -943,7 +981,7 @@
       </div>
       <div class="leading-tight">
         <div class="flex items-center space-x-1.5">
-          <span class="font-bold text-xs sm:text-sm text-[#F5F5F7]">Isaque da Silva Rocha</span>
+          <span class="font-bold text-xs sm:text-sm text-[#F5F5F7]"><span class="sm:hidden">Isaque Rocha</span><span class="hidden sm:inline">Isaque da Silva Rocha</span></span>
           <span class="w-1.5 h-1.5 rounded-full bg-[#30D158]"></span>
         </div>
         <span class="text-[11px] text-[#8E8E93] hidden sm:block">Data & Analytics Engineer</span>
@@ -979,7 +1017,7 @@
   <!-- ======================================================================= -->
   <!-- CHROME 4: CABEÇALHO AMAZON AWS (SQUID INK #232F3E / REGION SA-EAST-1)   -->
   <!-- ======================================================================= -->
-  <header class="chrome-amazon bg-[#232F3E] text-[#EAEDED] px-4 h-16 items-center justify-between w-full shrink-0 border-b border-[#3D5166]">
+  <header class="chrome-amazon bg-[#232F3E] text-[#EAEDED] px-3 sm:px-4 py-2 sm:py-0 sm:h-16 flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 w-full shrink-0 border-b border-[#3D5166]">
     <div class="flex items-center space-x-3">
       <!-- AWS Smile Orange Badge -->
       <span class="px-1.5 py-0.5 rounded-sm bg-[#FF9900] text-black font-bold text-[11px] whitespace-nowrap shrink-0">AWS</span>
@@ -994,7 +1032,7 @@
         IR
       </div>
       <div class="leading-tight text-xs">
-        <span class="text-[#EAEDED] font-bold">Isaque da Silva Rocha</span>
+        <span class="text-[#EAEDED] font-bold"><span class="sm:hidden">Isaque Rocha</span><span class="hidden sm:inline">Isaque da Silva Rocha</span></span>
         <span class="text-[10px] text-[#9BA7B4] block font-mono">arn:aws:iam::talent</span>
       </div>
 
@@ -1045,7 +1083,7 @@
   <!-- ======================================================================= -->
   <!-- BARRA DE FILTROS INTERATIVOS EM TEMPO REAL                              -->
   <!-- ======================================================================= -->
-  <section class="border-b border-idsr-borda bg-idsr-surface/40 px-4 sm:px-6 py-2.5 transition-colors">
+  <section class="border-b border-idsr-borda bg-idsr-surface/40 px-3 sm:px-6 py-2.5 transition-colors w-full">
     <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 text-xs">
       <div class="flex flex-wrap items-center gap-2">
         <span class="text-idsr-creme font-bold text-[11px] whitespace-nowrap uppercase tracking-wider">Filtros:</span>
@@ -1190,7 +1228,7 @@
     <main class="flex-1 overflow-y-auto w-full p-4 sm:p-6 lg:p-8 space-y-6">
 
       <!-- NAVEGAÇÃO DE ABAS UNIVERSAL (Para IDSR e AWS ou Mobile) -->
-      <div class="chrome-idsr chrome-amazon flex space-x-1 overflow-x-auto pb-2 border-b border-idsr-borda w-full">
+      <div class="tab-bar-nav flex space-x-1.5 overflow-x-auto pb-2 pt-1 border-b border-idsr-borda w-full scrollbar-none shrink-0">
         <button onclick="switchTab('analytics')" id="tab-btn-analytics" class="tab-nav-btn tab-nav-active px-3 py-1.5 text-xs theme-btn" data-balloon-badge="Módulo 1" data-balloon-title="Visão Geral & Simulador Preditivo" data-balloon="Painel executivo com taxas de sobrevivência do Sebrae/Receita Federal, distribuição geográfica e simulador preditivo de risco.">
           Visão Geral & Simulador
         </button>
@@ -1400,7 +1438,7 @@
       <!-- TAB 2: CONSULTAS ANALÍTICAS (SQL)                                   -->
       <!-- =================================================================== -->
       <div id="view-lakehouse" class="tab-view hidden space-y-5 w-full">
-        <div class="flex items-center justify-between pb-3 border-b border-idsr-borda">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-idsr-borda">
           <div>
             <h2 class="text-base font-bold text-idsr-creme uppercase">Consultas Analíticas em Dados Federais (SQL)</h2>
             <span class="text-xs text-idsr-cinza">Execução de Star Schema Gold sobre dados abertos da Receita Federal e IBGE.</span>
@@ -1442,7 +1480,7 @@
       <!-- TAB 3: DBT / ORIGEM E LIMPEZA DOS DADOS                             -->
       <!-- =================================================================== -->
       <div id="view-dbt" class="tab-view hidden space-y-5 w-full">
-        <div class="flex items-center justify-between pb-3 border-b border-idsr-borda">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-idsr-borda">
           <div>
             <h2 class="text-base font-bold text-idsr-creme uppercase">Origem e Limpeza dos Dados (dbt Core)</h2>
             <span class="text-xs text-idsr-cinza">Pipelines auditáveis que higienizam dados brutos da Receita Federal e IBGE.</span>
@@ -1456,7 +1494,8 @@
         <div class="p-5 theme-card border border-idsr-borda bg-idsr-painel">
           <span class="text-xs text-idsr-cinza block mb-3 font-bold uppercase">Linhagem de Dados (Lineage Graph):</span>
           
-          <div class="p-6 theme-card bg-idsr-noite border border-idsr-borda overflow-x-auto flex items-center justify-between min-w-[650px] space-x-3">
+          <div class="w-full overflow-x-auto pb-2">
+            <div class="p-6 theme-card bg-idsr-noite border border-idsr-borda flex items-center justify-between min-w-[620px] space-x-3">
             <div class="p-3.5 theme-card bg-idsr-surface border border-amber-800 text-center w-56">
               <span class="text-[10px] text-amber-400 block uppercase font-bold">1. Entrada Oficial</span>
               <span class="text-xs font-bold text-idsr-creme block mt-0.5">receita_federal.cnpjs</span>
@@ -1479,6 +1518,7 @@
               <span class="text-[10px] text-idsr-sucesso block mt-1">Cruzada com IBGE & pronta</span>
             </div>
           </div>
+          </div>
         </div>
       </div>
 
@@ -1486,7 +1526,7 @@
       <!-- TAB 4: AIRFLOW WORKFLOWS                                            -->
       <!-- =================================================================== -->
       <div id="view-airflow" class="tab-view hidden space-y-5 w-full">
-        <div class="flex items-center justify-between pb-3 border-b border-idsr-borda">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-idsr-borda">
           <div>
             <h2 class="text-base font-bold text-idsr-creme uppercase">Rotina de Atualização Automática (Airflow)</h2>
             <span class="text-xs text-idsr-cinza">Orquestração noturna com retentativas e tolerância a falhas na API pública.</span>
@@ -1549,7 +1589,7 @@
       <!-- TAB 5: PYSPARK & FASTAPI                                            -->
       <!-- =================================================================== -->
       <div id="view-pyspark" class="tab-view hidden space-y-5 w-full">
-        <div class="flex items-center justify-between pb-3 border-b border-idsr-borda">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-idsr-borda">
           <div>
             <h2 class="text-base font-bold text-idsr-creme uppercase">API de Consulta Direta (Python & FastAPI)</h2>
             <span class="text-xs text-idsr-cinza">Microserviço assíncrono com latência &lt; 10ms e validação Pydantic v2.</span>
@@ -1597,7 +1637,7 @@
       <!-- TAB 6: RAG & BUSCA VETORIAL                                         -->
       <!-- =================================================================== -->
       <div id="view-rag" class="tab-view hidden space-y-5 w-full">
-        <div class="flex items-center justify-between pb-3 border-b border-idsr-borda">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-idsr-borda">
           <div>
             <h2 class="text-base font-bold text-idsr-creme uppercase">Perguntas & Respostas com IA (RAG)</h2>
             <span class="text-xs text-idsr-cinza">Busca vetorial ancorada em documentos e normas oficiais do Governo Federal.</span>
